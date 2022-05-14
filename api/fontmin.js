@@ -1,5 +1,5 @@
 const Fontmin = require('fontmin');
-
+const { existsSync } = require('fs')
 // 动态中文字体加载方案 https://zhuanlan.zhihu.com/p/349267844
 
 module.exports = function (req, res) {
@@ -7,6 +7,7 @@ module.exports = function (req, res) {
     // 字体源文件
     const srcPath = './EVA-Matisse_Classic.ttf';
     let {text,unicode} = req.query;
+    if(!(existsSync(srcPath))) return res.end()
     
     if(unicode){
         text = unicode.split(/,/g).map(String.fromCharCode).join('')
