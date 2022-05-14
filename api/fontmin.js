@@ -11,7 +11,8 @@ module.exports = function (req, res) {
     if(!(existsSync(srcPath))){
         throw ([
             [srcPath,existsSync(srcPath)],
-            ['./fontmin.html',existsSync('./fontmin.html')]
+            ['./fontmin.html',existsSync('./fontmin.html')],
+            ['../fontmin.html',existsSync('../fontmin.html')],
         ])
         return res.end()
     } 

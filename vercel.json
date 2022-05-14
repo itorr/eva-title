@@ -1,0 +1,7 @@
+{
+    "functions": {
+      "api/fontmin.js": {
+        "includeFiles": "/**"
+      }
+    }
+  }
