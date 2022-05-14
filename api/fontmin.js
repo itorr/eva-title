@@ -5,7 +5,7 @@ const { existsSync } = require('fs')
 module.exports = function (req, res) {
     console.time('a')
     // 字体源文件
-    const srcPath = './EVA-Matisse_Classic.ttf';
+    const srcPath = 'fonts/EVA-Matisse_Classic.ttf';
     let {text,unicode} = req.query;
 
     if(!(existsSync(srcPath))){
