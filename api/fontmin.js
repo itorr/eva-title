@@ -7,8 +7,15 @@ module.exports = function (req, res) {
     // 字体源文件
     const srcPath = './EVA-Matisse_Classic.ttf';
     let {text,unicode} = req.query;
-    if(!(existsSync(srcPath))) return res.end()
-    
+
+    if(!(existsSync(srcPath))){
+        throw ([
+            [srcPath,existsSync(srcPath)],
+            ['./fontmin.html',existsSync('./fontmin.html')]
+        ])
+        return res.end()
+    } 
+
     if(unicode){
         text = unicode.split(/,/g).map(String.fromCharCode).join('')
     }
