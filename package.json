@@ -1,0 +1,15 @@
+{
+  "name": "eva-title",
+  "version": "1.0.0",
+  "description": "EVA标题生成器",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "itorr",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.1",
+    "fontmin": "^0.9.9"
+  }
+}
