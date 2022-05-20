@@ -1,0 +1,107 @@
+// @font-face {
+//     font-family: EVAMatisseClassic;
+//     src: url(EVA-Matisse_Classic.woff2);
+// }
+// @font-face {
+//     font-family: MatisseProEB;
+//     src: url(FOT-MatissePro-EB.woff2);
+// }
+
+// @font-face {
+//     font-family: NotoSerifSCBlack;
+//     src: url(NotoSerifSC-Black.woff2);
+// }
+
+
+/*
+
+
+"MS Pゴシック","MS P明朝",
+"ヒラギノ明朝","游明朝", "Yu Mincho", "游明朝体", YuMincho,
+"微軟正黑體",
+"ヒラギノ明朝 Pro","PT Serif",
+*/
+
+html{
+    font:24px/1.4 serif;
+    // font-family: MatisseProEB,serif;
+    // font-family: EVAMatisseClassic,serif;
+    // font-family: EVAMatisseClassic,MatisseProEB,serif;
+    // font-family: NotoSerifSCBlack,serif;
+    // font-family: MatisseProEB,NotoSerifSCBlack,serif;
+    font-weight: 200;
+    font-display: swap;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: grayscale;
+
+    background:#999;
+}
+input,
+textarea{
+    font: inherit
+}
+input[type="checkbox"]{
+    width: .8em;
+    height:.8em;
+}
+
+textarea{
+    resize: none;
+    width:80%;
+    
+}
+div{
+    font-size:2em;
+    // font-family: EVAMatisseClassic;
+    overflow: hidden;
+    canvas{
+        float: left;
+        width: 640px;
+        height: 480px;
+        display: block;
+        // padding:40px;
+        background:#000;
+        margin:10px;
+        // width: 320px;
+        // height: 240px;
+        margin:4px;
+    }
+}
+a{
+    text-decoration: none;
+    color:dodgerblue
+}
+
+.wikitable {
+    font-size:18px;
+    background-color: #f8f9fa;
+    color: #202122;
+    margin: 1em 0;
+    border: 1px solid #a2a9b1;
+    border-collapse: collapse
+}
+
+.wikitable > tr > th,.wikitable > tr > td,.wikitable > * > tr > th,.wikitable > * > tr > td {
+    border: 1px solid #a2a9b1;
+    padding: 0.2em 0.4em
+}
+
+.wikitable > tr > th,.wikitable > * > tr > th {
+    background-color: #eaecf0;
+    text-align: center
+}
+
+.wikitable > caption {
+    font-weight: bold
+}
+
+
+// .wikitable td:nth-child(3),
+// .wikitable td:nth-child(4),
+// .wikitable td:nth-child(5),
+// .wikitable td:nth-child(6),
+// .wikitable td:nth-child(7),
+// .wikitable td:nth-child(8),
+// .wikitable td:nth-child(9){
+//     display: none;
+// }
