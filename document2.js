@@ -44,8 +44,26 @@ const c = _=>{
     getFontFromText(fontFamilyName,v,async _=>{
         // outputEl.innerText = v
         outputEl.innerHTML = '';
-        v.split(/\n\n/g).forEach(v=>{
-            const el = make(v)
+        layouts.slice().sort(_=>-1).forEach((layout,index)=>{
+            let texts = [
+                // '使徒',
+                // '襲来',
+                // '第壱話',
+            ];
+            texts = layout.texts.map((input,index)=>{
+                return texts[index] || input.placeholder
+            })
+            const height = 360;
+            const el = make({
+                texts,
+                config:{
+                    height: !index?(height*2+8):height,
+                    // convolute: true,
+                    blur:1,
+                    // inverse: true,
+                },
+                layout
+            })
             outputEl.appendChild(el)
         })
     })
