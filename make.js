@@ -9,7 +9,7 @@ const orangeColorInverse = 'rgba(255,165,255,.2)'
 let fontFamilyName = 'EVAMatisseClassic'
 const engFontFamilyName = `"Times New Roman"`
 
-// fontFamilyName = 'MatisseProEB'
+fontFamilyName = 'MatisseProEB'
 // fontFamilyName = 'RaglanStdUB'
 
 const isEngRegex = /^[a-z\s!?:\.()\[\]\{\}]+$/i;
@@ -204,9 +204,19 @@ const make = ({
         return canvas
         
     }
-    const makeTextSizeDiffCanvas = (text,letterSpacing = 0)=>{
-        const kataRegex = text.match(/[ァ-ヶぁ-ん]/g)
-        if(!kataRegex) return makeTextCanvas(text,letterSpacing)
+    const pointWidthScale = 0.4;
+    const makeTextSizeDiffCanvas = (text,letterSpacing = 0,firstWord = 1)=>{
+        let kataRegex = /[ァ-ヶぁ-ん]/g;
+        let kataMatch = text.match(kataRegex);
+        if(!kataMatch) return makeTextCanvas(text,letterSpacing)
+
+        // console.log(text,kataMatch.length , text.length)
+        if( (kataMatch.length / text.length) > 0.5 ){
+            kataRegex = /[のい的]/g;
+            kataMatch = text.match(kataRegex)
+            // console.log(text,kataMatch.length , text.length)
+            if(!kataMatch) return makeTextCanvas(text,letterSpacing)
+        }
         
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d');
@@ -217,8 +227,23 @@ const make = ({
 
         const mojis = text.split('')
 
-        const fontWidth = fontSize + letterSpacing
-        const width = (mojis.length * fontWidth - letterSpacing - kataFontSizeDiff * kataRegex.length) + fontPadding * 2;
+
+        let allWidth = fontPadding * 2 - letterSpacing;
+        mojis.forEach(moji=>{
+
+            let mojiFontSize = fontSize;
+
+            if(/、/.test(moji)){
+                mojiFontSize = fontSize * pointWidthScale
+            }else if(new RegExp(kataRegex,'').test(moji)){
+                mojiFontSize = kataFontSize;
+            }
+            
+
+            allWidth += mojiFontSize + letterSpacing;
+        })
+        
+        const width = allWidth;
         const height = fontSize + fontPadding * 2;
 
         canvas.width = width
@@ -228,8 +253,13 @@ const make = ({
         let left = fontPadding;
 
         mojis.forEach((moji,index)=>{
-            const isKata = /[ァ-ヶぁ-ん]/.test(moji);
-            const _fontSize = isKata?kataFontSize:fontSize;
+
+            const isKata = new RegExp(kataRegex,'').test(moji);
+            let _fontSize = isKata?kataFontSize:fontSize;
+
+            // if(index === 0 && firstWord !== 1){
+            //     _fontSize *= firstWord;
+            // }
 
             setCtxConfig(ctx,{
                 textBaseline:'bottom',
@@ -240,11 +270,13 @@ const make = ({
                 moji,
                 left, height
             );
+            if(/、/.test(moji)){
+                _fontSize = fontSize * pointWidthScale
+            }
             left += _fontSize + letterSpacing;
         })
         document.body.removeChild(canvas)
         return canvas
-        
     }
     const makeLinesCanvas = (texts,letterSpacing = 0)=>{
         const canvas = document.createElement('canvas');
@@ -284,10 +316,9 @@ const make = ({
         })
         return canvas;
     }
-    const makeLinesDiffSizeCanvas = (texts,config)=>{
+    const makeLinesDiffSizeCanvas = (texts,config = {})=>{
         const {
-            letterSpacing = 0,
-
+            lineHeight = 1,
         } = config
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d');
@@ -297,6 +328,7 @@ const make = ({
         });
         let allWidth = 0;
         let allHeight = 0;
+        let maxHeight = 0;
         let lines = texts.map(text=>{
             const _canvas = makeTextCanvas(text)
             const width = _canvas.width;
@@ -304,6 +336,9 @@ const make = ({
 
             // const top = allHeight;
             // allHeight += height + letterSpacing;
+            if(height > maxHeight){
+                maxHeight = height;
+            }
 
             if(width > allWidth){
                 allWidth = width;
@@ -314,23 +349,26 @@ const make = ({
                 width,
                 height,
             }
-        }).map(o=>{
+        });
+        let letterSpacing = 0;
+        lines = lines.map(o=>{
             const scale = o.width / allWidth
 
             if(scale < 0.99){
                 o.width = o.width * 0.7
                 o.height = o.height * 0.7
             }
+            letterSpacing = (lineHeight - 1) * o.height;
 
             const top = allHeight;
             allHeight += o.height + letterSpacing;
-
+            
             o.top = top;
             return o
         });
 
-        canvas.width = allWidth
-        canvas.height = allHeight - letterSpacing
+        canvas.width = allWidth;
+        canvas.height = allHeight - letterSpacing;
         lines.forEach(line=>{
             ctx.drawImage(
                 line.image,
@@ -396,7 +434,7 @@ const make = ({
         mojis.forEach((moji,index)=>{
             ctx.save()
             ctx.translate(width/2, index * lineHeight + fontSize / 2)
-            if(StartAndEndTagTestRegex.test(moji)){
+            if(StartAndEndTagTestRegex.test(moji)|| /ー/.test(moji)){
                 ctx.rotate(90 * Math.PI / 180);
             }
             ctx.fillText(

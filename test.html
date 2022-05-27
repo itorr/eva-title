@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>福音战士標題生成器</title>
+<link rel="stylesheet" href="document.css">
+<style>
+    @font-face {
+        font-weight: 900;
+        font-family: FOTMatisseProEB;
+        src: url(fonts/FOT-MatissePro-EB.otf);
+    }
+    p{
+        font-weight: 900;
+        font-family: FOTMatisseProEB,serif;
+        font-variant-east-asian: proportional-width;
+        -moz-font-feature-settings: "pwid";
+        -webkit-font-feature-settings: "pwid";
+        font-feature-settings: "pwid";
+    }
+</style>
+<h1>福音战士標題生成器</h1>
+<textarea placeholder="輸入標題" cols="40" rows="10"></textarea>
+<p></p>
+<script>
+textEl = document.querySelector('textarea')
+textEl.oninput = e=>{
+    document.querySelector('p').textContent = textEl.value;
+}
+
+fetch('input.txt').then(r=>r.text()).then(text=>{
+    textEl.value = text
+    textEl.oninput()
+})
+
+
+</script>

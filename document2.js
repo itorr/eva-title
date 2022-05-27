@@ -41,6 +41,8 @@ const c = _=>{
     let v = inputEl.value.trim()
     if(checkboxEl.checked) v = transformFunc[2](v)
 
+    v += layouts.map(a=>[a.inputs.map(t=>t.placeholder),a.exemples]).flat().join()
+
     getFontFromText(fontFamilyName,v,async _=>{
         // outputEl.innerText = v
         outputEl.innerHTML = '';
@@ -50,7 +52,7 @@ const c = _=>{
                 // '襲来',
                 // '第壱話',
             ];
-            texts = layout.texts.map((input,index)=>{
+            texts = layout.inputs.map((input,index)=>{
                 return texts[index] || input.placeholder
             })
             const height = 360;
@@ -65,6 +67,20 @@ const c = _=>{
                 layout
             })
             outputEl.appendChild(el)
+
+            if(layout.exemples){
+                layout.exemples.forEach(texts=>{
+                    const el = make({
+                        texts,
+                        config:{
+                            height,
+                            blur:1,
+                        },
+                        layout
+                    })
+                    outputEl.appendChild(el)
+                })
+            }
         })
     })
 }

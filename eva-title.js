@@ -349,8 +349,9 @@ const makeVerticalTextCanvas = (text,letterSpacing = 0)=>{
 
     mojis.forEach((moji,index)=>{
         ctx.save()
-        ctx.translate(width/2, index * lineHeight + fontSize / 2)
-        if(StartAndEndTagTestRegex.test(moji)){
+        ctx.translate(width/2, index * lineHeight + fontSize / 2);
+        
+        if(StartAndEndTagTestRegex.test(moji) || /ー/.test(moji)){
             ctx.rotate(90 * Math.PI / 180);
         }
         ctx.fillText(
@@ -1046,13 +1047,15 @@ const make = text=>{
     }else{
         // 多排托底
         console.log(/多排托底/,texts);
-        const aCanvas = makeLinesCanvas(texts,-space)
+        if(texts.length){
+            const aCanvas = makeLinesCanvas(texts,-space)
 
-        ctx.drawImage(
-            aCanvas,
-            width * 0.1, height * 0.1,
-            width * 0.8, height * 0.8,
-        )
+            ctx.drawImage(
+                aCanvas,
+                width * 0.1, height * 0.1,
+                width * 0.8, height * 0.8,
+            )
+        }
 
 
         // const _height = Math.floor(height/texts.length)

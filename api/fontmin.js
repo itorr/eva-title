@@ -6,6 +6,7 @@ const Fonts = {
     'EVAMatisseClassic':'EVA-Matisse_Classic.ttf',
     'EVAMatisseStandard':'EVA-Matisse_Standard.ttf',
     'MatisseProEB':'FOT-MatissePro-EB.ttf',
+    // 'MatisseProEB':'FOT-MatissePro-EB.otf',
     'RaglanStdUB':'FOT-RaglanStd-UB.ttf',
     'coco':'可口可乐在乎体.ttf',
 }
