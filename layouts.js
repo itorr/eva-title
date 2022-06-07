@@ -632,7 +632,7 @@ const layouts = [
 
             const aWidth = Math.min( aHeight / aCanvas.height * aCanvas.width , maxaWidth );
             const aPaddingScale = 1 - (b.length - a.length) / 10
-            console.log({aPaddingScale})
+            // console.log({aPaddingScale})
             ctx.drawImage(aCanvas, 
                 padding , padding + padding * aPaddingScale,
                 aWidth, aHeight,
@@ -778,13 +778,18 @@ const layouts = [
         }
     },
     {   //书名号包裹的情况
-        title: '【在世界中心呼喊】',
+        title: '最後のシ者',
         inputs:[
             {
-                placeholder:'【在世界中心呼喊】',
+                placeholder:'最後のシ者',
                 minLength:2,
                 maxLength:10,
             },
+        ],
+        exemples:[
+            // [
+            //     '【在世界中心呼喊】'
+            // ]
         ],
         make:({
             canvas,
@@ -816,24 +821,24 @@ const layouts = [
 
             let titleCanvas;
             if(0.5 > Math.random()){
-                titleCanvas = makeTextCanvas(text,-space)
+                titleCanvas = makeTextSizeDiffCanvas(text,-space)
             }else{
                 titleCanvas = makeVerticalTextCanvas(text,-space)
             }
-            
+            const _padding = padding * 2; 
             let titleWidth;
             let titleHeight;
-            let titleTop = 0;
-            let titleLeft = 0;
+            let titleTop = _padding;
+            let titleLeft = _padding;
             let titleScale = titleCanvas.width / titleCanvas.height;
 
             if(titleScale > scale){
-                titleWidth = width;
-                titleHeight = titleWidth / titleScale * rand(1,1.6)
+                titleWidth = width - _padding * 2;
+                titleHeight = titleWidth / titleScale * rand(1,1.4)
                 titleTop = (height - titleHeight) / 2
             }else{
-                titleHeight = height;
-                titleWidth = titleHeight * titleScale * rand(1,1.6)
+                titleHeight = height - _padding * 2;
+                titleWidth = titleHeight * titleScale * rand(1,1.4)
                 titleLeft = (width - titleWidth) / 2;
             }
 
@@ -932,10 +937,10 @@ const layouts = [
                 'アスカ、来日',
                 '第八話'
             ],
-            [
-                'レイ、心のむこうに',
-                '第伍話'
-            ],
+            // [
+            //     'レイ、心のむこうに',
+            //     '第伍話'
+            // ],
             [
                 'ゼーレ、魂の座',
                 '第拾四話'
@@ -972,7 +977,11 @@ const layouts = [
             // ┗
             const titleCanvas = (_=>{
                 
-                const aSliceIndex = Math.floor(a.length/2)
+                let aSliceIndex = Math.floor(a.length/2)
+
+                const pointIndex = a.indexOf('、')
+                if(pointIndex !== -1) aSliceIndex = pointIndex
+
                 const aa = a.slice(0,aSliceIndex)
                 const ab = a.slice(aSliceIndex)
 
@@ -1276,6 +1285,13 @@ const layouts = [
                 minLength:2,
                 maxLength:10,
             },
+        ],
+        exemples:[
+            [
+                '今日臭臭臭',
+                '明日香香香',
+                '最喜欢的一話',
+            ],
         ],
         make:({
             canvas,

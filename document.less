@@ -37,7 +37,8 @@ html{
     background:#999;
 }
 input,
-textarea{
+textarea,
+button{
     font: inherit
 }
 input[type="checkbox"]{
@@ -50,24 +51,24 @@ textarea{
     width:80%;
     
 }
-div{
-    font-size:2em;
-    // font-family: EVAMatisseClassic;
-    overflow: hidden;
-    canvas{
-        float: left;
-        // width: 640px;
-        // height: 480px;
-        display: block;
-        // padding:40px;
-        background:#000;
-        margin:10px;
-        // width: 320px;
-        // height: 240px;
-        zoom:.5;
-        margin:4px;
-    }
-}
+// div{
+//     // font-size:2em;
+//     // font-family: EVAMatisseClassic;
+//     overflow: hidden;
+//     canvas{
+//         float: left;
+//         // width: 640px;
+//         // height: 480px;
+//         display: block;
+//         // padding:40px;
+//         background:#000;
+//         margin:10px;
+//         // width: 320px;
+//         // height: 240px;
+//         zoom:.5;
+//         margin:4px;
+//     }
+// }
 a{
     text-decoration: none;
     color:dodgerblue
@@ -106,3 +107,101 @@ a{
 // .wikitable td:nth-child(9){
 //     display: none;
 // }
+
+
+
+
+.layout-list{
+    overflow: hidden;
+    .item{
+        float: left;
+        cursor: pointer;
+        img{
+            display: block;
+            width: 160px;
+            height: 120px;
+        }
+        position: relative;
+        b{
+            position: absolute;
+            bottom:0;
+            left:0;
+            right:0;
+        }
+    }
+}
+
+
+
+
+
+
+.ui-switch-box {
+    cursor: pointer;
+    margin: 0 .5em;
+
+    display: inline-block;
+    vertical-align: middle;
+
+    .switch {
+        display: inline-block;
+        vertical-align: middle;
+
+        margin-top: -.3em;
+        width: 2.4em;
+        height: 1.4em;
+        border-radius: 9em;
+        background: rgba(0,0,0,.2);
+        transition: background-color .3s ease;
+        .slider {
+            display: inline-block;
+            vertical-align: top;
+            width: 1em;
+            height: 1em;
+            border-radius: 9em;
+            background: #fff;
+            margin: .2em;
+            position: relative;
+            transition: transform .3s ease;
+        }
+    }
+    &[data-checked]{
+        .switch {
+            background: currentColor;
+            .slider {
+                transform: translateX(1em)
+            }
+        }
+    }
+}
+
+
+
+
+
+.ui-tabs-box{
+    display: inline-block;
+    // margin:10px 0;
+    background:#FFF;
+    border-radius:3px;
+    overflow: hidden;
+    text-align: center;
+
+    a{
+        float: left;
+        cursor: pointer;
+        line-height: 1;
+        padding:8px;
+        transition: color .3s ease, background-color .3s ease;
+        &[data-checked="true"]{
+            background:dodgerblue;
+            color:#FFF;
+        }
+    }
+}
+
+
+
+.config-item{
+    padding:10px 0;
+}

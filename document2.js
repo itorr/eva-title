@@ -31,21 +31,21 @@ function utf82str(str) {
 }
 
 
+const deepCopy=o=>JSON.parse(JSON.stringify(o));
+
 const inputEl = document.querySelector('textarea');
 const checkboxEl = document.querySelector('input');
-const outputEl = document.querySelector('div');
+const outputEl = document.querySelector('#out');
 
 const s = '沉值'
 const t = '沈値'
 const c = _=>{
-    let v = inputEl.value.trim()
-    if(checkboxEl.checked) v = transformFunc[2](v)
+    // let v = inputEl.value.trim()
+    // if(checkboxEl.checked) v = transformFunc[2](v)
 
-    v += layouts.map(a=>[a.inputs.map(t=>t.placeholder),a.exemples]).flat().join()
+    let v = layouts.map(a=>[a.inputs.map(t=>t.placeholder),a.exemples]).flat().join()
 
     getFontFromText(fontFamilyName,v,async _=>{
-        // outputEl.innerText = v
-        outputEl.innerHTML = '';
         layouts.slice().sort(_=>-1).forEach((layout,index)=>{
             let texts = [
                 // '使徒',
@@ -59,14 +59,18 @@ const c = _=>{
             const el = make({
                 texts,
                 config:{
-                    height: !index?(height*2+8):height,
+                    height: 240,
                     // convolute: true,
                     blur:1,
-                    // inverse: true,
+                    inverse: Math.random()>0.9,
                 },
                 layout
             })
-            outputEl.appendChild(el)
+            const src = makeBMPFormCanvas(el)
+            layout.src = src;
+            // console.log(src)
+            // app.$set(layout,'src',src)
+            // outputEl.appendChild(el)
 
             if(layout.exemples){
                 layout.exemples.forEach(texts=>{
@@ -78,22 +82,84 @@ const c = _=>{
                         },
                         layout
                     })
-                    outputEl.appendChild(el)
+                    // outputEl.appendChild(el)
                 })
             }
         })
+
+        app.layouts = layouts;
+
     })
 }
-inputEl.oninput = _=>{
-    clearTimeout(c.t)
-    c.t = setTimeout(c,1000)
+
+
+c();
+
+const texts = [
+    '',
+    '',
+    '',
+    '',
+]
+const config = {
+    blur:true,
+    height:480,
+    shadow:true,
+    convolute: false,
+    retina:true,
+    inverse: Math.random()>0.9,
+};
+const types = [
+    {
+        value: undefined,
+        text:'DVD'
+    },
+    {
+        value: 95,
+        text: '95'
+    }
+]
+const data ={
+    layout:layouts[0],
+    layouts:deepCopy(layouts),
+    config,
+    texts
 }
-checkboxEl.oninput = c;
 
+const app = new Vue({
+    el:'.app',
+    data,
+    methods:{
+        make(){
+            clearTimeout(make.timer);
 
-fetch('input.txt').then(r=>r.text()).then(text=>{
-    inputEl.value = text
-    c();
+            make.timer = setTimeout(_=>{
+                const texts = this.layout.inputs.map((input,index)=>{
+                    return this.texts[index] || input.placeholder
+                });
+
+                getFontFromText(fontFamilyName,texts.join(''), make.bind(null,{
+                    canvas: this.$refs['canvas'],
+                    texts,
+                    config: this.config,
+                    layout: this.layout
+                }));
+            },200);
+        }
+    },
+    watch:{
+        config:{
+            deep:true,
+            handler:'make'
+        },
+        layout:'make',
+        texts:{
+            deep:true,
+            handler:'make'
+        },
+    },
+    created(){
+
+    }
 })
 
-document.querySelector('button').onclick = c

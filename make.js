@@ -90,11 +90,26 @@ const make = ({
 
     const ctx = canvas.getContext('2d');
 
+    let { 
+        shadow = true,
+        type95 = false,
+        retina = true,
+        convolute = false,
+    } = config;
 
     const outputHeight = config.height || 480;
     const outputWidth = Math.floor(outputHeight / 3 * 4);
 
-    const renderScale = 2;
+    let renderScale = 1;
+
+    if(type95){
+        retina = false;
+        convolute = true;
+    }
+
+    if(retina){
+        renderScale = 2;
+    }
 
 
     // const defaultHeight = 960;
@@ -119,9 +134,9 @@ const make = ({
     const scale = width / height;
 
     
-    config.width  = width;
-    config.height = height;
-    config.scale  = scale;
+    // config.width  = width;
+    // config.height = height;
+    // config.scale  = scale;
 
     canvas.width  = width;
     canvas.height = height;
@@ -139,7 +154,7 @@ const make = ({
     ctx.fillStyle = backgroundColor;
     ctx.fillRect(
         0, 0,
-        config.width, config.height
+        width, height
     );
 
 
@@ -147,7 +162,8 @@ const make = ({
         const {
             fontSize = defaultFontSize,
             textBaseline = 'middle',
-            _fontFamilyName = fontFamilyName
+            _fontFamilyName = fontFamilyName,
+            // shadow = true
         } = config || {};
         
         ctx.font = `900 ${fontSize}px ${_fontFamilyName},serif`;
@@ -157,9 +173,10 @@ const make = ({
         ctx.textAlign = 'left';
         ctx.textBaseline = textBaseline;
 
-
-        ctx.shadowColor = shadowColor;//'orange';
-        ctx.shadowBlur = space * 2;
+        if(shadow){
+            ctx.shadowColor = shadowColor;//'orange';
+            ctx.shadowBlur = space * 2;
+        }
     }
 
 
@@ -188,7 +205,7 @@ const make = ({
         const width = Math.ceil(metrics.width) - letterSpacing + fontPadding * 2;
         const height = Math.ceil(metrics.fontBoundingBoxDescent + metrics.fontBoundingBoxAscent) + fontPadding * 2;
 
-        console.log({text,width,height})
+        // console.log({text,width,height})
         canvas.width = width;
         canvas.height = height;
 
@@ -206,13 +223,13 @@ const make = ({
     }
     const pointWidthScale = 0.4;
     const makeTextSizeDiffCanvas = (text,letterSpacing = 0,firstWord = 1)=>{
-        let kataRegex = /[ァ-ヶぁ-ん]/g;
+        let kataRegex = /[ァ-ヶぁ-ん、]/g;
         let kataMatch = text.match(kataRegex);
         if(!kataMatch) return makeTextCanvas(text,letterSpacing)
 
         // console.log(text,kataMatch.length , text.length)
         if( (kataMatch.length / text.length) > 0.5 ){
-            kataRegex = /[のい的]/g;
+            kataRegex = /[のい的、]/g;
             kataMatch = text.match(kataRegex)
             // console.log(text,kataMatch.length , text.length)
             if(!kataMatch) return makeTextCanvas(text,letterSpacing)
@@ -473,24 +490,41 @@ const make = ({
         }
     });
 
-    const zoom = 2;
-    if(zoom !== 1){
-        const zoomWidth = width / zoom;
-        const zoomheight = height / zoom;
-    
-        ctx.drawImage(
-            canvas,
-            0,0,width,height,
-            0,0,zoomWidth,zoomheight,
-        )
-        ctx.drawImage(
-            canvas,
-            0,0,zoomWidth,zoomheight,
-            0,0,width,height
-        )
-    }
 
    
+
+    if(type95){
+        // const pixel = outputCtx.getImageData(0,0,outputWidth,outputHeight);
+        // const pixelData = pixel.data;
+
+        // for(let i = 0;i < pixelData.length;i += 4){
+        //     const yuv = rgb2yuv(
+        //         pixelData[i  ],
+        //         pixelData[i+1],
+        //         pixelData[i+2],
+        //     );
+    
+        // 	yuv[0] = Math.max(yuv[0],50);
+            
+        // 	const _rgb = yuv2rgb(yuv);
+    
+        // 	pixelData[i   ] = _rgb[0];
+        // 	pixelData[i+1 ] = _rgb[1];
+        // 	pixelData[i+2 ] = _rgb[2];
+        // }
+
+        // outputCtx.putImageData(pixel,0,0);
+        
+    
+        ctx.fillStyle = 'rgba(108,130,108,.14)';
+        ctx.fillRect(
+            0, 0,
+            width, height
+        );
+    }
+
+
+
     const blurFunc = _=>{
         ctx.drawImage(
             canvas,
@@ -503,9 +537,26 @@ const make = ({
             -0.5,-0.5,width,height
         )
     }
-
     if(config.blur){
-        let i = config.blur;
+
+        const zoom = 2;
+        if(zoom !== 1){
+            const zoomWidth = width / zoom;
+            const zoomheight = height / zoom;
+        
+            ctx.drawImage(
+                canvas,
+                0,0,width,height,
+                0,0,zoomWidth,zoomheight,
+            )
+            ctx.drawImage(
+                canvas,
+                0,0,zoomWidth,zoomheight,
+                0,0,width,height
+            )
+        }
+
+        let i = 1//config.blur;
         while(i--){
             blurFunc();
         }
@@ -550,8 +601,7 @@ const make = ({
         0,0,outputWidth,outputHeight,
     )
     
-
-    if(config.convolute){
+    if(convolute){
 
         let pixel = outputCtx.getImageData(0,0,outputWidth,outputHeight);
         // let pixelData = pixel.data;
@@ -570,7 +620,7 @@ const make = ({
         //     pixelData[i+2 - shiftVPixel ] = yuv[2];
         // }
     
-        pixel = convolute(
+        pixel = convolutePixel(
             pixel,
             [
                 0, -0.3,  0,
@@ -600,6 +650,7 @@ const make = ({
     
     }
 
+
     console.timeEnd(layout.title)
     return outputCanvas
 }
@@ -607,7 +658,7 @@ const make = ({
 
 
 
-const convolute = (pixels,weights,ctx)=>{
+const convolutePixel = (pixels,weights,ctx)=>{
 	const side = Math.round(Math.sqrt(weights.length));
 	const halfSide = Math.floor(side/2);
 
