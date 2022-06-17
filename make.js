@@ -82,12 +82,13 @@ const yuv2rgb = (y,u,v)=>{
 
 
 const make = ({
-    canvas = document.createElement('canvas'),
+    outputCanvas = document.createElement('canvas'),
     texts,
     config = {},
     layout})=>{
     console.time(layout.title)
 
+    const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
 
     let { 
@@ -95,6 +96,7 @@ const make = ({
         type95 = false,
         retina = true,
         convolute = false,
+        noise = false,
     } = config;
 
     const outputHeight = config.height || 480;
@@ -145,10 +147,14 @@ const make = ({
     let backgroundColor = blackColor
     let shadowColor = orangeColor
 
-    if(config.inverse){
+    if(config.plan === 'white'){
         fontColor = blackColor
         backgroundColor = '#FFF'
         shadowColor = orangeColorInverse
+    }else if(config.plan === 'red'){
+        fontColor = '#D00'
+        backgroundColor = '#130000'
+        shadowColor = 'rgba(255,0,0,.5)'
     }
     
     ctx.fillStyle = backgroundColor;
@@ -493,35 +499,6 @@ const make = ({
 
    
 
-    if(type95){
-        // const pixel = outputCtx.getImageData(0,0,outputWidth,outputHeight);
-        // const pixelData = pixel.data;
-
-        // for(let i = 0;i < pixelData.length;i += 4){
-        //     const yuv = rgb2yuv(
-        //         pixelData[i  ],
-        //         pixelData[i+1],
-        //         pixelData[i+2],
-        //     );
-    
-        // 	yuv[0] = Math.max(yuv[0],50);
-            
-        // 	const _rgb = yuv2rgb(yuv);
-    
-        // 	pixelData[i   ] = _rgb[0];
-        // 	pixelData[i+1 ] = _rgb[1];
-        // 	pixelData[i+2 ] = _rgb[2];
-        // }
-
-        // outputCtx.putImageData(pixel,0,0);
-        
-    
-        ctx.fillStyle = 'rgba(108,130,108,.14)';
-        ctx.fillRect(
-            0, 0,
-            width, height
-        );
-    }
 
 
 
@@ -589,7 +566,7 @@ const make = ({
     }
 
 
-    const outputCanvas = document.createElement('canvas');
+    // const outputCanvas = document.createElement('canvas');
     const outputCtx = outputCanvas.getContext('2d');
 
     outputCanvas.width = outputWidth
@@ -601,7 +578,7 @@ const make = ({
         0,0,outputWidth,outputHeight,
     )
     
-    if(convolute){
+    if(convolute || noise){
 
         let pixel = outputCtx.getImageData(0,0,outputWidth,outputHeight);
         // let pixelData = pixel.data;
@@ -619,18 +596,37 @@ const make = ({
         //     pixelData[i+1 - shiftUPixel ] = yuv[1];
         //     pixelData[i+2 - shiftVPixel ] = yuv[2];
         // }
-    
-        pixel = convolutePixel(
-            pixel,
-            [
-                0, -0.3,  0,
-                -0.3, 1.3,  0.7,
-                0, -0.3,  0
-            ],
-            outputCtx
-        );
-    
-        blurFunc();
+        if(noise){
+            let pixelData = pixel.data;
+            let seed = 21;
+            console.log({seed})
+            for(let i = 0;i < pixelData.length;i += 4){
+                let l = pixelData[i] *  .299000 + pixelData[i+1] *  .587000 + pixelData[i+2] *  .114000;
+                let s = Math.round(rand(-seed,seed)) * (l/255 - 0.5);
+                s = Math.floor(s)
+                // console.log({s})
+
+                pixelData[i   ] = pixelData[i   ] + s;
+                pixelData[i+1 ] = pixelData[i+1 ] + s;
+                pixelData[i+2 ] = pixelData[i+2 ] + s;
+            }
+        }
+
+
+        if(convolute){
+            let a = 0.3;
+            pixel = convolutePixel(
+                pixel,
+                [
+                    0, -a,  0,
+                    -a, 1 +a*2,  a,
+                    0, -a,  0
+                ],
+                outputCtx
+            );
+        
+            blurFunc();
+        }
         // pixelData = pixel.data;
     
         // for(let i = 0;i < pixelData.length;i += 4){
@@ -645,11 +641,42 @@ const make = ({
         // 	pixelData[i+1 ] = _rgb[1];
         // 	pixelData[i+2 ] = _rgb[2];
         // }
+
     
         outputCtx.putImageData(pixel,0,0);
     
     }
 
+
+    if(type95){
+        // const pixel = outputCtx.getImageData(0,0,outputWidth,outputHeight);
+        // const pixelData = pixel.data;
+
+        // for(let i = 0;i < pixelData.length;i += 4){
+        //     const yuv = rgb2yuv(
+        //         pixelData[i  ],
+        //         pixelData[i+1],
+        //         pixelData[i+2],
+        //     );
+    
+        // 	yuv[0] = Math.max(yuv[0],50);
+            
+        // 	const _rgb = yuv2rgb(yuv);
+    
+        // 	pixelData[i   ] = _rgb[0];
+        // 	pixelData[i+1 ] = _rgb[1];
+        // 	pixelData[i+2 ] = _rgb[2];
+        // }
+
+        // outputCtx.putImageData(pixel,0,0);
+        
+    
+        outputCtx.fillStyle = 'rgba(108,130,108,.14)';
+        outputCtx.fillRect(
+            0, 0,
+            outputWidth,outputHeight
+        );
+    }
 
     console.timeEnd(layout.title)
     return outputCanvas

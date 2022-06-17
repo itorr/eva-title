@@ -819,12 +819,7 @@ const layouts = [
 
             const [text,sub] = texts;
 
-            let titleCanvas;
-            if(0.5 > Math.random()){
-                titleCanvas = makeTextSizeDiffCanvas(text,-space)
-            }else{
-                titleCanvas = makeVerticalTextCanvas(text,-space)
-            }
+            let titleCanvas = makeTextSizeDiffCanvas(text,-space)
             const _padding = padding * 2; 
             let titleWidth;
             let titleHeight;
@@ -832,17 +827,74 @@ const layouts = [
             let titleLeft = _padding;
             let titleScale = titleCanvas.width / titleCanvas.height;
 
-            if(titleScale > scale){
-                titleWidth = width - _padding * 2;
-                titleHeight = titleWidth / titleScale * rand(1,1.4)
-                titleTop = (height - titleHeight) / 2
-            }else{
-                titleHeight = height - _padding * 2;
-                titleWidth = titleHeight * titleScale * rand(1,1.4)
-                titleLeft = (width - titleWidth) / 2;
-            }
+            titleWidth = width - _padding * 2;
+            titleHeight = titleWidth / titleScale * 1.2
+            titleTop = (height - titleHeight) / 2
+    
 
             ctx.drawImage(
+                titleCanvas,
+                titleLeft , titleTop,
+                titleWidth, titleHeight
+            )
+
+        }
+    },
+    {   //书名号包裹的情况
+        title: '最後のシ者',
+        inputs:[
+            {
+                placeholder:'最後のシ者',
+                minLength:2,
+                maxLength:10,
+            },
+        ],
+        exemples:[
+            // [
+            //     '【在世界中心呼喊】'
+            // ]
+        ],
+        make:({
+            canvas,
+            ctx,
+            texts,
+            config,
+            functions,
+        })=>{
+            const {
+                width,
+                height,
+                scale,
+                padding,
+                space,
+                fontColor,
+            } = config;
+            
+            const {
+                randOne,
+                setCtxConfig,
+                makeTextCanvas,
+                makeTextSizeDiffCanvas,
+                makeLinesCanvas,
+                makeLinesDiffSizeCanvas,
+                makeVerticalTextCanvas,
+            } = functions;
+
+            const [text,sub] = texts;
+
+            let titleCanvas = makeVerticalTextCanvas(text,-space)
+            const _padding = padding * 2; 
+            let titleWidth;
+            let titleHeight;
+            let titleTop = _padding;
+            let titleLeft = _padding;
+            let titleScale = titleCanvas.width / titleCanvas.height;
+
+                titleHeight = height - _padding * 2;
+                titleWidth = titleHeight * titleScale * 1.2
+                titleLeft = (width - titleWidth) / 2;
+
+                ctx.drawImage(
                 titleCanvas,
                 titleLeft , titleTop,
                 titleWidth, titleHeight

@@ -107,6 +107,8 @@ const config = {
     shadow:true,
     convolute: false,
     retina:true,
+    plan:undefined,
+    noise:false,
     inverse: Math.random()>0.9,
 };
 const types = [
@@ -117,6 +119,20 @@ const types = [
     {
         value: 95,
         text: '95'
+    }
+]
+const plans = [
+    {
+        value:undefined,
+        text:'黑底'
+    },
+    {
+        value:'white',
+        text:'白底'
+    },
+    {
+        value:'red',
+        text:'红字'
     }
 ]
 const data ={
@@ -139,7 +155,7 @@ const app = new Vue({
                 });
 
                 getFontFromText(fontFamilyName,texts.join(''), make.bind(null,{
-                    canvas: this.$refs['canvas'],
+                    outputCanvas: this.$refs['canvas'],
                     texts,
                     config: this.config,
                     layout: this.layout

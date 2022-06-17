@@ -42,13 +42,17 @@
                 <ui-tabs v-model="config.type" :options="types"></ui-tabs>
             </div> -->
             <div class="config-item">
+                <ui-tabs v-model="config.plan" :options="plans"></ui-tabs>
+            </div>
+            <div class="config-item">
                 <ui-switch v-model="config.blur">模糊</ui-switch>
-                <ui-switch v-model="config.inverse">反白</ui-switch>
+                <ui-switch v-model="config.noise">噪点</ui-switch>
+                <!-- <ui-switch v-model="config.inverse">反白</ui-switch> -->
                 <!-- <ui-switch v-model="config.retina">Retina</ui-switch> -->
                 <!-- <ui-switch v-model="config.shadow">边缘模糊</ui-switch> -->
-                <ui-switch v-model="config.type95">Type 95</ui-switch>
                 <!-- <ui-switch v-model="config.type95">繁体</ui-switch> -->
-                <!-- <ui-switch v-model="config.convolute">锐化</ui-switch> -->
+                <ui-switch v-model="config.convolute">锐化</ui-switch>
+                <ui-switch v-model="config.type95">Type 95</ui-switch>
 
                 <!-- <input type="number" v-model.number="config.renderScale" placeholder="renderScale"> -->
             </div>
