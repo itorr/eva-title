@@ -1020,7 +1020,7 @@ const layouts = [
     },
     {
         id:'anno-kandoku',
-        title: '监督 庵野秀明',
+        title: '監督 庵野秀明',
         inputs:[
             {
                 placeholder:'庵野秀明',
@@ -1028,7 +1028,7 @@ const layouts = [
                 maxLength:10,
             },
             {
-                placeholder:'监督',
+                placeholder:'監督',
                 minLength:2,
                 maxLength:10,
             },
