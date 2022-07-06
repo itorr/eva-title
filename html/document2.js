@@ -1,7 +1,14 @@
+const isChrome = /Chrome/.test(navigator.userAgent);
+
+const htmlEl = document.documentElement;
+
+htmlEl.setAttribute('data-is-chrome',isChrome);
 
 const style = document.createElement('style');
 document.head.appendChild(style);
-let fontAPI = 'http://192.168.31.7:8003/api/fontmin';
+// let fontAPI = 'http://192.168.31.7:8003/api/fontmin';
+let fontAPI = 'https://lab.magiconch.com/api/fontmin';
+
 // fontAPI = 'https://eva-title.vercel.app/api/fontmin';
 const getFontFromText = (name,text,onOver=_=>{})=>{
     if(!text) return onOver();

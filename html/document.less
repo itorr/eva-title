@@ -49,6 +49,7 @@ html{
 }
 body{
     margin:0;
+    padding:20px 0 100px;
 }
 input,
 textarea,
@@ -141,7 +142,17 @@ header{
         padding-top:.5em;
     }
 }
-
+h3.tip{
+    padding:20px;
+    font-size:14px;
+    color:#a42121;
+}
+p.tip{
+    margin:0;
+    padding:10px 0;
+    font-size:14px;
+    color:#a42121;
+}
 .layout-list{
     overflow: hidden;
     position: relative;
@@ -334,5 +345,21 @@ button{
             max-width: 100%;
             height:auto !important
         }
+    }
+}
+
+
+.is-chrome{
+    display: none;
+}
+html[data-is-chrome="false"]{
+    section{
+        display: none;
+    }
+    .is-chrome{
+        display: block;
+    }
+    .app{
+        display: none;
     }
 }

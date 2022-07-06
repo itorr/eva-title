@@ -11,7 +11,7 @@
     <h1>福音戰士標題生成器</h1>
     <h2>Evangelion Title Card Generator</h2>
 </header>
-
+<h3 class="tip">仅支持桌面端 Chrome 浏览器，Safari、Firefox 下存在严重问题</h3>
 <div class="app">
     <section class="layout-list">
         <h2>排版</h2>
@@ -88,10 +88,16 @@
         </section>
         <section>
             <button @click="save()" data-text="保存标题图"></button>
+            <p class="tip">请使用桌面端 Chrome 浏览器</p>
+            <p>仅支持桌面端 Chrome 浏览器，Safari、Firefox 下存在严重问题</p>
         </section>
     </template>
 </div>
-<script src="transform-func.js"></script>
+<section class="is-chrome">
+    <h2>请使用桌面端 Chrome 浏览器</h2>
+    <p>仅支持桌面端 Chrome 浏览器，Safari、Firefox 下存在严重问题</p>
+</section>
+<!-- <script src="transform-func.js"></script> -->
 <script src="vue.2.6.11.min.js"></script>
 <script src="ui-tabs.vue.js"></script>
 <script src="ui-switch.vue.js"></script>
@@ -106,10 +112,14 @@
 </section>
 <section>
     <h2>GitHub</h2>
-    <a href="https://github.com/itorr/">github.com/itorr/eva-title</a>
+    <a href="https://github.com/itorr/eva-title">github.com/itorr/eva-title</a>
 </section>
 
 <section>
     <h2>标题参考</h2>
     <a href="https://zh.wikipedia.org/wiki/%E6%96%B0%E4%B8%96%E7%BA%AA%E7%A6%8F%E9%9F%B3%E6%88%98%E5%A3%AB#%E6%94%BE%E6%98%A0%E5%92%8C%E7%99%BC%E8%A1%8C">zh.wikipedia.org/wiki/新世纪福音战士</a>
+</section>
+<section>
+    <h2>神奇海螺实验室</h2>
+    <a href="https://lab.magiconch.com">lab.magiconch.com</a>
 </section>
