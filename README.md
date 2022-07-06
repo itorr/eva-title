@@ -1,4 +1,4 @@
-# 🤖「EVA标题生成器」Evangelion Title Card Generator
+# 🤖「福音战士标题生成器」Evangelion Title Card Generator
 又一个福音战士标题生成器
 
 ## 在线地址
