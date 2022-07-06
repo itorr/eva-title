@@ -6,3 +6,4 @@ fonts/*
 un/*
 vercel.json
 api/*
+server.js
