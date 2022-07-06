@@ -12,9 +12,9 @@ const orangeColorInverse = 'rgba(255,165,255,.2)'
 let fontFamilyName = 'EVAMatisseClassic'
 const engFontFamilyName = `"Times New Roman"`
 
-if(ios){
-    fontFamilyName = 'MatisseProEB'
-}
+// if(ios || !isChrome){
+//     fontFamilyName = 'MatisseProEB'
+// }
 // fontFamilyName = 'RaglanStdUB'
 
 const isEngRegex = /^[a-z\s!?:\.()\[\]\{\}]+$/i;

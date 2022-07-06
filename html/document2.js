@@ -52,21 +52,24 @@ const outputEl = document.querySelector('#out');
 const s = '沉值'
 const t = '沈値';
 
-
-
-let defaultMoji = (_=>{
+const getMoji = _=>{
     let v = layouts.map(a=>[a.inputs.map(t=>t.placeholder),a.exemples]).flat().join();
     // console.log(v)
     v += document.querySelector('header h1').textContent;
     v += 0;
+    return v;
+};
+
+let defaultMoji = (_=>{
+    let v = getMoji();
     let text = v.replace(/\s/g,'');
-    text = Array.from(new Set(text.split(''))).sort();
+    text = Array.from(new Set(text)).sort();
     return text;
 })();
 
-if(ios){
-    defaultMoji = [];
-}
+// if(ios || !isChrome){
+//     defaultMoji = [];
+// }
 
 // const unicode = str2utf8(defaultMoji.join('')).join();
 // console.log(unicode,'unicode');
@@ -77,50 +80,51 @@ const diffDefaultMoji = text=>{
 };
 
 const c = _=>{
-    // getFontFromText(fontFamilyName,v,async _=>{
     loadFont('baseSplit','base-split.woff',async _=>{
-        layouts.slice().sort(_=>-1).forEach((layout,index)=>{
-            let texts = [
-                // '使徒',
-                // '襲来',
-                // '第壱話',
-            ];
-            texts = layout.inputs.map((input,index)=>{
-                return texts[index] || input.placeholder
-            })
-            const height = 240;
-            const config = Object.assign({},defaultConfig,layout.config,{
-                height,
-                // convolute: true,
-                noise:false,
-                blur:1,
-                // inverse: Math.random()>0.9,
-            });
-            const el = make({
-                texts,
-                config,
-                layout
-            })
-            const src = makeBMPFormCanvas(el)
-            layout.src = src;
-            // console.log(src)
-            // app.$set(layout,'src',src)
-            // outputEl.appendChild(el)
+        getFontFromText(fontFamilyName,getMoji(),async _=>{
+            layouts.slice().sort(_=>-1).forEach((layout,index)=>{
+                let texts = [
+                    // '使徒',
+                    // '襲来',
+                    // '第壱話',
+                ];
+                texts = layout.inputs.map((input,index)=>{
+                    return texts[index] || input.placeholder
+                })
+                const height = 240;
+                const config = Object.assign({},defaultConfig,layout.config,{
+                    height,
+                    // convolute: true,
+                    noise:false,
+                    blur:1,
+                    // inverse: Math.random()>0.9,
+                });
+                const el = make({
+                    texts,
+                    config,
+                    layout
+                })
+                const src = makeBMPFormCanvas(el)
+                layout.src = src;
+                // console.log(src)
+                // app.$set(layout,'src',src)
+                // outputEl.appendChild(el)
 
-            // if(layout.exemples){
-            //     layout.exemples.forEach(texts=>{
-            //         const el = make({
-            //             texts,
-            //             config,
-            //             layout
-            //         })
-            //         // outputEl.appendChild(el)
-            //     })
-            // }
+                // if(layout.exemples){
+                //     layout.exemples.forEach(texts=>{
+                //         const el = make({
+                //             texts,
+                //             config,
+                //             layout
+                //         })
+                //         // outputEl.appendChild(el)
+                //     })
+                // }
+            })
+
+            app.layouts = layouts;
+
         })
-
-        app.layouts = layouts;
-
     })
 }
 
