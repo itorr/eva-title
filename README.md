@@ -16,8 +16,8 @@ https://lab.magiconch.com/eva-title/
 
 
 ## 没解决的大问题
-- [-] Safari 下 EVAMatisseClassic 字体无法正常绘制
-- [-] FireFox 下 canvas 无法正常绘制
+- [ ] Safari 下 EVAMatisseClassic 字体无法正常绘制
+- [ ] FireFox 下 canvas 无法正常绘制
 
 所以现在只能在新版本 Chrome 下正常使用
 
