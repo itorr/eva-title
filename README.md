@@ -10,8 +10,8 @@ https://lab.magiconch.com/eva-title/
 - [x] 白底黑字
 - [x] 黑底红字
 - [x] 模糊
-- [x] 模糊
-- [x] 模糊
+- [x] 噪点
+- [x] 锐化
 - [x] 模仿95版画面
 
 
