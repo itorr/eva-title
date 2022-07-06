@@ -7,3 +7,5 @@ un/*
 vercel.json
 api/*
 server.js
+dest/*
+html/dest/*
