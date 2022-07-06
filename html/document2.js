@@ -43,7 +43,7 @@ const c = _=>{
     // let v = inputEl.value.trim()
     // if(checkboxEl.checked) v = transformFunc[2](v)
 
-    let v = layouts.map(a=>[a.inputs.map(t=>t.placeholder),a.exemples]).flat().join()
+    let v = layouts.map(a=>[a.inputs.map(t=>t.placeholder),a.exemples]).flat().join();
 
     getFontFromText(fontFamilyName,v,async _=>{
         layouts.slice().sort(_=>-1).forEach((layout,index)=>{
@@ -55,15 +55,17 @@ const c = _=>{
             texts = layout.inputs.map((input,index)=>{
                 return texts[index] || input.placeholder
             })
-            const height = 360;
+            const height = 240;
+            const config = Object.assign({},defaultConfig,layout.config,{
+                height,
+                // convolute: true,
+                noise:false,
+                blur:1,
+                // inverse: Math.random()>0.9,
+            });
             const el = make({
                 texts,
-                config:{
-                    height: 240,
-                    // convolute: true,
-                    blur:1,
-                    inverse: Math.random()>0.9,
-                },
+                config,
                 layout
             })
             const src = makeBMPFormCanvas(el)
@@ -76,10 +78,7 @@ const c = _=>{
                 layout.exemples.forEach(texts=>{
                     const el = make({
                         texts,
-                        config:{
-                            height,
-                            blur:1,
-                        },
+                        config,
                         layout
                     })
                     // outputEl.appendChild(el)
@@ -101,7 +100,7 @@ const texts = [
     '',
     '',
 ]
-const config = {
+const defaultConfig = {
     blur:true,
     height:480,
     shadow:true,
@@ -109,7 +108,7 @@ const config = {
     retina:true,
     plan:undefined,
     noise:false,
-    inverse: Math.random()>0.9,
+    // inverse:false,// Math.random()>0.9,
 };
 const types = [
     {
@@ -136,9 +135,9 @@ const plans = [
     }
 ]
 const data ={
-    layout:layouts[0],
+    layout:null,
     layouts:deepCopy(layouts),
-    config,
+    config:deepCopy(defaultConfig),
     texts
 }
 
@@ -151,6 +150,10 @@ const app = new Vue({
 
             make.timer = setTimeout(_=>{
                 const texts = this.layout.inputs.map((input,index)=>{
+                    const {type} = input;
+                    if(type==='tab'){
+                        return this.texts[index];
+                    }
                     return this.texts[index] || input.placeholder
                 });
 
@@ -161,6 +164,31 @@ const app = new Vue({
                     layout: this.layout
                 }));
             },200);
+        },
+        setLayout(_layout){
+            this.layout = _layout;
+            const {inputs,config} = _layout;
+            console.log(Object.assign({},defaultConfig,config))
+            this.config = Object.assign({},defaultConfig,config);
+            this.setDefaultTexts(_layout);
+        },
+        setExemple(exemple){
+            console.log({exemple})
+            exemple.forEach((t,i)=>{
+                // this.texts[i]=t
+                this.$set(this.texts,i,t);
+                // this.texts[i]=t
+            })
+        },
+        setDefaultTexts(layout){
+            const {inputs} = layout;
+            this.texts = inputs.map(input=>{
+                const {type} = input;
+                if(type === 'tab'){
+                    return 0//input.options[0]
+                }
+                return '';
+            })
         }
     },
     watch:{

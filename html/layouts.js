@@ -1,5 +1,6 @@
 const layouts = [
     {
+        id: 'e1',
         title: '第壱話 使徒、襲来',
         inputs:[
             {
@@ -104,6 +105,7 @@ const layouts = [
         }
     },
     {
+        id: 'e13',
         title: '第拾参話 使徒、侵入',
         inputs:[
             {
@@ -214,6 +216,7 @@ const layouts = [
         }
     },
     {
+        id: 'e25',
         title: '第弐拾伍話 終わる世界',
         inputs:[
             {
@@ -278,6 +281,7 @@ const layouts = [
         }
     },
     {
+        id: 'e15',
         title: '第拾弐話 奇跡の価値は',
         inputs:[
             {
@@ -347,6 +351,7 @@ const layouts = [
         }
     },
     {
+        id: 'e3',
         title: '第参話 鳴らない、電話',
         inputs:[
             {
@@ -426,6 +431,7 @@ const layouts = [
         }
     },
     {
+        id: 'e25-2',
         title: '第弐拾伍話 終わる世界',
         inputs:[
             {
@@ -437,7 +443,43 @@ const layouts = [
                 placeholder:'第弐拾伍話',
                 minLength:2,
                 maxLength:10,
-            }
+            },
+            {
+                type:'tab',
+                name:'大标题位置',
+                options:[
+                    {
+                        "value": 0,
+                        "text": "偏下"
+                    },
+                    {
+                        "value": 1,
+                        "text": "偏左"
+                    },
+                    {
+                        "value": 2,
+                        "text": "偏右"
+                    }
+                ]
+            },
+            {
+                type:'tab',
+                name:'小标题位置',
+                options:[
+                    {
+                        "value": 0,
+                        "text": "起始"
+                    },
+                    {
+                        "value": 1,
+                        "text": "居中"
+                    },
+                    {
+                        "value": 2,
+                        "text": "结束"
+                    }
+                ]
+            },
         ],
         make:({
             canvas,
@@ -464,7 +506,9 @@ const layouts = [
                 makeVerticalTextCanvas,
             } = functions;
 
-            const [text,sub] = texts;
+            const [text,sub,a,b] = texts;
+
+            console.log(text,sub,a,b)
 
             randOne([
                 _=>{
@@ -486,7 +530,7 @@ const layouts = [
                             padding, // left
                             (width - subWidth) / 2, //center
                             width - subWidth - padding // right
-                        ]);
+                        ],b);
     
                         ctx.drawImage(
                             subCanvas,
@@ -520,7 +564,7 @@ const layouts = [
                             padding,
                             (height - subHeight) / 2, // middle
                             height - subHeight - padding
-                        ]);
+                        ],b);
                         ctx.drawImage(
                             subCanvas,
                             subLeft, subTop,
@@ -553,7 +597,7 @@ const layouts = [
                             padding,
                             (height - subHeight) / 2, // middle
                             height - subHeight - padding
-                        ]);
+                        ],b);
                         ctx.drawImage(
                             subCanvas,
                             subLeft, subTop,
@@ -561,10 +605,11 @@ const layouts = [
                         );
                     }
                 },
-            ])()
+            ],a)();
         }
     },
     {
+        id: 'e4',
         title: '第四話 雨、逃げ出した後',
         inputs:[
             {
@@ -698,6 +743,7 @@ const layouts = [
         }
     },
     {
+        id: 'air',
         title: 'air',
         inputs:[
             {
@@ -777,70 +823,71 @@ const layouts = [
 
         }
     },
-    {   //书名号包裹的情况
-        title: '最後のシ者',
-        inputs:[
-            {
-                placeholder:'最後のシ者',
-                minLength:2,
-                maxLength:10,
-            },
-        ],
-        exemples:[
-            // [
-            //     '【在世界中心呼喊】'
-            // ]
-        ],
-        make:({
-            canvas,
-            ctx,
-            texts,
-            config,
-            functions,
-        })=>{
-            const {
-                width,
-                height,
-                scale,
-                padding,
-                space,
-                fontColor,
-            } = config;
+    // {   //书名号包裹的情况
+    //     title: '最後のシ者',
+    //     inputs:[
+    //         {
+    //             placeholder:'最後のシ者',
+    //             minLength:2,
+    //             maxLength:10,
+    //         },
+    //     ],
+    //     exemples:[
+    //         // [
+    //         //     '【在世界中心呼喊】'
+    //         // ]
+    //     ],
+    //     make:({
+    //         canvas,
+    //         ctx,
+    //         texts,
+    //         config,
+    //         functions,
+    //     })=>{
+    //         const {
+    //             width,
+    //             height,
+    //             scale,
+    //             padding,
+    //             space,
+    //             fontColor,
+    //         } = config;
             
-            const {
-                randOne,
-                setCtxConfig,
-                makeTextCanvas,
-                makeTextSizeDiffCanvas,
-                makeLinesCanvas,
-                makeLinesDiffSizeCanvas,
-                makeVerticalTextCanvas,
-            } = functions;
+    //         const {
+    //             randOne,
+    //             setCtxConfig,
+    //             makeTextCanvas,
+    //             makeTextSizeDiffCanvas,
+    //             makeLinesCanvas,
+    //             makeLinesDiffSizeCanvas,
+    //             makeVerticalTextCanvas,
+    //         } = functions;
 
-            const [text,sub] = texts;
+    //         const [text,sub] = texts;
 
-            let titleCanvas = makeTextSizeDiffCanvas(text,-space)
-            const _padding = padding * 2; 
-            let titleWidth;
-            let titleHeight;
-            let titleTop = _padding;
-            let titleLeft = _padding;
-            let titleScale = titleCanvas.width / titleCanvas.height;
+    //         let titleCanvas = makeTextSizeDiffCanvas(text,-space)
+    //         const _padding = padding * 2; 
+    //         let titleWidth;
+    //         let titleHeight;
+    //         let titleTop = _padding;
+    //         let titleLeft = _padding;
+    //         let titleScale = titleCanvas.width / titleCanvas.height;
 
-            titleWidth = width - _padding * 2;
-            titleHeight = titleWidth / titleScale * 1.2
-            titleTop = (height - titleHeight) / 2
+    //         titleWidth = width - _padding * 2;
+    //         titleHeight = titleWidth / titleScale * 1.2
+    //         titleTop = (height - titleHeight) / 2
     
 
-            ctx.drawImage(
-                titleCanvas,
-                titleLeft , titleTop,
-                titleWidth, titleHeight
-            )
+    //         ctx.drawImage(
+    //             titleCanvas,
+    //             titleLeft , titleTop,
+    //             titleWidth, titleHeight
+    //         )
 
-        }
-    },
+    //     }
+    // },
     {   //书名号包裹的情况
+        id: 'e24',
         title: '最後のシ者',
         inputs:[
             {
@@ -850,10 +897,10 @@ const layouts = [
             },
         ],
         exemples:[
-            // [
-            //     '【在世界中心呼喊】'
-            // ]
         ],
+        config:{
+            plan:'white'
+        },
         make:({
             canvas,
             ctx,
@@ -903,6 +950,7 @@ const layouts = [
         }
     },
     {   //大于十个字符 六字多排 世界中心呼唤
+        id:'e26',
         title: '最終話 世界の中心でアイを叫んだけもの',
         inputs:[
             {
@@ -971,6 +1019,7 @@ const layouts = [
         }
     },
     {
+        id:'anno-kandoku',
         title: '监督 庵野秀明',
         inputs:[
             {
@@ -1075,19 +1124,33 @@ const layouts = [
         }
     },
     {
-        title: '原作 石森章太郎',
+        id:'e15',
+        title: '第拾伍話 嘘と沈黙',
         inputs:[
             {
-                placeholder:'石森章太郎',
+                placeholder:'嘘と沈黙',
                 minLength:2,
                 maxLength:10,
             },
             {
-                placeholder:'原作',
+                placeholder:'第拾伍話',
                 minLength:2,
                 maxLength:10,
             },
         ],
+        exemples:[
+            [
+                '石森章太郎',
+                '原作'
+            ],
+            // [
+            //     '嘘と沈黙',
+            //     '第拾伍話'
+            // ]
+        ],
+        config:{
+            plan:'white'
+        },
         make:({
             canvas,
             ctx,
@@ -1141,24 +1204,25 @@ const layouts = [
 
             const subCanvas = makeVerticalTextCanvas(b,-space)
             let subWidth = width * 0.15;
-            let subHeight = Math.min(subWidth * subCanvas.height / subCanvas.width * 1.1,height - padding * 2);
-
+            let subHeight = Math.min(subWidth * subCanvas.height / subCanvas.width * 1.1,height/2);
+            subWidth = Math.min(subWidth,subHeight /subCanvas.height * subCanvas.width *1.2 );
             ctx.drawImage(
                 subCanvas,
-                padding,padding,
+                padding,padding * 2,
                 subWidth,subHeight
             );
 
-            let titleWidth = width - padding * 2 - subWidth
+            let titleWidth = width - padding * 6 - subWidth
             let titleHeight = Math.max( titleWidth / titleCanvas.width * titleCanvas.height , height * 0.6)
             ctx.drawImage(
                 titleCanvas,
-                width - titleWidth - padding , height - titleHeight - padding,
+                width - titleWidth - padding * 3 , height - titleHeight - padding * 2,
                 titleWidth , titleHeight
             )
         }
     },
     {
+        id:'eng-title',
         title: 'NEON GENESIS EVANGELION Rei II',
         inputs:[
             {
@@ -1247,6 +1311,7 @@ const layouts = [
         }
     },
     {
+        id:'do-you-love-me',
         title: 'Do you love me?',
         inputs:[
             {
@@ -1320,6 +1385,7 @@ const layouts = [
         }
     },
     {   //大于十个字符 六字多排 世界中心呼唤
+        id:'e20',
         title: '第弐拾話 心のかたち 人のかたち',
         inputs:[
             {
@@ -1420,5 +1486,80 @@ const layouts = [
 
         }
     },
+    {   //两排兜底
+        id:'e10',
+        title: '第拾話 マグマダイバー',
+        inputs:[
+            {
+                placeholder:'マグマ',
+                minLength:2,
+                maxLength:10,
+            },
+            {
+                placeholder:'ダイバー',
+                minLength:2,
+                maxLength:10,
+            },
+            {
+                placeholder:'第拾話',
+                minLength:2,
+                maxLength:10,
+            },
+        ],
+        config:{
+            plan:'red',
+            noise:true,
+        },
+        make:({
+            canvas,
+            ctx,
+            texts,
+            config,
+            functions,
+        })=>{
+            const {
+                width,
+                height,
+                scale,
+                padding,
+                space,
+                fontColor,
+            } = config;
+            
+            const {
+                randOne,
+                setCtxConfig,
+                makeTextCanvas,
+                makeTextSizeDiffCanvas,
+                makeLinesCanvas,
+                makeLinesDiffSizeCanvas,
+                makeVerticalTextCanvas,
+            } = functions;
+
+            console.log(/两排托底/,texts);
+            if(texts.length){
+                const aCanvas = makeLinesCanvas(texts.slice(0,2),-space * 2)
+                ctx.drawImage(
+                    aCanvas,
+                    width * 0.1, height * 0.05,
+                    width * 0.85, height * 0.7,
+                )
+            }
+
+            const sub = texts[2];
+
+            const subCanvas = makeTextCanvas(sub,-space)
+            let subHeight = height * 0.19;
+            let subWidth = subHeight / subCanvas.height * subCanvas.width;
+        
+            ctx.drawImage(
+                subCanvas,
+                width - padding- subWidth,height - padding - subHeight,
+                subWidth,subHeight
+            );
+
+        }
+    },
+    
 
 ]

@@ -9,7 +9,7 @@ const orangeColorInverse = 'rgba(255,165,255,.2)'
 let fontFamilyName = 'EVAMatisseClassic'
 const engFontFamilyName = `"Times New Roman"`
 
-fontFamilyName = 'MatisseProEB'
+// fontFamilyName = 'MatisseProEB'
 // fontFamilyName = 'RaglanStdUB'
 
 const isEngRegex = /^[a-z\s!?:\.()\[\]\{\}]+$/i;
@@ -97,6 +97,7 @@ const make = ({
         retina = true,
         convolute = false,
         noise = false,
+        plan
     } = config;
 
     const outputHeight = config.height || 480;
@@ -147,13 +148,13 @@ const make = ({
     let backgroundColor = blackColor
     let shadowColor = orangeColor
 
-    if(config.plan === 'white'){
+    if(plan === 'white'){
         fontColor = blackColor
         backgroundColor = '#FFF'
         shadowColor = orangeColorInverse
-    }else if(config.plan === 'red'){
+    }else if(plan === 'red'){
         fontColor = '#D00'
-        backgroundColor = '#130000'
+        backgroundColor = '#180000'
         shadowColor = 'rgba(255,0,0,.5)'
     }
     

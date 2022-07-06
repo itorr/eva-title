@@ -22,6 +22,11 @@
 "ヒラギノ明朝 Pro","PT Serif",
 */
 
+@font-face {
+    font-family: baseSplit;
+    src: url(base-split.woff);
+}
+
 html{
     font:24px/1.4 serif;
     // font-family: MatisseProEB,serif;
@@ -34,7 +39,13 @@ html{
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: grayscale;
 
-    background:#999;
+    background:#252525;
+    color:#EEE;
+
+    // https://codepen.io/mr21/pen/WgyYWM
+    background-position: top left;
+	background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23222222' viewBox='0 0 100 169.5'%3E%3Cpolygon points='50,34.75 93.5,59.75 93.5,109.75 50,134.75 6.5,109.75 6.5,59.75'%3E%3C/polygon%3E%3Cpolygon points='0,-50 43.5,-25 43.5,25 0,50 -43.5,25 -43.5,-25'%3E%3C/polygon%3E%3Cpolygon points='100,-50 143.5,-25 143.5,25 100,50 56.5,25 56.5,-25'%3E%3C/polygon%3E%3Cpolygon points='0,119.5 43.5,144.5 43.5,194.5 0,219.5 -43.5,194.5 -43.5,144.5'%3E%3C/polygon%3E%3Cpolygon points='100,119.5 143.5,144.5 143.5,194.5 100,219.5 56.5,194.5 56.5,144.5'%3E%3C/polygon%3E%3C/svg%3E");
+	background-size: 16px;
 }
 input,
 textarea,
@@ -71,7 +82,8 @@ textarea{
 // }
 a{
     text-decoration: none;
-    color:dodgerblue
+    color:dodgerblue;
+    color:#a42121;
 }
 
 .wikitable {
@@ -109,13 +121,27 @@ a{
 // }
 
 
-
+h1,h2,h3,h4{
+    margin:0;
+}
+header{
+    padding:20px;
+    text-shadow: 0 2px 0 #000;
+    h1{
+        font-family: 'EVAMatisseClassic',baseSplit;
+    }
+    h2{
+        font-weight: 400;
+        font-family: 'Times New Roman', Times, serif;
+    }
+}
 
 .layout-list{
     overflow: hidden;
     .item{
         float: left;
         cursor: pointer;
+        padding:1px;
         img{
             display: block;
             width: 160px;
@@ -152,6 +178,7 @@ a{
         height: 1.4em;
         border-radius: 9em;
         background: rgba(0,0,0,.2);
+        background: #000;
         transition: background-color .3s ease;
         .slider {
             display: inline-block;
@@ -177,12 +204,15 @@ a{
 
 
 
-
+[data-text]{
+    &:before{
+        content:attr(data-text);
+    }
+}
 
 .ui-tabs-box{
     display: inline-block;
     // margin:10px 0;
-    background:#FFF;
     border-radius:3px;
     overflow: hidden;
     text-align: center;
@@ -193,22 +223,42 @@ a{
         line-height: 1;
         padding:8px;
         transition: color .3s ease, background-color .3s ease;
+        background:#FFF;
         &[data-checked="true"]{
-            background:dodgerblue;
-            color:#FFF;
+            background: currentColor;
+            &:before{
+                color:#FFF;
+            }
         }
     }
 }
 
-
+section{
+    padding:20px;
+}
 
 .config-item{
     padding:10px 0;
 }
 
 .exemple-list{
-
+    overflow: hidden;
+    padding:10px 0;
 }
 .exemple-item{
+    float: left;
     cursor: pointer;
+    background:rgba(0,0,0,.2);
+    padding:20px 30px;
+    border-radius:4px;
+    margin-right:10px;
+    span{
+        display: block;
+    }
+}
+
+.input-item{
+    h4{
+        margin:0;
+    }
 }

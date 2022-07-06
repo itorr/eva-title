@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>福音战士標題生成器</title>
+<link rel="stylesheet" href="document.css">
+
+<header>
+    <h1>福音戰士標題生成器</h1>
+    <h2>Evangelion Title Card Generator</h2>
+</header>
+
+<div class="app">
+    <section class="layout-list">
+        <h2>排版</h2>
+        <div class="item" v-for="(_layout,index) in layouts"
+            :title="_layout.title"
+            @click="setLayout(_layout)">
+            <img :src="_layout.src">
+        </div>
+    </section>
+    <template v-if="layout">
+        <section class="layout">
+            <!-- <h2>{{layout.title}}</h2> -->
+            <h2>文字</h2>
+            <div class="inputs-box">
+                <div class="input-item" v-for="(input,index) in layout.inputs">
+                    <template v-if="input.type==='tab'">
+                        <h4>{{input.name}}</h4>
+                        <ui-tabs v-model="texts[index]" :options="input.options"></ui-tabs>
+                    </template>
+                    <template v-else>
+                        <input type="text" :placeholder="input.placeholder" v-model.lazy.trim="texts[index]" 
+                            :minlength="input.minLength"
+                            :maxlength="input.maxLength">
+                    </template>
+                </div>
+
+                <div class="exemple-list">
+                    <div class="exemple-item" @click="setDefaultTexts(layout)">
+                        <span v-for="input in layout.inputs">{{input.placeholder}}</span>
+                    </div>
+                    <div class="exemple-item" v-for="exemple in layout.exemples" @click="setExemple(exemple)">
+                        <span v-for="text in exemple">{{text}}</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section>
+            <h2>选项</h2>
+            <div class="config-box">
+                <!-- <div class="config-item">
+                    <ui-tabs v-model="config.type" :options="types"></ui-tabs>
+                </div> -->
+                <div class="config-item">
+                    <ui-tabs v-model="config.plan" :options="plans"></ui-tabs>
+                </div>
+                <div class="config-item">
+                    <ui-switch v-model="config.blur">模糊</ui-switch>
+                    <ui-switch v-model="config.noise">噪点</ui-switch>
+                    <!-- <ui-switch v-model="config.inverse">反白</ui-switch> -->
+                    <!-- <ui-switch v-model="config.retina">Retina</ui-switch> -->
+                    <!-- <ui-switch v-model="config.shadow">边缘模糊</ui-switch> -->
+                    <!-- <ui-switch v-model="config.type95">繁体</ui-switch> -->
+                    <ui-switch v-model="config.convolute">锐化</ui-switch>
+                    <ui-switch v-model="config.type95">Type 95</ui-switch>
+
+                    <!-- <input type="number" v-model.number="config.renderScale" placeholder="renderScale"> -->
+                </div>
+            </div>
+            <div>
+                <canvas ref="canvas" :style="{height:`${config.height}px`}"></canvas>
+            </div>
+            <!-- <pre>{{config}}</pre>
+            <pre>{{texts}}</pre> -->
+        </section>
+    </template>
+</div>
+
+<section>
+    <h2>字体授权</h2>
+    <a href="https://mojimo.jp/eva/">https://mojimo.jp/eva/</a>
+</section>
+<script src="transform-func.js"></script>
+<!-- <script src="stackblur.js"></script> -->
+<script src="vue.2.6.11.min.js"></script>
+<script src="ui-tabs.vue.js"></script>
+<script src="ui-switch.vue.js"></script>
+<script src="layouts.js"></script>
+<script src="makebmp.js"></script>
+<script src="make.js"></script>
+<script src="document2.js"></script>
+<script>
+// getFontFromText('使徒、襲来')
+</script>
