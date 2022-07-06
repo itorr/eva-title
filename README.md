@@ -13,6 +13,7 @@ https://lab.magiconch.com/eva-title/
 - [x] 噪点
 - [x] 锐化
 - [x] 模仿95版画面
+- [x] 文字转繁体
 
 
 ## 没解决的大问题
