@@ -1,5 +1,8 @@
 
 
+const ios = /iphone|ipad|ipod|ios/i.test(navigator.userAgent);
+const isChrome = /Chrome/.test(navigator.userAgent);
+
 // const whiteColor = '#e8e8e8'
 const whiteColor = '#e4e0e8'
 const blackColor = '#030201'
@@ -9,7 +12,9 @@ const orangeColorInverse = 'rgba(255,165,255,.2)'
 let fontFamilyName = 'EVAMatisseClassic'
 const engFontFamilyName = `"Times New Roman"`
 
-// fontFamilyName = 'MatisseProEB'
+if(ios){
+    fontFamilyName = 'MatisseProEB'
+}
 // fontFamilyName = 'RaglanStdUB'
 
 const isEngRegex = /^[a-z\s!?:\.()\[\]\{\}]+$/i;
@@ -78,7 +83,6 @@ const yuv2rgb = (y,u,v)=>{
 
 
 
-const ios = /iphone|ipad|ipod|ios/i.test(navigator.userAgent);
 
 
 const make = ({
@@ -351,6 +355,7 @@ const make = ({
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d');
 
+        document.body.appendChild(canvas);
         setCtxConfig(ctx,{
             // fontFamilyName:'Helvetica'
         });
@@ -404,6 +409,7 @@ const make = ({
                 line.width,line.height
             )
         })
+        document.body.removeChild(canvas)
         return canvas;
     }
 
@@ -412,6 +418,7 @@ const make = ({
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d');
 
+        document.body.appendChild(canvas)
         const config = {
             textBaseline:'top',
         };
@@ -471,6 +478,7 @@ const make = ({
             );
             ctx.restore()
         })
+        document.body.removeChild(canvas)
         return canvas
 
     }

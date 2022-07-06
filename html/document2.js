@@ -1,4 +1,3 @@
-const isChrome = /Chrome/.test(navigator.userAgent);
 
 const htmlEl = document.documentElement;
 
@@ -8,6 +7,7 @@ const style = document.createElement('style');
 document.head.appendChild(style);
 // let fontAPI = 'http://192.168.31.7:8003/api/fontmin';
 let fontAPI = 'https://lab.magiconch.com/api/fontmin';
+
 
 // fontAPI = 'https://eva-title.vercel.app/api/fontmin';
 const getFontFromText = (name,text,onOver=_=>{})=>{
@@ -54,7 +54,7 @@ const t = '沈値';
 
 
 
-const defaultMoji = (_=>{
+let defaultMoji = (_=>{
     let v = layouts.map(a=>[a.inputs.map(t=>t.placeholder),a.exemples]).flat().join();
     // console.log(v)
     v += document.querySelector('header h1').textContent;
@@ -64,6 +64,9 @@ const defaultMoji = (_=>{
     return text;
 })();
 
+if(ios){
+    defaultMoji = [];
+}
 
 // const unicode = str2utf8(defaultMoji.join('')).join();
 // console.log(unicode,'unicode');
@@ -104,16 +107,16 @@ const c = _=>{
             // app.$set(layout,'src',src)
             // outputEl.appendChild(el)
 
-            if(layout.exemples){
-                layout.exemples.forEach(texts=>{
-                    const el = make({
-                        texts,
-                        config,
-                        layout
-                    })
-                    // outputEl.appendChild(el)
-                })
-            }
+            // if(layout.exemples){
+            //     layout.exemples.forEach(texts=>{
+            //         const el = make({
+            //             texts,
+            //             config,
+            //             layout
+            //         })
+            //         // outputEl.appendChild(el)
+            //     })
+            // }
         })
 
         app.layouts = layouts;
