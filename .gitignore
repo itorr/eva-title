@@ -9,3 +9,5 @@ api/*
 server.js
 dest/*
 html/dest/*
+html/Gruntfile.js
+html/package.json
