@@ -209,7 +209,7 @@ const app = new Vue({
 
             document.title = title;
 
-            history.pushState({}, title, `./?layout=${encodeURIComponent(id)}`);
+            history.replaceState({}, title, `./?layout=${encodeURIComponent(id)}`);
         },
         setExemple(exemple){
             console.log({exemple})
@@ -228,6 +228,13 @@ const app = new Vue({
                 }
                 return '';
             })
+        },
+        save(){
+            const {canvas} = this.$refs;
+            const a = document.createElement('a');
+            a.href = canvas.toDataURL('image/jpeg',.95);
+            a.download = `[lab.magiconch.com][福音戰士標題生成器]-${+Date.now()}.jpg`;
+            a.click();
         }
     },
     watch:{
