@@ -6,9 +6,13 @@ let fontAPI = 'http://192.168.31.7:8003/api/fontmin';
 const getFontFromText = (name,text,onOver=_=>{})=>{
     text = text.replace(/\s/g,'');
     text = Array.from(new Set(text)).sort().join('');
-    console.log(str2utf8(text))
-    console.log(utf82str(str2utf8(text)))
-    const unicode = str2utf8(text).join()
+    // console.log(str2utf8(text))
+    // console.log(utf82str(str2utf8(text)))
+    text = diffDefaultMoji(text);
+    // console.log({text})
+    if(!text) return onOver();
+
+    const unicode = str2utf8(text).join();
     const fontURL = `${fontAPI}?name=${name}&unicode=${unicode}`;
 
     loadFont(name,fontURL,_=>{
@@ -38,14 +42,32 @@ const checkboxEl = document.querySelector('input');
 const outputEl = document.querySelector('#out');
 
 const s = '沉值'
-const t = '沈値'
-const c = _=>{
-    // let v = inputEl.value.trim()
-    // if(checkboxEl.checked) v = transformFunc[2](v)
+const t = '沈値';
 
+
+
+const defaultMoji = (_=>{
     let v = layouts.map(a=>[a.inputs.map(t=>t.placeholder),a.exemples]).flat().join();
+    // console.log(v)
+    v += document.querySelector('header h1').textContent;
+    v += 0;
+    let text = v.replace(/\s/g,'');
+    text = Array.from(new Set(text.split(''))).sort();
+    return text;
+})();
 
-    getFontFromText(fontFamilyName,v,async _=>{
+
+// const unicode = str2utf8(defaultMoji.join('')).join();
+// console.log(unicode,'unicode');
+
+
+const diffDefaultMoji = text=>{
+    return text.split('').filter(moji=>!defaultMoji.includes(moji)).join('');
+};
+
+const c = _=>{
+    // getFontFromText(fontFamilyName,v,async _=>{
+    loadFont('baseSplit','base-split.woff',async _=>{
         layouts.slice().sort(_=>-1).forEach((layout,index)=>{
             let texts = [
                 // '使徒',
@@ -90,6 +112,8 @@ const c = _=>{
 
     })
 }
+
+
 
 
 c();
@@ -139,7 +163,13 @@ const data ={
     layouts:deepCopy(layouts),
     config:deepCopy(defaultConfig),
     texts
-}
+};
+const Layouts = {}
+layouts.forEach(layout=>{
+    Layouts[layout.id] = layout;
+});
+
+const defaultTitle = document.title;
 
 const app = new Vue({
     el:'.app',
@@ -168,9 +198,17 @@ const app = new Vue({
         setLayout(_layout){
             this.layout = _layout;
             const {inputs,config} = _layout;
-            console.log(Object.assign({},defaultConfig,config))
+            // console.log(Object.assign({},defaultConfig,config))
             this.config = Object.assign({},defaultConfig,config);
             this.setDefaultTexts(_layout);
+
+            const { id } = _layout;
+
+            const title = `${_layout.title} - ${defaultTitle}`;
+
+            document.title = title;
+
+            history.pushState({}, title, `./?layout=${encodeURIComponent(id)}`);
         },
         setExemple(exemple){
             console.log({exemple})
@@ -207,3 +245,28 @@ const app = new Vue({
     }
 })
 
+
+
+
+const getQuerys = _=>{
+	const GET = {};
+	let queryString = location.search.slice(1);
+	if(queryString){
+		let gets = queryString.split(/&/g);
+		gets.forEach(get=>{
+			let [k,v] = get.split(/=/);
+			GET[decodeURIComponent(k)] = decodeURIComponent(v);
+		})
+	};
+	return GET
+};
+
+
+
+
+
+const GET = getQuerys();
+const layoutId = GET['layout']
+if(Layouts[layoutId]){
+    app.setLayout(Layouts[layoutId]);
+}

@@ -78,15 +78,17 @@ const yuv2rgb = (y,u,v)=>{
 
 
 
-
+const ios = /iphone|ipad|ipod|ios/i.test(navigator.userAgent);
 
 
 const make = ({
     outputCanvas = document.createElement('canvas'),
     texts,
     config = {},
-    layout})=>{
-    console.time(layout.title)
+    timer = false,
+    layout
+})=>{
+    !timer||console.time(layout.title)
 
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
@@ -99,6 +101,8 @@ const make = ({
         noise = false,
         plan
     } = config;
+
+    // if(ios) shadow = false;
 
     const outputHeight = config.height || 480;
     const outputWidth = Math.floor(outputHeight / 3 * 4);
@@ -173,7 +177,7 @@ const make = ({
             // shadow = true
         } = config || {};
         
-        ctx.font = `900 ${fontSize}px ${_fontFamilyName},serif`;
+        ctx.font = `900 ${fontSize}px ${_fontFamilyName},baseSplit,serif`;
         ctx.fillStyle = fontColor
         ctx.lineCap  = 'round';
         ctx.lineJoin = 'round';
@@ -600,7 +604,7 @@ const make = ({
         if(noise){
             let pixelData = pixel.data;
             let seed = 21;
-            console.log({seed})
+            // console.log({seed})
             for(let i = 0;i < pixelData.length;i += 4){
                 let l = pixelData[i] *  .299000 + pixelData[i+1] *  .587000 + pixelData[i+2] *  .114000;
                 let s = Math.round(rand(-seed,seed)) * (l/255 - 0.5);
@@ -679,7 +683,7 @@ const make = ({
         );
     }
 
-    console.timeEnd(layout.title)
+    !timer||console.timeEnd(layout.title)
     return outputCanvas
 }
 

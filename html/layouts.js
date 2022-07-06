@@ -281,7 +281,7 @@ const layouts = [
         }
     },
     {
-        id: 'e15',
+        id: 'e12',
         title: '第拾弐話 奇跡の価値は',
         inputs:[
             {
@@ -508,7 +508,7 @@ const layouts = [
 
             const [text,sub,a,b] = texts;
 
-            console.log(text,sub,a,b)
+            // console.log(text,sub,a,b)
 
             randOne([
                 _=>{
@@ -696,7 +696,7 @@ const layouts = [
                 const bSliceIndex = Math.floor(b.length/2)
                 const ba = b.slice(0,bSliceIndex)
                 const bb = b.slice(bSliceIndex)
-                console.log({ba,bb})
+                // console.log({ba,bb})
 
                 const baCanvas = makeTextCanvas(ba,-space)
                 const bbCanvas = makeVerticalTextCanvas(bb,-space)
@@ -1536,7 +1536,7 @@ const layouts = [
                 makeVerticalTextCanvas,
             } = functions;
 
-            console.log(/两排托底/,texts);
+            // console.log(/两排托底/,texts);
             if(texts.length){
                 const aCanvas = makeLinesCanvas(texts.slice(0,2),-space * 2)
                 ctx.drawImage(

@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>福音战士標題生成器</title>
+<title>福音战士標題生成器 - Evangelion Title Card Generator - 神奇海螺实验室</title>
 <link rel="stylesheet" href="document.css">
 
 <header>
@@ -15,13 +15,20 @@
 <div class="app">
     <section class="layout-list">
         <h2>排版</h2>
-        <div class="item" v-for="(_layout,index) in layouts"
+        <a class="item" v-for="(_layout,index) in layouts"
             :title="_layout.title"
-            @click="setLayout(_layout)">
-            <img :src="_layout.src">
-        </div>
+            :data-checked="layout && layout.id === _layout.id"
+            @click.prevent="setLayout(_layout)"
+            :href="`/?layout=${encodeURI(_layout.id)}`"
+            >
+            <img :src="_layout.src" v-if="_layout.src">
+        </a>
     </section>
     <template v-if="layout">
+        <section class="output-box">
+            <h2>输出</h2>
+            <canvas ref="canvas" :style="{height:`${config.height}px`}"></canvas>
+        </section>
         <section class="layout">
             <!-- <h2>{{layout.title}}</h2> -->
             <h2>文字</h2>
@@ -37,12 +44,18 @@
                             :maxlength="input.maxLength">
                     </template>
                 </div>
-
+                <h3>样例</h3>
                 <div class="exemple-list">
-                    <div class="exemple-item" @click="setDefaultTexts(layout)">
+                    <div class="exemple-item" 
+                        @click="setDefaultTexts(layout)"
+                        :d="texts.filter(t=>!t.type).join('')"
+                        :data-checked="!texts.filter((t,i)=>!layout.inputs[i].type).join('')">
                         <span v-for="input in layout.inputs">{{input.placeholder}}</span>
                     </div>
-                    <div class="exemple-item" v-for="exemple in layout.exemples" @click="setExemple(exemple)">
+                    <div class="exemple-item" 
+                        v-for="exemple in layout.exemples" 
+                        :data-checked="texts.join(',') === exemple.join(',')"
+                        @click="setExemple(exemple)">
                         <span v-for="text in exemple">{{text}}</span>
                     </div>
                 </div>
@@ -70,21 +83,12 @@
                     <!-- <input type="number" v-model.number="config.renderScale" placeholder="renderScale"> -->
                 </div>
             </div>
-            <div>
-                <canvas ref="canvas" :style="{height:`${config.height}px`}"></canvas>
-            </div>
             <!-- <pre>{{config}}</pre>
             <pre>{{texts}}</pre> -->
         </section>
     </template>
 </div>
-
-<section>
-    <h2>字体授权</h2>
-    <a href="https://mojimo.jp/eva/">https://mojimo.jp/eva/</a>
-</section>
 <script src="transform-func.js"></script>
-<!-- <script src="stackblur.js"></script> -->
 <script src="vue.2.6.11.min.js"></script>
 <script src="ui-tabs.vue.js"></script>
 <script src="ui-switch.vue.js"></script>
@@ -92,6 +96,17 @@
 <script src="makebmp.js"></script>
 <script src="make.js"></script>
 <script src="document2.js"></script>
-<script>
-// getFontFromText('使徒、襲来')
-</script>
+
+<section>
+    <h2>字体授权</h2>
+    <a href="https://mojimo.jp/eva/">mojimo.jp/eva/</a>
+</section>
+<section>
+    <h2>GitHub</h2>
+    <a href="https://github.com/itorr/">github.com/itorr/eva-title</a>
+</section>
+
+<section>
+    <h2>标题参考</h2>
+    <a href="https://zh.wikipedia.org/wiki/%E6%96%B0%E4%B8%96%E7%BA%AA%E7%A6%8F%E9%9F%B3%E6%88%98%E5%A3%AB#%E6%94%BE%E6%98%A0%E5%92%8C%E7%99%BC%E8%A1%8C">zh.wikipedia.org/wiki/新世纪福音战士#放映和發行</a>
+</section>
