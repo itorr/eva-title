@@ -88,6 +88,7 @@
         </section>
         <section>
             <button @click="save()" data-text="保存标题图"></button>
+            <button class="tc" v-if="canTc" @click="tc()" data-text="转繁体"></button>
             <p class="tip">请使用桌面端 Chrome 浏览器</p>
             <!-- <p>仅支持桌面端 Chrome 浏览器，Safari、Firefox 下存在严重问题</p> -->
         </section>
@@ -103,7 +104,7 @@
         <a href="https://lab.magiconch.com">神奇海螺实验室</a>
     </p>
 </section>
-<!-- <script src="transform-func.js"></script> -->
+<script src="transform-func.js"></script>
 <script src="vue.2.6.11.min.js"></script>
 <script src="ui-tabs.vue.js"></script>
 <script src="ui-switch.vue.js"></script>

@@ -242,6 +242,14 @@ const app = new Vue({
             a.href = canvas.toDataURL('image/jpeg',.95);
             a.download = `[lab.magiconch.com][福音戰士標題生成器]-${+Date.now()}.jpg`;
             a.click();
+        },
+        tc(){
+            this.texts = this.texts.map(transformFunc[2])
+        }
+    },
+    computed:{
+        canTc(){
+            return this.texts.join() !== transformFunc[2](this.texts.join())
         }
     },
     watch:{
