@@ -4,6 +4,7 @@ document.head.appendChild(style);
 let fontAPI = 'http://192.168.31.7:8003/api/fontmin';
 // fontAPI = 'https://eva-title.vercel.app/api/fontmin';
 const getFontFromText = (name,text,onOver=_=>{})=>{
+    if(!text) return onOver();
     text = text.replace(/\s/g,'');
     text = Array.from(new Set(text)).sort().join('');
     // console.log(str2utf8(text))
