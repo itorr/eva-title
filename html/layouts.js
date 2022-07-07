@@ -6,12 +6,12 @@ const layouts = [
             {
                 placeholder:'使徒',
                 minLength:2,
-                maxLength:5,
+                maxLength:8,
             },
             {
                 placeholder:'襲来',
                 minLength:2,
-                maxLength:5,
+                maxLength:8,
             },
             {
                 placeholder:'第壱話',
@@ -111,12 +111,12 @@ const layouts = [
             {
                 placeholder:'使徒',
                 minLength:2,
-                maxLength:5,
+                maxLength:8,
             },
             {
                 placeholder:'侵入',
                 minLength:2,
-                maxLength:5,
+                maxLength:8,
             },
             {
                 placeholder:'第拾参話',
@@ -222,12 +222,12 @@ const layouts = [
             {
                 placeholder:'終わる世界',
                 minLength:2,
-                maxLength:10,
+                maxLength:14,
             },
             {
                 placeholder:'第弐拾伍話',
                 minLength:2,
-                maxLength:10,
+                maxLength:14,
             }
         ],
         make:({
@@ -287,12 +287,12 @@ const layouts = [
             {
                 placeholder:'奇跡の価値は',
                 minLength:2,
-                maxLength:10,
+                maxLength:14,
             },
             {
                 placeholder:'第拾弐話',
                 minLength:2,
-                maxLength:10,
+                maxLength:14,
             }
         ],
         make:({
@@ -357,12 +357,12 @@ const layouts = [
             {
                 placeholder:'鳴らない、電話',
                 minLength:2,
-                maxLength:10,
+                maxLength:14,
             },
             {
                 placeholder:'第参話',
                 minLength:2,
-                maxLength:10,
+                maxLength:14,
             }
         ],
         make:({
@@ -437,12 +437,12 @@ const layouts = [
             {
                 placeholder:'終わる世界',
                 minLength:2,
-                maxLength:10,
+                maxLength:14,
             },
             {
                 placeholder:'第弐拾伍話',
                 minLength:2,
-                maxLength:10,
+                maxLength:14,
             },
             {
                 type:'tab',
@@ -619,7 +619,7 @@ const layouts = [
             {
                 placeholder:'逃げ出した後',
                 minLength:2,
-                maxLength:10,
+                maxLength:14,
             },
             {
                 placeholder:'第四話',
@@ -754,7 +754,7 @@ const layouts = [
             {
                 placeholder:'air',
                 minLength:2,
-                maxLength:10,
+                maxLength:14,
             },
         ],
         make:({
@@ -898,7 +898,7 @@ const layouts = [
             {
                 placeholder:'最後のシ者',
                 minLength:2,
-                maxLength:10,
+                maxLength:14,
             },
         ],
         exemples:[
@@ -961,12 +961,12 @@ const layouts = [
             {
                 placeholder:'世界の中心でアイを叫んだけもの',
                 minLength:2,
-                maxLength:10,
+                maxLength:40,
             },
             {
                 placeholder:'最終話',
                 minLength:2,
-                maxLength:10,
+                maxLength:14,
             },
         ],
         make:({
@@ -1030,12 +1030,12 @@ const layouts = [
             {
                 placeholder:'庵野秀明',
                 minLength:2,
-                maxLength:10,
+                maxLength:14,
             },
             {
                 placeholder:'監督',
                 minLength:2,
-                maxLength:10,
+                maxLength:14,
             },
         ],
         exemples:[
@@ -1135,12 +1135,12 @@ const layouts = [
             {
                 placeholder:'嘘と沈黙',
                 minLength:2,
-                maxLength:10,
+                maxLength:14,
             },
             {
                 placeholder:'第拾伍話',
                 minLength:2,
-                maxLength:10,
+                maxLength:14,
             },
         ],
         exemples:[
@@ -1233,17 +1233,17 @@ const layouts = [
             {
                 placeholder:'NEON GENESIS EVANGELION',
                 minLength:2,
-                maxLength:10,
+                maxLength:14,
             },
             {
                 placeholder:'EPISODE:13',
                 minLength:2,
-                maxLength:10,
+                maxLength:14,
             },
             {
                 placeholder:'Rei II',
                 minLength:2,
-                maxLength:10,
+                maxLength:14,
             },
         ],
         make:({
@@ -1396,17 +1396,17 @@ const layouts = [
             {
                 placeholder:'心のかたち',
                 minLength:2,
-                maxLength:10,
+                maxLength:14,
             },
             {
                 placeholder:'人のかたち',
                 minLength:2,
-                maxLength:10,
+                maxLength:14,
             },
             {
                 placeholder:'第弐拾話',
                 minLength:2,
-                maxLength:10,
+                maxLength:14,
             },
         ],
         exemples:[
@@ -1498,17 +1498,17 @@ const layouts = [
             {
                 placeholder:'マグマ',
                 minLength:2,
-                maxLength:10,
+                maxLength:14,
             },
             {
                 placeholder:'ダイバー',
                 minLength:2,
-                maxLength:10,
+                maxLength:14,
             },
             {
                 placeholder:'第拾話',
                 minLength:2,
-                maxLength:10,
+                maxLength:14,
             },
         ],
         config:{

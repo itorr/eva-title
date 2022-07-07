@@ -368,7 +368,20 @@ button{
     }
 }
 
+input {
+    border: 2px solid currentColor;
+    margin: 0.4em 0;
+    padding: 0.3em 0.5em;
+    width: 600px;
+    max-width: 100%;
+    outline: none;
+    line-height: 1;
+    &:focus{
+        border-color:#a42121;
+    }
+}
 
+// 暂时屏蔽 Chrome 之外浏览器
 .is-chrome{
     display: none;
 }
