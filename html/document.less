@@ -130,11 +130,16 @@ h1,h2,h3,h4{
 }
 header{
     padding:40px 20px 20px;
-    text-shadow: 0 2px 0 #000;
     line-height: 1;
     h1{
         font-weight: 800;
         font-family: 'EVAMatisseClassic',baseSplit,serif;
+        width: 428px;
+        height:48px;
+        white-space: nowrap;
+        color:rgba(0,0,0,0);
+        background:url(logo@2x.png) no-repeat top left;
+        background-size:cover;
     }
     h2{
         font-weight: 400;
@@ -142,10 +147,10 @@ header{
         padding-top:.5em;
     }
 }
-h1,h2,h3,h4,
-.exemple-item{
-    font-family: baseSplit,serif;
-}
+// h1,h2,h3,h4,
+// .exemple-item{
+//     font-family: baseSplit,serif;
+// }
 h3.tip{
     padding:20px;
     font-size:14px;
@@ -289,7 +294,7 @@ footer{
 
 .exemple-list{
     overflow: hidden;
-    padding:10px 0;
+    padding:10px 0 0;
 }
 .exemple-item{
     float: left;
@@ -297,7 +302,7 @@ footer{
     background:rgba(0,0,0,.2);
     padding:20px 30px;
     border-radius:4px;
-    margin-right:10px;
+    margin:0 10px 10px 0;
     span{
         display: block;
     }
@@ -310,6 +315,10 @@ footer{
     h4{
         margin:0;
     }
+}
+
+.ctrl-box{
+    padding:15px 0;
 }
 
 button{
@@ -335,6 +344,23 @@ button{
     a{
         display: inline-block;
         padding:.5em .8em;
+    }
+}
+@media (min-width:900px){
+    .content-box{
+        overflow: hidden;
+        position: relative;
+        padding-left:660px;
+        min-height:480px;
+        .output-box{
+            width: 640px;
+            position: absolute;
+            top:0;
+            left:0;
+        }
+        .config-box{
+
+        }
     }
 }
 
@@ -378,6 +404,7 @@ input {
     margin: 0.4em 0;
     padding: 0.3em 0.5em;
     width: 600px;
+    box-sizing: border-box;
     max-width: 100%;
     outline: none;
     line-height: 1;

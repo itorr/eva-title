@@ -26,12 +26,12 @@
             <img :src="_layout.src" v-if="_layout.src">
         </a>
     </section>
-    <template v-if="layout">
+    <div class="content-box" v-if="layout">
         <section class="output-box">
             <h2>輸出</h2>
             <canvas ref="canvas" :style="{height:`${config.height}px`}"></canvas>
         </section>
-        <section class="layout">
+        <section class="config-box">
             <!-- <h2>{{layout.title}}</h2> -->
             <h2>文字</h2>
             <div class="inputs-box">
@@ -62,14 +62,15 @@
                     </div>
                 </div>
             </div>
-        </section>
-        <section>
-            <button @click="make()" data-text="生成"></button>
-            <button class="tc" @click="save()" data-text="保存成圖片"></button>
-            <button class="tc" v-if="canTc" @click="tc()" data-text="转繁体"></button>
-            <p class="tip">遇到不匹配字型可先嘗試轉繁體，還不匹配的情况請嘗試替換其他文字</p>
-        </section>
-        <section>
+            <div class="ctrl-box">
+                <button @click="make()" data-text="生成"></button>
+                <button class="tc" @click="save()" data-text="保存成圖片"></button>
+                <button class="tc" v-if="canTc" @click="tc()" data-text="转繁体"></button>
+            </div>
+            <p class="tip">
+                遇到不匹配字型可先嘗試轉繁體，還不匹配的情况請嘗試替換其他文字<br>
+                生成图片仅供预览，再利用需自行购买字体授权
+            </p>
             <!-- <h2>选项</h2> -->
             <div class="config-box">
                 <!-- <div class="config-item">
@@ -94,10 +95,10 @@
             <!-- <pre>{{config}}</pre>
             <pre>{{texts}}</pre> -->
         </section>
-    </template>
+    </div>
 </div>
 <section class="is-chrome">
-    <h2>请使用桌面端 Chrome 浏览器</h2>
+    <h3>请使用桌面端 Chrome 浏览器</h3>
     <h4 style="padding-top:1。4em;">看看其他网页</h4>
     <p>
         <a href="https://lab.magiconch.com/magi/">👩🏼「MAGI System」 一键决议系统</a>
@@ -105,37 +106,6 @@
         <a href="https://lab.magiconch.com">神奇海螺实验室</a>
     </p>
 </section>
-<footer>
-    <section>
-        <h2>MAGI System</h2>
-        <a href="https://lab.magiconch.com/magi" target="_blank">lab.magiconch.com/magi/</a>
-    </section>
-    <section>
-        <h2>“掃雷、襲來！”</h2>
-        <a href="https://v.magiconch.com/mine-sweeper" target="_blank">v.magiconch.com/mine-sweeper</a>
-    </section>
-    <section>
-        <h2>字體</h2>
-        <a href="https://mojimo.jp/eva/" target="_blank">mojimo.jp/eva/</a>
-    </section>
-    <section>
-        <h2>GitHub</h2>
-        <a href="https://github.com/itorr/eva-title" target="_blank">github.com/itorr/eva-title</a>
-    </section>
-    <section>
-        <h2>轉發微博</h2>
-        <a href="https://weibo.com/1197780522/LB5DsoCUF" target="_blank">weibo.com/1197780522/LB5DsoCUF</a>
-    </section>
-    
-    <section>
-        <h2>標題參攷</h2>
-        <a href="https://zh.wikipedia.org/wiki/%E6%96%B0%E4%B8%96%E7%BA%AA%E7%A6%8F%E9%9F%B3%E6%88%98%E5%A3%AB#%E6%94%BE%E6%98%A0%E5%92%8C%E7%99%BC%E8%A1%8C" target="_blank">zh.wikipedia.org/wiki/新世纪福音战士</a>
-    </section>
-    <section>
-        <h2>神奇海螺實驗室</h2>
-        <a href="https://lab.magiconch.com">lab.magiconch.com</a>
-    </section> 
-</footer>
 
 <script src="https://lab.magiconch.com/vue.2.6.11.min.js"></script>
 <!--merge:js-->
@@ -147,6 +117,40 @@
 <script src="make.js"></script>
 <script src="document2.js"></script>
 <!--merge:js-->
+
+<base target="_blank">
+<footer>
+    <section>
+        <h2>MAGI System</h2>
+        <a href="https://lab.magiconch.com/magi">lab.magiconch.com/magi/</a>
+    </section>
+    <section>
+        <h2>“掃雷、襲來！”</h2>
+        <a href="https://v.magiconch.com/mine-sweeper">v.magiconch.com/mine-sweeper</a>
+    </section>
+    <section>
+        <h2>字體</h2>
+        <a href="https://mojimo.jp/eva/">mojimo.jp/eva/</a>
+        <p style="color:#999;font-size:.8em;margin:.3em 0;">仅供个人非商业使用，再利用需自行购买字体授权</p>
+    </section>
+    <section>
+        <h2>GitHub</h2>
+        <a href="https://github.com/itorr/eva-title">github.com/itorr/eva-title</a>
+    </section>
+    <section>
+        <h2>轉發微博</h2>
+        <a href="https://weibo.com/1197780522/LB5DsoCUF">weibo.com/1197780522/LB5DsoCUF</a>
+    </section>
+    
+    <section>
+        <h2>標題參攷</h2>
+        <a href="https://zh.wikipedia.org/wiki/%E6%96%B0%E4%B8%96%E7%BA%AA%E7%A6%8F%E9%9F%B3%E6%88%98%E5%A3%AB#%E6%94%BE%E6%98%A0%E5%92%8C%E7%99%BC%E8%A1%8C">zh.wikipedia.org/wiki/新世纪福音战士</a>
+    </section>
+    <section>
+        <h2>神奇海螺實驗室</h2>
+        <a href="https://lab.magiconch.com">lab.magiconch.com</a>
+    </section> 
+</footer>
 <!-- <footer class="ui-footer">
     <a href="https://weibo.com/1197780522/LB5DsoCUF" target="_blank">转发微博</a>
     <a href="https://weibo.com/1197780522" target="_blank">@卜卜口</a>
