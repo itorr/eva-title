@@ -2,7 +2,7 @@
 
 const ios = /iphone|ipad|ipod|ios/i.test(navigator.userAgent);
 const isChrome = /Chrome/.test(navigator.userAgent);
-
+const isMobile = document.body.offsetWidth < 700;
 // const whiteColor = '#e8e8e8'
 const whiteColor = '#e4e0e8'
 const blackColor = '#030201'
@@ -122,7 +122,7 @@ const make = ({
     if(retina){
         renderScale = 2;
     }
-    if(ios){
+    if(ios || isMobile){
         renderScale = 1;
     }
 

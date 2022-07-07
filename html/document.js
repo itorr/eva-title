@@ -33,7 +33,10 @@ const loadFont = async (fontName,fontURL,callback) => {
 	fontFace.load().then(fontFace => {
 		document.fonts.add(fontFace);
 		callback(fontFace);
-	});
+	}).catch(e=>{
+        console.log(e);
+        callback();
+    })
 };
 function str2utf8(str) {
     return str.split('').map(s=>s.charCodeAt(0))
