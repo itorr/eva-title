@@ -254,7 +254,8 @@ const app = new Vue({
             a.click();
         },
         tc(){
-            this.texts = this.texts.map(transformFunc[2])
+            this.texts = this.texts.map(transformFunc[2]);
+            this.make();
         }
     },
     computed:{
