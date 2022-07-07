@@ -43,6 +43,7 @@ const rand = (a,b)=>{
     return a + (b-a) * Math.random()
 }
 
+const createCanvas = _=>document.createElement('canvas');
 
 const rgb2yuv = (r,g,b)=>{
 	var y, u, v;
@@ -86,7 +87,7 @@ const yuv2rgb = (y,u,v)=>{
 
 
 const make = ({
-    outputCanvas = document.createElement('canvas'),
+    outputCanvas = createCanvas(),
     texts,
     config = {},
     timer = false,
@@ -94,7 +95,7 @@ const make = ({
 })=>{
     !timer||console.time(layout.title)
 
-    const canvas = document.createElement('canvas');
+    const canvas = createCanvas();
     const ctx = canvas.getContext('2d');
 
     let { 
@@ -120,6 +121,9 @@ const make = ({
 
     if(retina){
         renderScale = 2;
+    }
+    if(ios){
+        renderScale = 1;
     }
 
 
@@ -180,6 +184,8 @@ const make = ({
             _fontFamilyName = fontFamilyName,
             // shadow = true
         } = config || {};
+
+        // console.log({ctx})
         
         ctx.font = `900 ${fontSize}px ${_fontFamilyName},baseSplit,serif`;
         ctx.fillStyle = fontColor
@@ -196,7 +202,7 @@ const make = ({
 
 
     const makeTextCanvas = (text,letterSpacing = 0,margin = 0)=>{
-        const canvas = document.createElement('canvas');
+        const canvas = createCanvas();
         const ctx = canvas.getContext('2d');
 
         document.body.appendChild(canvas)
@@ -250,7 +256,7 @@ const make = ({
             if(!kataMatch) return makeTextCanvas(text,letterSpacing)
         }
         
-        const canvas = document.createElement('canvas');
+        const canvas = createCanvas();
         const ctx = canvas.getContext('2d');
 
         document.body.appendChild(canvas)
@@ -311,7 +317,7 @@ const make = ({
         return canvas
     }
     const makeLinesCanvas = (texts,letterSpacing = 0)=>{
-        const canvas = document.createElement('canvas');
+        const canvas = createCanvas();
         const ctx = canvas.getContext('2d');
 
         setCtxConfig(ctx);
@@ -352,7 +358,7 @@ const make = ({
         const {
             lineHeight = 1,
         } = config
-        const canvas = document.createElement('canvas');
+        const canvas = createCanvas();
         const ctx = canvas.getContext('2d');
 
         document.body.appendChild(canvas);
@@ -415,7 +421,7 @@ const make = ({
 
 
     const makeVerticalTextCanvas = (text,letterSpacing = 0)=>{
-        const canvas = document.createElement('canvas');
+        const canvas = createCanvas();
         const ctx = canvas.getContext('2d');
 
         document.body.appendChild(canvas)
@@ -555,7 +561,7 @@ const make = ({
     const outLine = false;
     
     if(outLine){
-        const outLineCanvas = document.createElement('canvas');
+        const outLineCanvas = createCanvas();
         const outLineCtx = outLineCanvas.getContext('2d');
         
         const outLineZoom = 4;
@@ -579,7 +585,7 @@ const make = ({
     }
 
 
-    // const outputCanvas = document.createElement('canvas');
+    // const outputCanvas = createCanvas();
     const outputCtx = outputCanvas.getContext('2d');
 
     outputCanvas.width = outputWidth

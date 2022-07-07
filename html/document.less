@@ -420,7 +420,8 @@ input {
 }
 
 // 暂时屏蔽 Chrome 之外浏览器
-.is-chrome{
+.is-not-chrome{
+    display: none;
     padding:10px 20px;
     background:#a42121;
     color:#FFF;
@@ -436,7 +437,7 @@ input {
 }
 html[data-is-chrome="false"]{
 
-    .is-chrome{
+    .is-not-chrome{
         display: block;
     }
     .app{
