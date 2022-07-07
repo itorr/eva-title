@@ -28,7 +28,7 @@
 // }
 
 html{
-    font:24px/1.4 serif;
+    font:24px/1.4 sans-serif;
     // font-family: MatisseProEB,serif;
     // font-family: EVAMatisseClassic,serif;
     // font-family: EVAMatisseClassic,MatisseProEB,serif;
@@ -312,6 +312,7 @@ button{
     background-color: #a42121;
     color:#FFF;
     border:0;
+    font-weight: bold;
     line-height: 3;
     padding:0 1em;
     cursor: pointer;
@@ -394,5 +395,27 @@ html[data-is-chrome="false"]{
     }
     .app{
         display: none;
+    }
+}
+
+
+.app{
+    &:before{
+        position: fixed;
+        top:0;
+        right:0;
+        content: '生成中...';
+        background:#111;
+        color:#a42121;
+        padding:.5em .8em;
+        margin:.8em;
+        border-radius:4px;
+        pointer-events: none;
+        opacity: 0;
+    }
+    &[data-loading="true"]{
+        &:before{
+            opacity: 1;
+        }
     }
 }

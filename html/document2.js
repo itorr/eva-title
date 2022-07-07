@@ -177,7 +177,8 @@ const data ={
     layout:null,
     layouts:deepCopy(layouts),
     config:deepCopy(defaultConfig),
-    texts
+    texts,
+    loading:false
 };
 const Layouts = {}
 layouts.forEach(layout=>{
@@ -202,12 +203,17 @@ const app = new Vue({
                     return this.texts[index] || input.placeholder
                 });
 
-                getFontFromText(fontFamilyName,texts.join(''), make.bind(null,{
-                    outputCanvas: this.$refs['canvas'],
-                    texts,
-                    config: this.config,
-                    layout: this.layout
-                }));
+                this.loading = true;
+                getFontFromText(fontFamilyName,texts.join(''), _=>{
+                    make({
+                        outputCanvas: this.$refs['canvas'],
+                        texts,
+                        config: this.config,
+                        layout: this.layout
+                    });
+                    this.loading = false;
+                    
+                });
             },200);
         },
         setLayout(_layout){
