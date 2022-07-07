@@ -9,7 +9,7 @@ document.head.appendChild(style);
 let fontAPI = 'https://lab.magiconch.com/api/fontmin';
 
 
-// fontAPI = 'https://eva-title.vercel.app/api/fontmin';
+fontAPI = 'https://eva-title-server.vercel.app/api/fontmin';
 const getFontFromText = (name,text,onOver=_=>{})=>{
     if(!text) return onOver();
     text = text.replace(/\s/g,'');
@@ -17,7 +17,7 @@ const getFontFromText = (name,text,onOver=_=>{})=>{
     // console.log(str2utf8(text))
     // console.log(utf82str(str2utf8(text)))
     text = diffDefaultMoji(text);
-    // console.log({text})
+    console.log({text})
     if(!text) return onOver();
 
     const unicode = str2utf8(text).join();
@@ -55,26 +55,22 @@ const t = '沈値';
 const getMoji = _=>{
     let v = layouts.map(a=>[a.inputs.map(t=>t.placeholder),a.exemples]).flat().join();
     // console.log(v)
-    v += document.querySelector('header h1').textContent;
+    v += document.querySelector('body').textContent;
     v += 0;
     return v;
 };
 
-let defaultMoji = (_=>{
-    let v = getMoji();
-    let text = v.replace(/\s/g,'');
-    text = Array.from(new Set(text)).sort();
-    return text;
-})();
+let defaultMoji = Array.from(new Set(getMoji().replace(/\s/g,''))).sort();
+
+// console.log(defaultMoji.join(''));
 
 // if(ios || !isChrome){
 //     defaultMoji = [];
 // }
+defaultMoji = ',-./01235789:?ABCDEFGHILMNOPRSTUVabcdefghijklmnoprstuvwxyz“”、。「」いかくけげしせただちてでとなのはめもらるわをんアイカグシスゼダネバフマルレー一下不世中了京人今他伍作使來例価侵値僅先入八六其决况出到劳化匹博原参參叫可吃問喜嘗嘘器噪嚴四在型士壱太奇字存实室實市座庵弐当後徒微心情成我战戦戰拾持掃授排換支攷文新日明替最权来東案桌森標模樣歡求決沈浏海瀏版生用界發的監看督石神福秀章端第糊系終繁纪统网者臭螺襲覽览試話誕請议请跡輸轉逃选遇還郎配重野銳键間雨雷電面音頭題页项香驗验體魂鳴麦黙點🏼👩！，'.split('');
 
-// const unicode = str2utf8(defaultMoji.join('')).join();
-// console.log(unicode,'unicode');
-
-
+const unicode = str2utf8(defaultMoji.join('')).join();
+console.log(unicode)
 const diffDefaultMoji = text=>{
     return text.split('').filter(moji=>!defaultMoji.includes(moji)).join('');
 };
@@ -216,7 +212,7 @@ const app = new Vue({
                 });
             },200);
         },
-        setLayout(_layout){
+        setLayout(_layout,noRoute){
             this.layout = _layout;
             const {inputs,config} = _layout;
             // console.log(Object.assign({},defaultConfig,config))
@@ -229,7 +225,7 @@ const app = new Vue({
 
             document.title = title;
 
-            history.replaceState({}, title, `./?layout=${encodeURIComponent(id)}`);
+            if(!noRoute) history.replaceState({}, title, `./?layout=${encodeURIComponent(id)}`);
         },
         setExemple(exemple){
             console.log({exemple})
@@ -237,7 +233,8 @@ const app = new Vue({
                 // this.texts[i]=t
                 this.$set(this.texts,i,t);
                 // this.texts[i]=t
-            })
+            });
+            this.make();
         },
         setDefaultTexts(layout){
             const {inputs} = layout;
@@ -271,13 +268,10 @@ const app = new Vue({
             handler:'make'
         },
         layout:'make',
-        texts:{
-            deep:true,
-            handler:'make'
-        },
-    },
-    created(){
-
+        // texts:{
+        //     deep:true,
+        //     handler:'make'
+        // },
     }
 })
 
@@ -302,7 +296,7 @@ const getQuerys = _=>{
 
 
 const GET = getQuerys();
-const layoutId = GET['layout']
+const layoutId = GET['layout'] || 'e1';
 if(Layouts[layoutId]){
-    app.setLayout(Layouts[layoutId]);
+    app.setLayout(Layouts[layoutId],1);
 }

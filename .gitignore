@@ -11,3 +11,4 @@ dest/*
 html/dest/*
 html/Gruntfile.js
 html/package.json
+html/logo*

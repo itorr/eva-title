@@ -754,7 +754,7 @@ const layouts = [
             {
                 placeholder:'air',
                 minLength:2,
-                maxLength:14,
+                maxLength:20,
             },
         ],
         make:({
@@ -1233,12 +1233,12 @@ const layouts = [
             {
                 placeholder:'NEON GENESIS EVANGELION',
                 minLength:2,
-                maxLength:14,
+                maxLength:40,
             },
             {
                 placeholder:'EPISODE:13',
                 minLength:2,
-                maxLength:14,
+                maxLength:20,
             },
             {
                 placeholder:'Rei II',

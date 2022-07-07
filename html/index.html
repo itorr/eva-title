@@ -13,7 +13,7 @@
     <h1>福音戰士標題生成器</h1>
     <h2>Evangelion Title Card Generator</h2>
 </header>
-<h3 class="tip">仅支持桌面端 Chrome 浏览器，Safari、Firefox 下存在严重问题</h3>
+<h3 class="tip">僅支持案頭端 Chrome、Edge 瀏覽器。Safari、Firefox 下存在嚴重問題</h3>
 <div class="app" :data-loading="loading">
     <section class="layout-list">
         <h2>排版</h2>
@@ -28,7 +28,7 @@
     </section>
     <template v-if="layout">
         <section class="output-box">
-            <h2>输出</h2>
+            <h2>輸出</h2>
             <canvas ref="canvas" :style="{height:`${config.height}px`}"></canvas>
         </section>
         <section class="layout">
@@ -46,7 +46,7 @@
                             :maxlength="input.maxLength">
                     </template>
                 </div>
-                <h3>样例</h3>
+                <h3>樣例</h3>
                 <div class="exemple-list">
                     <div class="exemple-item" 
                         @click="setDefaultTexts(layout)"
@@ -65,13 +65,12 @@
         </section>
         <section>
             <button @click="make()" data-text="生成"></button>
-            <button class="tc" @click="save()" data-text="保存标题图"></button>
+            <button class="tc" @click="save()" data-text="保存成圖片"></button>
             <button class="tc" v-if="canTc" @click="tc()" data-text="转繁体"></button>
-            <p class="tip">遇到不匹配字型可先尝试转繁体，还不匹配的情况请尝试替换其他文字</p>
-            <!-- <p>仅支持桌面端 Chrome 浏览器，Safari、Firefox 下存在严重问题</p> -->
+            <p class="tip">遇到不匹配字型可先嘗試轉繁體，還不匹配的情况請嘗試替換其他文字</p>
         </section>
         <section>
-            <h2>选项</h2>
+            <!-- <h2>选项</h2> -->
             <div class="config-box">
                 <!-- <div class="config-item">
                     <ui-tabs v-model="config.type" :options="types"></ui-tabs>
@@ -81,12 +80,12 @@
                 </div>
                 <div class="config-item">
                     <ui-switch v-model="config.blur">模糊</ui-switch>
-                    <ui-switch v-model="config.noise">噪点</ui-switch>
+                    <ui-switch v-model="config.noise">噪點</ui-switch>
                     <!-- <ui-switch v-model="config.inverse">反白</ui-switch> -->
                     <!-- <ui-switch v-model="config.retina">Retina</ui-switch> -->
                     <!-- <ui-switch v-model="config.shadow">边缘模糊</ui-switch> -->
                     <!-- <ui-switch v-model="config.type95">繁体</ui-switch> -->
-                    <ui-switch v-model="config.convolute">锐化</ui-switch>
+                    <ui-switch v-model="config.convolute">銳化</ui-switch>
                     <ui-switch v-model="config.type95">Type 95</ui-switch>
 
                     <!-- <input type="number" v-model.number="config.renderScale" placeholder="renderScale"> -->
@@ -106,6 +105,38 @@
         <a href="https://lab.magiconch.com">神奇海螺实验室</a>
     </p>
 </section>
+<footer>
+    <section>
+        <h2>MAGI System</h2>
+        <a href="https://lab.magiconch.com/magi" target="_blank">lab.magiconch.com/magi/</a>
+    </section>
+    <section>
+        <h2>“掃雷、襲來！”</h2>
+        <a href="https://v.magiconch.com/mine-sweeper" target="_blank">v.magiconch.com/mine-sweeper</a>
+    </section>
+    <section>
+        <h2>字體</h2>
+        <a href="https://mojimo.jp/eva/" target="_blank">mojimo.jp/eva/</a>
+    </section>
+    <section>
+        <h2>GitHub</h2>
+        <a href="https://github.com/itorr/eva-title" target="_blank">github.com/itorr/eva-title</a>
+    </section>
+    <section>
+        <h2>轉發微博</h2>
+        <a href="https://weibo.com/1197780522/LB5DsoCUF" target="_blank">weibo.com/1197780522/LB5DsoCUF</a>
+    </section>
+    
+    <section>
+        <h2>標題參攷</h2>
+        <a href="https://zh.wikipedia.org/wiki/%E6%96%B0%E4%B8%96%E7%BA%AA%E7%A6%8F%E9%9F%B3%E6%88%98%E5%A3%AB#%E6%94%BE%E6%98%A0%E5%92%8C%E7%99%BC%E8%A1%8C" target="_blank">zh.wikipedia.org/wiki/新世纪福音战士</a>
+    </section>
+    <section>
+        <h2>神奇海螺實驗室</h2>
+        <a href="https://lab.magiconch.com">lab.magiconch.com</a>
+    </section> 
+</footer>
+
 <script src="https://lab.magiconch.com/vue.2.6.11.min.js"></script>
 <!--merge:js-->
 <script src="transform-func.js"></script>
@@ -116,33 +147,6 @@
 <script src="make.js"></script>
 <script src="document2.js"></script>
 <!--merge:js-->
-<footer>
-    <section>
-        <h2>MAGI System</h2>
-        <a href="https://lab.magiconch.com/magi" target="_blank">lab.magiconch.com/magi/</a>
-    </section>
-    <section>
-        <h2>字体</h2>
-        <a href="https://mojimo.jp/eva/" target="_blank">mojimo.jp/eva/</a>
-    </section>
-    <section>
-        <h2>GitHub</h2>
-        <a href="https://github.com/itorr/eva-title" target="_blank">github.com/itorr/eva-title</a>
-    </section>
-    <section>
-        <h2>转发微博</h2>
-        <a href="https://weibo.com/1197780522/LB5DsoCUF" target="_blank">weibo.com/1197780522/LB5DsoCUF</a>
-    </section>
-    
-    <section>
-        <h2>标题参考</h2>
-        <a href="https://zh.wikipedia.org/wiki/%E6%96%B0%E4%B8%96%E7%BA%AA%E7%A6%8F%E9%9F%B3%E6%88%98%E5%A3%AB#%E6%94%BE%E6%98%A0%E5%92%8C%E7%99%BC%E8%A1%8C" target="_blank">zh.wikipedia.org/wiki/新世纪福音战士</a>
-    </section>
-    <section>
-        <h2>神奇海螺实验室</h2>
-        <a href="https://lab.magiconch.com">lab.magiconch.com</a>
-    </section> 
-</footer>
 <!-- <footer class="ui-footer">
     <a href="https://weibo.com/1197780522/LB5DsoCUF" target="_blank">转发微博</a>
     <a href="https://weibo.com/1197780522" target="_blank">@卜卜口</a>

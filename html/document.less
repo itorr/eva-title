@@ -142,6 +142,10 @@ header{
         padding-top:.5em;
     }
 }
+h1,h2,h3,h4,
+.exemple-item{
+    font-family: baseSplit,serif;
+}
 h3.tip{
     padding:20px;
     font-size:14px;
@@ -414,6 +418,7 @@ html[data-is-chrome="false"]{
         opacity: 0;
     }
     &[data-loading="true"]{
+        pointer-events: none;
         &:before{
             opacity: 1;
         }
