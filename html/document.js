@@ -11,11 +11,52 @@ let fontAPI = 'https://lab.magiconch.com/api/fontmin';
 // fontAPI = 'https://s6.magiconch.com/api/fontmin';
 // fontAPI = 'http://localhost:60912/api/fontmin';
 
+if(/192\.168|local/.test(location.origin)){
+    fontAPI = 'http://localhost:60912/api/fontmin';
+}
 // fontAPI = 'https://eva-title-server.vercel.app/api/fontmin';
 
 const blockMojiRegex = /\s/g;
+
+
+const checkFont = fontName=>{
+    const canvas = document.createElement('canvas');
+    const w = 18;
+    canvas.width = w;
+    canvas.height = w;
+    const ctx = canvas.getContext('2d');
+    // document.body.appendChild(canvas);
+
+    ctx.font = `100 ${w}px ${fontName},sans-serif`;
+    ctx.fillStyle = '#000';
+    ctx.lineCap  = 'round';
+    ctx.lineJoin = 'round';
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'bottom';
+    ctx.clearRect(0,0,w,w);
+    ctx.fillText(
+        '饑',
+        0, w
+    );
+    const pixel = ctx.getImageData(0,0,w,w);
+    const d = pixel.data;
+
+    let aa =  0;
+    for(let i=0;i<d.length;i+=4){
+        aa += d[i+3];
+    }
+
+    const l = aa/w/w;
+    return l;
+};
+
+const haveMatisse = checkFont('EVA_Matisse_Classic-EB,MatissePro-EB') > 120;
+
+
 const getFontFromText = (name,text,onOver=_=>{})=>{
     if(!text) return onOver();
+    if(haveMatisse) return onOver();
+
     text = text.replace(blockMojiRegex,'');
     text += '0';
     text = Array.from(new Set(text)).sort().join('');
@@ -34,6 +75,7 @@ const getFontFromText = (name,text,onOver=_=>{})=>{
     })
 }
 const loadFont = async (fontName,fontURL,callback) => {
+    if(haveMatisse) return callback();
 	const fontFace = new FontFace(fontName, `url(${fontURL})`);
 	fontFace.load().then(fontFace => {
 		document.fonts.add(fontFace);
@@ -81,55 +123,6 @@ const diffDefaultMoji = text=>{
     return text.split('').filter(moji=>!defaultMoji.includes(moji)).join('').replace(/\s/g,'')
 };
 
-const c = _=>{
-    loadFont('baseSplit','base-split.woff?r=220708',async _=>{
-        getFontFromText(fontFamilyName,getMoji(),async _=>{
-            layouts.slice().sort(_=>-1).forEach((layout,index)=>{
-                let texts = [
-                    // '使徒',
-                    // '襲来',
-                    // '第壱話',
-                ];
-                texts = layout.inputs.map((input,index)=>{
-                    return texts[index] || input.placeholder
-                })
-                const height = 240;
-                const config = Object.assign({},defaultConfig,layout.config,{
-                    height,
-                    // convolute: true,
-                    noise:false,
-                    blur:1,
-                    // inverse: Math.random()>0.9,
-                });
-                const el = make({
-                    texts,
-                    config,
-                    layout
-                })
-                const src = makeBMPFormCanvas(el)
-                layout.src = src;
-                // console.log(src)
-                // app.$set(layout,'src',src)
-                // outputEl.appendChild(el)
-
-                // if(layout.exemples){
-                //     layout.exemples.forEach(texts=>{
-                //         const el = make({
-                //             texts,
-                //             config,
-                //             layout
-                //         })
-                //         // outputEl.appendChild(el)
-                //     })
-                // }
-            })
-            app.layouts = layouts;
-
-        })
-    })
-}
-
-c();
 
 const texts = [
     '',
@@ -193,6 +186,10 @@ const textBefore = '掃襲';
 const textFilter = text=>{
     return text;
 };
+
+
+
+
 
 const app = new Vue({
     el:'.app',
@@ -265,11 +262,18 @@ const app = new Vue({
             a.click();
         },
         tc(){
-            this.texts = this.texts.map(transformFunc[2]);
+            this.texts = this.texts.map(s=>{
+                if(s.constructor === String) return transformFunc[2](s);
+
+                return s
+            });
             this.make();
         }
     },
     computed:{
+        haveMatisse(){
+            return haveMatisse
+        },
         _text(){
             return this.layout.inputs.map((input,index)=>{
                 const {type} = input;
@@ -319,6 +323,55 @@ const getQuerys = _=>{
 };
 
 
+const c = _=>{
+    loadFont('baseSplit','base-split.woff?r=220708',async _=>{
+        getFontFromText(fontFamilyName,getMoji(),async _=>{
+            layouts.slice().sort(_=>-1).forEach((layout,index)=>{
+                let texts = [
+                    // '使徒',
+                    // '襲来',
+                    // '第壱話',
+                ];
+                texts = layout.inputs.map((input,index)=>{
+                    return texts[index] || input.placeholder
+                })
+                const height = 240;
+                const config = Object.assign({},defaultConfig,layout.config,{
+                    height,
+                    // convolute: true,
+                    noise:false,
+                    blur:1,
+                    // inverse: Math.random()>0.9,
+                });
+                const el = make({
+                    texts,
+                    config,
+                    layout
+                })
+                const src = makeBMPFormCanvas(el)
+                layout.src = src;
+                // console.log(src)
+                // app.$set(layout,'src',src)
+                // outputEl.appendChild(el)
+
+                // if(layout.exemples){
+                //     layout.exemples.forEach(texts=>{
+                //         const el = make({
+                //             texts,
+                //             config,
+                //             layout
+                //         })
+                //         // outputEl.appendChild(el)
+                //     })
+                // }
+            })
+            app.layouts = layouts;
+
+        })
+    })
+}
+
+c();
 
 
 

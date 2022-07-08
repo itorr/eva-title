@@ -103,6 +103,14 @@
                     <!-- <input type="number" v-model.number="config.renderScale" placeholder="renderScale"> -->
                 </div>
             </div>
+            <p class="tip" v-if="!haveMatisse">
+                本机安装 <b>Matisse-EB</b> 字体的情况会得到最佳使用体验<br>
+                建议优先安装 <b>EVA-Matisse-EB</b>，会更有福音战士味儿<br>
+                Fontworks 的 EVA 联动订阅字体授权在 <a href="https://mojimo.jp/eva">mojimo.jp/eva</a>
+            </p>
+            <p class="tip" v-if="haveMatisse">
+                本机已安装 <b>Matisse-EB</b> 字体，字体授权情况请自行确认
+            </p>
             <!-- <pre>{{config}}</pre>
             <pre>{{texts}}</pre> -->
         </section>

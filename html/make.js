@@ -9,6 +9,12 @@ const blackColor = '#030201'
 const orangeColor = 'rgba(255,165,0,.6)'
 const orangeColorInverse = 'rgba(255,165,255,.2)'
 
+let fontWeight = 900
+
+if(/192\.168|local/.test(location.origin)){
+    fontWeight = 100;
+}
+
 let fontFamilyName = 'EVAMatisseClassic'
 const engFontFamilyName = `"Times New Roman"`
 
@@ -187,7 +193,7 @@ const make = ({
 
         // console.log({ctx})
         
-        ctx.font = `900 ${fontSize}px ${_fontFamilyName},baseSplit,serif`;
+        ctx.font = `${fontWeight} ${fontSize}px ${_fontFamilyName},EVA_Matisse_Classic-EB,MatissePro-EB,baseSplit,serif`;
         ctx.fillStyle = fontColor
         ctx.lineCap  = 'round';
         ctx.lineJoin = 'round';
