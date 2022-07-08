@@ -9,7 +9,7 @@ document.head.appendChild(style);
 let fontAPI = 'https://lab.magiconch.com/api/fontmin';
 
 // fontAPI = 'https://s6.magiconch.com/api/fontmin';
-fontAPI = 'http://localhost:60912/api/fontmin';
+// fontAPI = 'http://localhost:60912/api/fontmin';
 
 // fontAPI = 'https://eva-title-server.vercel.app/api/fontmin';
 
