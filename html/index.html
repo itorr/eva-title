@@ -74,7 +74,8 @@
                     </div>
                 </div>
             </div>
-            <div class="ctrl-box" v-if="!noMatchMojis.length">
+            <!-- v-if="!noMatchMojis.length" -->
+            <div class="ctrl-box">
                 <button :class="{current:lastAllText!==allText && !noMatchMojis.length}" @click="make()" data-text="生成"></button>
                 <button :class="{current:lastAllText===allText && !noMatchMojis.length}" @click="save()" data-text="保存成圖片"></button>
             </div>
