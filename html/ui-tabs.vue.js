@@ -29,7 +29,6 @@ Vue.component('ui-tabs',{
     },
     methods:{
         set(v){
-            console.log(v)
             this.$emit('input',v);
         }
     }
