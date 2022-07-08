@@ -11,9 +11,6 @@ let fontAPI = 'https://lab.magiconch.com/api/fontmin';
 // fontAPI = 'https://s6.magiconch.com/api/fontmin';
 // fontAPI = 'http://localhost:60912/api/fontmin';
 
-if(/192\.168|local/.test(location.origin)){
-    fontAPI = 'http://localhost:60912/api/fontmin';
-}
 // fontAPI = 'https://eva-title-server.vercel.app/api/fontmin';
 
 const blockMojiRegex = /\s/g;
@@ -50,7 +47,15 @@ const checkFont = fontName=>{
     return l;
 };
 
-const haveMatisse = checkFont('EVA_Matisse_Classic-EB,MatissePro-EB') > 120;
+let haveMatisse = checkFont('EVA_Matisse_Classic-EB,MatissePro-EB') > 120;
+
+
+
+if(/192\.168|local/.test(location.origin)){
+    fontAPI = 'http://localhost:60912/api/fontmin';
+    haveMatisse = false;
+    baseFontFamilyName = 'baseSplit,serif';
+}
 
 
 const getFontFromText = (name,text,onOver=_=>{})=>{

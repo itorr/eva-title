@@ -89,7 +89,7 @@ const yuv2rgb = (y,u,v)=>{
 };
 
 
-
+let baseFontFamilyName = 'EVA_Matisse_Classic-EB,MatissePro-EB,baseSplit,serif';
 
 
 const make = ({
@@ -193,7 +193,7 @@ const make = ({
 
         // console.log({ctx})
         
-        ctx.font = `${fontWeight} ${fontSize}px ${_fontFamilyName},EVA_Matisse_Classic-EB,MatissePro-EB,baseSplit,serif`;
+        ctx.font = `${fontWeight} ${fontSize}px ${_fontFamilyName},${baseFontFamilyName}`;
         ctx.fillStyle = fontColor
         ctx.lineCap  = 'round';
         ctx.lineJoin = 'round';
