@@ -328,7 +328,7 @@ footer{
 }
 
 button{
-    background-color: #a42121;
+    background-color: #333;
     color:#FFF;
     border:0;
     font-weight: bold;
@@ -339,8 +339,18 @@ button{
 
     border-radius:4px;
 
-    &.tc{
-        background-color: #333;
+    &.current{
+        background-color: #a42121;
+    }
+    &:disabled{
+        background-color: #2D2d2d;
+        color:#666;
+        cursor: not-allowed;
+    }
+    &.min{
+        font-size:.8em;
+        line-height: 2.6;
+        padding:0 .8em;
     }
 }
 
@@ -461,7 +471,10 @@ html[data-is-chrome="false"]{
         opacity: 0;
     }
     &[data-loading="true"]{
-        pointer-events: none;
+        cursor: wait;
+        &>*{
+            pointer-events: none;
+        }
         &:before{
             opacity: 1;
         }

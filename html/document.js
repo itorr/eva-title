@@ -8,16 +8,21 @@ document.head.appendChild(style);
 // let fontAPI = 'http://192.168.31.7:8003/api/fontmin';
 let fontAPI = 'https://lab.magiconch.com/api/fontmin';
 
+// fontAPI = 'https://s6.magiconch.com/api/fontmin';
+fontAPI = 'http://localhost:60912/api/fontmin';
 
-fontAPI = 'https://eva-title-server.vercel.app/api/fontmin';
+// fontAPI = 'https://eva-title-server.vercel.app/api/fontmin';
+
+const blockMojiRegex = /\s/g;
 const getFontFromText = (name,text,onOver=_=>{})=>{
     if(!text) return onOver();
-    text = text.replace(/\s/g,'');
+    text = text.replace(blockMojiRegex,'');
+    text += '0';
     text = Array.from(new Set(text)).sort().join('');
     // console.log(str2utf8(text))
     // console.log(utf82str(str2utf8(text)))
     text = diffDefaultMoji(text);
-    console.log({text})
+    // console.log({text})
     if(!text) return onOver();
 
     const unicode = str2utf8(text).join();
@@ -34,7 +39,7 @@ const loadFont = async (fontName,fontURL,callback) => {
 		document.fonts.add(fontFace);
 		callback(fontFace);
 	}).catch(e=>{
-        console.log(e);
+        // console.log(e);
         callback();
     })
 };
@@ -52,18 +57,16 @@ const inputEl = document.querySelector('textarea');
 const checkboxEl = document.querySelector('input');
 const outputEl = document.querySelector('#out');
 
-const s = '沉值'
-const t = '沈値';
+
 
 const getMoji = _=>{
     let v = layouts.map(a=>[a.inputs.map(t=>t.placeholder),a.exemples]).flat().join();
     // console.log(v)
-    v += document.querySelector('body').textContent;
-    v += 0;
+    // v += document.querySelector('body').textContent;
     return v;
 };
 
-let defaultMoji = Array.from(new Set(getMoji().replace(/\s/g,''))).sort();
+let defaultMoji = Array.from(new Set(getMoji())).sort();
 
 // console.log(defaultMoji.join(''));
 
@@ -120,15 +123,11 @@ const c = _=>{
                 //     })
                 // }
             })
-
             app.layouts = layouts;
 
         })
     })
 }
-
-
-
 
 c();
 
@@ -174,10 +173,11 @@ const plans = [
 ]
 const data ={
     layout:null,
-    layouts:deepCopy(layouts),
+    layouts:[],
     config:deepCopy(defaultConfig),
     texts,
-    loading:false
+    loading:false,
+    lastAllText:''
 };
 const Layouts = {}
 layouts.forEach(layout=>{
@@ -185,6 +185,14 @@ layouts.forEach(layout=>{
 });
 
 const defaultTitle = document.title;
+
+
+const textOrigin = '扫袭';
+const textBefore = '掃襲';
+
+const textFilter = text=>{
+    return text;
+};
 
 const app = new Vue({
     el:'.app',
@@ -199,7 +207,7 @@ const app = new Vue({
                     if(type==='tab'){
                         return this.texts[index];
                     }
-                    return this.texts[index] || input.placeholder
+                    return textFilter(this.texts[index] || input.placeholder)
                 });
 
                 this.loading = true;
@@ -211,7 +219,7 @@ const app = new Vue({
                         layout: this.layout
                     });
                     this.loading = false;
-                    
+                    this.lastAllText = this.allText;
                 });
             },200);
         },
@@ -227,15 +235,15 @@ const app = new Vue({
             const title = `${_layout.title} - ${defaultTitle}`;
 
             document.title = title;
+            this.make();
 
             if(!noRoute) history.replaceState({}, title, `./?layout=${encodeURIComponent(id)}`);
         },
         setExemple(exemple){
-            console.log({exemple})
+            // console.log({exemple})
             exemple.forEach((t,i)=>{
                 // this.texts[i]=t
                 this.$set(this.texts,i,t);
-                // this.texts[i]=t
             });
             this.make();
         },
@@ -262,8 +270,18 @@ const app = new Vue({
         }
     },
     computed:{
+        allText(){
+            return this.layout.inputs.map((input,index)=>{
+                const {type} = input;
+                if(type==='tab') return '';
+                return this.texts[index] || input.placeholder
+            }).join(',');
+        },
         canTc(){
             return this.texts.join() !== transformFunc[2](this.texts.join())
+        },
+        noMatchMojis(){
+            return Array.from(new Set(this.allText)).sort().filter(m=>!EVAMatisseClassicMojis.includes(m))
         }
     },
     watch:{
