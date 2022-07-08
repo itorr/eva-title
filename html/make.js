@@ -89,7 +89,7 @@ const yuv2rgb = (y,u,v)=>{
 };
 
 
-let baseFontFamilyName = 'EVA_Matisse_Classic-EB,MatissePro-EB,baseSplit,serif';
+let baseFontFamilyName = 'EVA_Matisse_Classic-EB,MatissePro-EB,baseSplit,SourceHanSerifCN-Heavy,serif';
 
 
 const make = ({
