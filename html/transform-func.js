@@ -4,29 +4,29 @@ let tc = '毎汝專業叢東絲丟兩嚴喪臨為麗舉義烏樂喬習書買虧�
 
 
 
-scArr = sc.split('');
-tcArr = tc.split('');
-scmm=[];
-tcmm=[];
-nsc = [];
-ntc = [];
-tcArr.forEach((m,i)=>{
-	// console.log(m,i)
-	if(!EVAMatisseClassicMojis.includes(m)){
-		scmm.push(scArr[i]);
-		tcmm.push(tcArr[i]);
-	}else{
-		nsc.push(scArr[i]);
-		ntc.push(tcArr[i]);
-	}
-});
+// scArr = sc.split('');
+// tcArr = tc.split('');
+// scmm=[];
+// tcmm=[];
+// nsc = [];
+// ntc = [];
+// tcArr.forEach((m,i)=>{
+// 	// console.log(m,i)
+// 	if(!EVAMatisseClassicMojis.includes(m)){
+// 		scmm.push(scArr[i]);
+// 		tcmm.push(tcArr[i]);
+// 	}else{
+// 		nsc.push(scArr[i]);
+// 		ntc.push(tcArr[i]);
+// 	}
+// });
 
-// console.log(/diff/,scArr.length - sc.length,tcmm.length,scArr.join(''),tcArr.join(''));
-console.log(/diff/,tcmm.length);
-console.log(`let sc = '${nsc.join('')}';`);
-console.log(`let tc = '${ntc.join('')}';`);
-console.log(`// let scmm = '${scmm.join('')}';`);
-console.log(`// let tcmm = '${tcmm.join('')}';`);
+// // console.log(/diff/,scArr.length - sc.length,tcmm.length,scArr.join(''),tcArr.join(''));
+// console.log(/diff/,tcmm.length);
+// console.log(`let sc = '${nsc.join('')}';`);
+// console.log(`let tc = '${ntc.join('')}';`);
+// console.log(`// let scmm = '${scmm.join('')}';`);
+// console.log(`// let tcmm = '${tcmm.join('')}';`);
 
 
 

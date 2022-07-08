@@ -235,7 +235,6 @@ const app = new Vue({
             const title = `${_layout.title} - ${defaultTitle}`;
 
             document.title = title;
-            this.make();
 
             if(!noRoute) history.replaceState({}, title, `./?layout=${encodeURIComponent(id)}`);
         },
@@ -256,6 +255,7 @@ const app = new Vue({
                 }
                 return '';
             })
+            this.make();
         },
         save(){
             const {canvas} = this.$refs;
@@ -289,7 +289,7 @@ const app = new Vue({
             deep:true,
             handler:'make'
         },
-        layout:'make',
+        // layout:'make',
         // texts:{
         //     deep:true,
         //     handler:'make'
