@@ -82,7 +82,7 @@ const diffDefaultMoji = text=>{
 };
 
 const c = _=>{
-    loadFont('baseSplit','base-split.woff',async _=>{
+    loadFont('baseSplit','base-split.woff?r=220708',async _=>{
         getFontFromText(fontFamilyName,getMoji(),async _=>{
             layouts.slice().sort(_=>-1).forEach((layout,index)=>{
                 let texts = [
@@ -270,12 +270,17 @@ const app = new Vue({
         }
     },
     computed:{
-        allText(){
+        _text(){
             return this.layout.inputs.map((input,index)=>{
                 const {type} = input;
-                if(type==='tab') return '';
-                return this.texts[index] || input.placeholder
-            }).join(',');
+                if(type==='tab'){
+                    return this.texts[index];
+                }
+                return textFilter(this.texts[index] || input.placeholder)
+            });
+        },
+        allText(){
+            return this._text.join(',');
         },
         canTc(){
             return this.texts.join() !== transformFunc[2](this.texts.join())
