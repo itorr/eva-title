@@ -1,8 +1,8 @@
 
 
-const ios = /iphone|ipad|ipod|ios/i.test(navigator.userAgent);
 const isChrome = /Chrome/.test(navigator.userAgent);
-const isMobile = document.body.offsetWidth < 700;
+// const ios = /iphone|ipad|ipod|ios/i.test(navigator.userAgent);
+// const isMobile = document.body.offsetWidth < 700;
 // const whiteColor = '#e8e8e8'
 const whiteColor = '#e4e0e8'
 const blackColor = '#030201'
@@ -112,21 +112,12 @@ const make = ({
     const outputHeight = config.height || 480;
     const outputWidth = Math.floor(outputHeight / 3 * 4);
 
-    let renderScale = 1;
+    let renderScale = window.devicePixelRatio || 1;
 
     if(type95){
-        retina = false;
+        renderScale = 1
         convolute = true;
     }
-
-    if(retina){
-        renderScale = 2;
-    }
-    if(ios || isMobile){
-        renderScale = 1;
-    }
-
-
     // const defaultHeight = 960;
     const defaultWidth  = outputWidth  * renderScale;
     const defaultHeight = outputHeight * renderScale;
