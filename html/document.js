@@ -1,5 +1,6 @@
 
 const htmlEl = document.documentElement;
+const isChrome = /Chrome/.test(navigator.userAgent);
 
 htmlEl.setAttribute('data-is-chrome',isChrome);
 
@@ -50,8 +51,11 @@ const checkFont = fontName=>{
 let haveMatisse = checkFont('EVA_Matisse_Classic-EB,MatissePro-EB') > 120;
 
 
+let debug = /192\.168|local/.test(location.origin);
 
-if(/192\.168|local/.test(location.origin)){
+
+if(debug){
+    fontWeight = 100;
     fontAPI = 'http://localhost:60912/api/fontmin';
     haveMatisse = false;
     baseFontFamilyName = 'baseSplit,serif';

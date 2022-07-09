@@ -1,7 +1,6 @@
 
 
 const ios = /iphone|ipad|ipod|ios/i.test(navigator.userAgent);
-const isChrome = /Chrome/.test(navigator.userAgent);
 const isMobile = document.body.offsetWidth < 700;
 // const whiteColor = '#e8e8e8'
 const whiteColor = '#e4e0e8'
@@ -11,12 +10,15 @@ const orangeColorInverse = 'rgba(255,165,255,.2)'
 
 let fontWeight = 900
 
-if(/192\.168|local/.test(location.origin)){
-    fontWeight = 100;
-}
-
 let fontFamilyName = 'EVAMatisseClassic'
 const engFontFamilyName = `"Times New Roman"`
+
+let baseFontFamilyName = 'EVA_Matisse_Classic-EB,MatissePro-EB,baseSplit,SourceHanSerifCN-Heavy,serif';
+
+// if(ios){
+//     fontFamilyName = 'SourceHanSerifHeavy';
+// }
+// fontFamilyName = 'SourceHanSerifHeavy';
 
 // if(ios || !isChrome){
 //     fontFamilyName = 'MatisseProEB'
@@ -87,9 +89,6 @@ const yuv2rgb = (y,u,v)=>{
 
 	return [r,g,b];
 };
-
-
-let baseFontFamilyName = 'EVA_Matisse_Classic-EB,MatissePro-EB,baseSplit,SourceHanSerifCN-Heavy,serif';
 
 
 const make = ({
