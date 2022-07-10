@@ -23,11 +23,11 @@ const layouts = [
             noise: true,
         },
         exemples: [
-            [
-                '不想',
-                '上班',
-                '能睡一天'
-            ]
+            // [
+            //     '媽的',
+            //     '好熱',
+            //     '不想上班'
+            // ]
         ],
         make:({
             canvas,
