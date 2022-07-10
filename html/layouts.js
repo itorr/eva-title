@@ -22,6 +22,13 @@ const layouts = [
         config:{
             noise: true,
         },
+        exemples: [
+            [
+                '不想',
+                '上班',
+                '能睡一天'
+            ]
+        ],
         make:({
             canvas,
             ctx,
