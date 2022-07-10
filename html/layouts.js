@@ -19,6 +19,9 @@ const layouts = [
                 maxLength:6,
             }
         ],
+        config:{
+            noise: true,
+        },
         make:({
             canvas,
             ctx,

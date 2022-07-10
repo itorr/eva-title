@@ -27,6 +27,12 @@
 //     src: url(base-split.woff);
 // }
 
+:root{
+    --color-red: #a42121;
+    --color-background: #252525;
+    --color-font: #EEE;
+}
+
 html{
     font:24px/1.4 sans-serif;
     // font-family: MatisseProEB,serif;
@@ -39,8 +45,8 @@ html{
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: grayscale;
 
-    background:#252525;
-    color:#EEE;
+    background: var(--color-background);
+    color:var(--color-font);
 
     // https://codepen.io/mr21/pen/WgyYWM
     background-position: top left;
@@ -56,74 +62,11 @@ textarea,
 button{
     font: inherit
 }
-input[type="checkbox"]{
-    width: .8em;
-    height:.8em;
-}
 
-textarea{
-    resize: none;
-    width:80%;
-    
-}
-// div{
-//     // font-size:2em;
-//     // font-family: EVAMatisseClassic;
-//     overflow: hidden;
-//     canvas{
-//         float: left;
-//         // width: 640px;
-//         // height: 480px;
-//         display: block;
-//         // padding:40px;
-//         background:#000;
-//         margin:10px;
-//         // width: 320px;
-//         // height: 240px;
-//         zoom:.5;
-//         margin:4px;
-//     }
-// }
 a{
     text-decoration: none;
-    color:dodgerblue;
-    color:#a42121;
+    color:var(--color-red);
 }
-
-.wikitable {
-    font-size:18px;
-    background-color: #f8f9fa;
-    color: #202122;
-    margin: 1em 0;
-    border: 1px solid #a2a9b1;
-    border-collapse: collapse
-}
-
-.wikitable > tr > th,.wikitable > tr > td,.wikitable > * > tr > th,.wikitable > * > tr > td {
-    border: 1px solid #a2a9b1;
-    padding: 0.2em 0.4em
-}
-
-.wikitable > tr > th,.wikitable > * > tr > th {
-    background-color: #eaecf0;
-    text-align: center
-}
-
-.wikitable > caption {
-    font-weight: bold
-}
-
-
-// .wikitable td:nth-child(3),
-// .wikitable td:nth-child(4),
-// .wikitable td:nth-child(5),
-// .wikitable td:nth-child(6),
-// .wikitable td:nth-child(7),
-// .wikitable td:nth-child(8),
-// .wikitable td:nth-child(9){
-//     display: none;
-// }
-
 
 h1,h2,h3,h4{
     margin:0;
@@ -140,14 +83,14 @@ header{
         height:48px;
         white-space: nowrap;
         overflow: hidden;
-        color:rgba(0,0,0,0);
-        background:url(logo@2x.png) no-repeat center center;
-        background-size:contain;
+        color: transparent;
+        background: url(logo@2x.png) no-repeat center center;
+        background-size: contain;
     }
     h2{
         font-weight: 400;
         font-family: 'Times New Roman', Times, serif;
-        padding-top:.5em;
+        padding-top: .5em;
     }
 }
 // h1,h2,h3,h4,
@@ -157,14 +100,18 @@ header{
 h3.tip{
     padding:20px;
     font-size:14px;
-    color:#a42121;
+    color:var(--color-red);
 }
 p.tip{
     margin:0;
     padding:10px 0;
     font-size:14px;
     line-height: 28px;
-    color:#a42121;
+    color:var(--color-red);
+    a{
+        font-weight: bold;
+        text-decoration: underline;
+    }
 }
 .layout-list{
     overflow: hidden;
@@ -193,8 +140,8 @@ p.tip{
             right:0;
         }
         &[data-checked]{
-            background:#a42121;
-            box-shadow:0 0 0 1px #a42121;
+            background:var(--color-red);
+            box-shadow:0 0 0 1px var(--color-red);
             z-index:1;
         }
     }
@@ -227,7 +174,7 @@ p.tip{
             width: 1em;
             height: 1em;
             border-radius: 9em;
-            background: #fff;
+            background: var(--color-font);
             margin: .2em;
             position: relative;
             transition: transform .3s ease;
@@ -264,11 +211,11 @@ p.tip{
         line-height: 1;
         padding:8px;
         transition: color .3s ease, background-color .3s ease;
-        background:#FFF;
+        background: var(--color-font);
         &[data-checked="true"]{
             background: currentColor;
             &:before{
-                color:#FFF;
+                color: var(--color-font);
             }
         }
     }
@@ -314,7 +261,7 @@ footer{
         display: block;
     }
     &[data-checked="true"]{
-        background: #a42121;
+        background: var(--color-red);
     }
 }
 
@@ -341,7 +288,7 @@ button{
     border-radius:4px;
 
     &.current{
-        background-color: #a42121;
+        background-color: var(--color-red);
     }
     &:disabled{
         background-color: #2D2d2d;
@@ -411,7 +358,7 @@ button{
         canvas{
             display: block;
             max-width: 100%;
-            height:auto !important
+            height:auto !important;
         }
     }
 }
@@ -426,7 +373,7 @@ input {
     outline: none;
     line-height: 1;
     &:focus{
-        border-color:#a42121;
+        border-color:var(--color-red);
     }
 }
 
@@ -434,8 +381,8 @@ input {
 .is-not-chrome{
     display: none;
     padding:10px 20px;
-    background:#a42121;
-    color:#FFF;
+    background: var(--color-red);
+    color: var(--color-font);
     h3{
         font-size:18px;
     }
@@ -443,7 +390,7 @@ input {
         font-size:14px;
     }
     a{
-        color:#ffeaea;
+        font-weight: bold;
     }
 }
 html[data-is-chrome="false"]{
@@ -463,8 +410,8 @@ html[data-is-chrome="false"]{
         top:0;
         right:0;
         content: '生成中...';
-        background:#111;
-        color:#a42121;
+        background: #111;
+        color:var(--color-red);
         padding:.5em .8em;
         margin:.8em;
         border-radius:4px;
