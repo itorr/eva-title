@@ -645,7 +645,7 @@ const make = ({
 
 
         if(convolute){
-            let a = 0.4;
+            let a = 0.35;
             pixel = convolutePixel(
                 pixel,
                 [
