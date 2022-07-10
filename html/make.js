@@ -50,8 +50,20 @@ const randOne = (arr,i)=>{
 const rand = (a,b)=>{
     return a + (b-a) * Math.random()
 }
+const canvasBoxEl = document.createElement('div');
+canvasBoxEl.className = 'canvas-box';
+document.body.appendChild(canvasBoxEl);
 
-const createCanvas = _=>document.createElement('canvas');
+const createCanvas = _=>{
+    const canvas = document.createElement('canvas');
+    canvasBoxEl.appendChild(canvas);
+    return canvas;
+}
+
+const removeCanvas = canvas=>{
+    if(canvas.parentNode !== canvasBoxEl) return;
+    canvasBoxEl.removeChild(canvas);
+}
 
 const rgb2yuv = (r,g,b)=>{
 	var y, u, v;
@@ -182,13 +194,13 @@ const make = ({
     );
 
 
-    const setCtxConfig = (ctx,config)=>{
+    const setCtxConfig = (ctx,config = {})=>{
         const {
             fontSize = defaultFontSize,
             textBaseline = 'middle',
             _fontFamilyName = fontFamilyName,
             // shadow = true
-        } = config || {};
+        } = config;
 
         // console.log({ctx})
         
@@ -209,8 +221,6 @@ const make = ({
     const makeTextCanvas = (text,letterSpacing = 0,margin = 0)=>{
         const canvas = createCanvas();
         const ctx = canvas.getContext('2d');
-
-        document.body.appendChild(canvas)
 
         let fontFamilyName = null;
 
@@ -243,7 +253,7 @@ const make = ({
             text,
             fontPadding, height/2
         );
-        document.body.removeChild(canvas)
+        removeCanvas(canvas)
         return canvas
         
     }
@@ -263,8 +273,6 @@ const make = ({
         
         const canvas = createCanvas();
         const ctx = canvas.getContext('2d');
-
-        document.body.appendChild(canvas)
 
         canvas.style.letterSpacing = `${letterSpacing}px`
 
@@ -318,7 +326,7 @@ const make = ({
             }
             left += _fontSize + letterSpacing;
         })
-        document.body.removeChild(canvas)
+        removeCanvas(canvas);
         return canvas
     }
     const makeLinesCanvas = (texts,letterSpacing = 0)=>{
@@ -357,6 +365,7 @@ const make = ({
                 line.width,line.height
             )
         })
+        removeCanvas(canvas);
         return canvas;
     }
     const makeLinesDiffSizeCanvas = (texts,config = {})=>{
@@ -366,7 +375,6 @@ const make = ({
         const canvas = createCanvas();
         const ctx = canvas.getContext('2d');
 
-        document.body.appendChild(canvas);
         setCtxConfig(ctx,{
             // fontFamilyName:'Helvetica'
         });
@@ -420,7 +428,7 @@ const make = ({
                 line.width,line.height
             )
         })
-        document.body.removeChild(canvas)
+        removeCanvas(canvas)
         return canvas;
     }
 
@@ -429,7 +437,6 @@ const make = ({
         const canvas = createCanvas();
         const ctx = canvas.getContext('2d');
 
-        document.body.appendChild(canvas)
         const config = {
             textBaseline:'top',
         };
@@ -489,7 +496,7 @@ const make = ({
             );
             ctx.restore()
         })
-        document.body.removeChild(canvas)
+        removeCanvas(canvas)
         return canvas
 
     }
@@ -703,6 +710,10 @@ const make = ({
     }
 
     !timer||console.timeEnd(layout.title)
+
+    removeCanvas(canvas);
+    removeCanvas(outputCanvas);
+
     return outputCanvas
 }
 

@@ -63,8 +63,8 @@ if(debug){
 
 
 const getFontFromText = (name,text,onOver=_=>{})=>{
-    if(!text) return onOver();
-    if(haveMatisse) return onOver();
+    if(!text) return requestAnimationFrame(onOver);
+    if(haveMatisse) return requestAnimationFrame(onOver);
 
     text = text.replace(blockMojiRegex,'');
     text += '0';
@@ -73,7 +73,7 @@ const getFontFromText = (name,text,onOver=_=>{})=>{
     // console.log(utf82str(str2utf8(text)))
     text = diffDefaultMoji(text);
     // console.log({text})
-    if(!text) return onOver();
+    if(!text) return requestAnimationFrame(onOver);
 
     const unicode = str2utf8(text).join();
     const fontURL = `${fontAPI}?name=${name}&unicode=${unicode}`;
@@ -84,7 +84,7 @@ const getFontFromText = (name,text,onOver=_=>{})=>{
     })
 }
 const loadFont = async (fontName,fontURL,callback) => {
-    if(haveMatisse) return callback();
+    if(haveMatisse) return requestAnimationFrame(callback);
 	const fontFace = new FontFace(fontName, `url(${fontURL})`);
 	fontFace.load().then(fontFace => {
 		document.fonts.add(fontFace);
@@ -335,6 +335,7 @@ const getQuerys = _=>{
 const c = _=>{
     loadFont('baseSplit','base-split.woff?r=220708',async _=>{
         getFontFromText(fontFamilyName,getMoji(),async _=>{
+            let outputCanvas = createCanvas();
             layouts.slice().sort(_=>-1).forEach((layout,index)=>{
                 let texts = [
                     // '使徒',
@@ -352,12 +353,13 @@ const c = _=>{
                     blur:1,
                     // inverse: Math.random()>0.9,
                 });
-                const el = make({
+                make({
+                    outputCanvas,
                     texts,
                     config,
                     layout
                 })
-                const src = makeBMPFormCanvas(el)
+                const src = makeBMPFormCanvas(outputCanvas)
                 layout.src = src;
                 // console.log(src)
                 // app.$set(layout,'src',src)
