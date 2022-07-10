@@ -80,7 +80,7 @@ const layouts = [
                 )
                 ctx.drawImage(
                     horizontalCanvas, 
-                    verticalCanvas.width * 1.3, height - horizontalCanvas.height
+                    verticalCanvas.width * 1.3, height - horizontalCanvas.height + padding / 3
                 )
                 return canvas
             })()
