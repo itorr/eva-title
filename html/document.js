@@ -331,11 +331,11 @@ const getQuerys = _=>{
 	return GET
 };
 
+let outputCanvas = createCanvas();
 
 const c = _=>{
     loadFont('baseSplit','base-split.woff?r=220708',async _=>{
         getFontFromText(fontFamilyName,getMoji(),async _=>{
-            let outputCanvas = createCanvas();
             layouts.slice().sort(_=>-1).forEach((layout,index)=>{
                 let texts = [
                     // '使徒',
