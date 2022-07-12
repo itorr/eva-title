@@ -143,9 +143,6 @@ const make = ({
     if(retina){
         renderScale = 2;
     }
-    if(ios || isMobile){
-        renderScale = 1;
-    }
 
 
     // const defaultHeight = 960;
