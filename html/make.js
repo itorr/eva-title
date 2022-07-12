@@ -1,6 +1,10 @@
 
 
 const ios = /iphone|ipad|ipod|ios/i.test(navigator.userAgent);
+const isSafari = navigator.vendor && navigator.vendor.indexOf('Apple') > -1 &&
+  navigator.userAgent &&
+  navigator.userAgent.indexOf('CriOS') == -1 &&
+  navigator.userAgent.indexOf('FxiOS') == -1;
 const isMobile = document.body.offsetWidth < 700;
 // const whiteColor = '#e8e8e8'
 const whiteColor = '#e4e0e8'
@@ -213,7 +217,11 @@ const make = ({
 
         if(shadow){
             ctx.shadowColor = shadowColor;//'orange';
-            ctx.shadowBlur = space * 2;
+            if (isSafari) {
+              ctx.shadowBlur = space * 1; // or `space * .8`, discuss it!
+            } else {
+              ctx.shadowBlur = space * 2;
+            }
         }
     }
 
@@ -239,7 +247,9 @@ const make = ({
 
         // console.log(text,metrics)
         const width = Math.ceil(metrics.width) - letterSpacing + fontPadding * 2;
-        const height = Math.ceil(metrics.fontBoundingBoxDescent + metrics.fontBoundingBoxAscent) + fontPadding * 2;
+        const height = isNaN(metrics.fontBoundingBoxDescent + metrics.fontBoundingBoxAscent)
+          ? fontSize + fontPadding * 2 // browser do not support `metrics.fontBoundingBoxDescent/Ascent`
+          : Math.ceil(metrics.fontBoundingBoxDescent + metrics.fontBoundingBoxAscent) + fontPadding * 2
 
         // console.log({text,width,height})
         canvas.width = width;
@@ -452,7 +462,9 @@ const make = ({
         if(/^[a-zA-Z][a-z ]+$/.test(text)){
             const metrics = ctx.measureText(text)
             const width = Math.ceil(metrics.width) - letterSpacing;
-            const height = Math.ceil(metrics.fontBoundingBoxDescent + metrics.fontBoundingBoxAscent);
+            const height = isNaN(metrics.fontBoundingBoxDescent + metrics.fontBoundingBoxAscent)
+              ? fontSize // browser do not support `metrics.fontBoundingBoxDescent/Ascent`
+              : Math.ceil(metrics.fontBoundingBoxDescent + metrics.fontBoundingBoxAscent)
 
             canvas.width = height
             canvas.height = width
