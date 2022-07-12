@@ -190,7 +190,7 @@ const data ={
     layouts:[],
     config:deepCopy(defaultConfig),
     texts,
-    loading:false,
+    loading:true,
     lastAllText:''
 };
 const Layouts = {}
@@ -400,6 +400,8 @@ c(_=>{
     if(Layouts[layoutId]){
         app.setLayout(Layouts[layoutId],1);
     }
+
+    app.loading = false;
 });
 
 
