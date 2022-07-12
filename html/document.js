@@ -179,7 +179,11 @@ const plans = [
     {
         value:'by',
         text:'黑黄'
-    }
+    },
+    // {
+    //     value:'yb',
+    //     text:'黄黑'
+    // }
 ]
 const data ={
     layout:null,

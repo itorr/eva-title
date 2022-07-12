@@ -914,7 +914,7 @@ const layouts = [
         exemples:[
         ],
         config:{
-            plan:'white'
+            plan:'wb'
         },
         make:({
             canvas,
@@ -1168,7 +1168,7 @@ const layouts = [
             // ]
         ],
         config:{
-            plan:'white'
+            plan:'wb'
         },
         make:({
             canvas,
@@ -1526,7 +1526,7 @@ const layouts = [
             },
         ],
         config:{
-            plan:'red',
+            plan:'br',
             noise:true,
         },
         make:({

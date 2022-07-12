@@ -196,6 +196,11 @@ const make = ({
             backgroundColor = '#140202'
             shadowColor = 'rgba(231,120,0,.5)'
             break;
+        case 'yb':
+            fontColor = '#140202'
+            backgroundColor = '#e77205'
+            shadowColor = 'rgba(231,120,0,.5)'
+            break;
     }
     ctx.fillStyle = backgroundColor;
     ctx.fillRect(
