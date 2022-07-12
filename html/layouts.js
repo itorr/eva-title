@@ -1114,7 +1114,11 @@ const layouts = [
                 canvas.height = height
 
                 ctx.drawImage(verticalCanvas, 0,0)
-                ctx.drawImage(horizontalCanvas, width - horizontalCanvas.width - space, height - horizontalCanvas.height)
+                ctx.drawImage(
+                    horizontalCanvas, 
+                    width - horizontalCanvas.width - space, 
+                    height - horizontalCanvas.height + padding / 3
+                )
                 return canvas
             })();
 
