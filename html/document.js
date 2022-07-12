@@ -55,7 +55,7 @@ let debug = /192\.168|local/.test(location.origin);
 
 
 if(debug){
-    fontWeight = 100;
+    // fontWeight = 100;
     fontAPI = 'http://localhost:60912/api/fontmin';
     haveMatisse = false;
     baseFontFamilyName = 'baseSplit,serif';

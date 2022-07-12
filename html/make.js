@@ -12,13 +12,16 @@ const blackColor = '#030201'
 const orangeColor = 'rgba(255,165,0,.6)'
 const orangeColorInverse = 'rgba(255,165,255,.2)'
 
-let fontWeight = 900
+let fontWeight = 900;
 
 let fontFamilyName = 'EVAMatisseClassic'
 const engFontFamilyName = `"Times New Roman"`
 
 let baseFontFamilyName = 'EVA_Matisse_Classic-EB,MatissePro-EB,baseSplit,SourceHanSerifCN-Heavy,serif';
 
+if(ios){
+    fontWeight = 500;
+}
 // if(ios){
 //     fontFamilyName = 'SourceHanSerifHeavy';
 // }
@@ -208,11 +211,7 @@ const make = ({
 
         if(shadow){
             ctx.shadowColor = shadowColor;//'orange';
-            if (isSafari) {
-              ctx.shadowBlur = space * 1; // or `space * .8`, discuss it!
-            } else {
-              ctx.shadowBlur = space * 2;
-            }
+            ctx.shadowBlur = space * 2;
         }
     }
 
