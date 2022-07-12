@@ -345,7 +345,7 @@ const getQuerys = _=>{
 
 let outputCanvas = createCanvas();
 
-const c = _=>{
+const c = callback=>{
     loadFont('baseSplit','base-split.woff?r=220708',async _=>{
         getFontFromText(fontFamilyName,getMoji(),async _=>{
             layouts.slice().sort(_=>-1).forEach((layout,index)=>{
@@ -389,17 +389,18 @@ const c = _=>{
                 // }
             })
             app.layouts = layouts;
-
+            callback()
         })
     })
 }
 
-c();
+c(_=>{
+    const GET = getQuerys();
+    const layoutId = GET['layout'] || 'e1';
+    if(Layouts[layoutId]){
+        app.setLayout(Layouts[layoutId],1);
+    }
+});
 
 
 
-const GET = getQuerys();
-const layoutId = GET['layout'] || 'e1';
-if(Layouts[layoutId]){
-    app.setLayout(Layouts[layoutId],1);
-}

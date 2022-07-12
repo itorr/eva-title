@@ -192,7 +192,7 @@ const make = ({
             shadowColor = 'rgba(255,120,120,.7)'
             break;
         case 'by':
-            fontColor = '#e77205'
+            fontColor = '#e77225'
             backgroundColor = '#140202'
             shadowColor = 'rgba(231,120,0,.5)'
             break;
