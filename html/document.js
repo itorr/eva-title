@@ -146,7 +146,7 @@ const defaultConfig = {
     convolute: false,
     retina:true,
     plan:undefined,
-    noise:false,
+    noise:true,
     // inverse:false,// Math.random()>0.9,
 };
 const types = [
@@ -162,15 +162,23 @@ const types = [
 const plans = [
     {
         value:undefined,
-        text:'黑底'
+        text:'黑白'
     },
     {
-        value:'white',
-        text:'白底'
+        value:'wb',
+        text:'白黑'
     },
     {
-        value:'red',
-        text:'红字'
+        value:'br',
+        text:'黑红'
+    },
+    {
+        value:'rw',
+        text:'红白'
+    },
+    {
+        value:'by',
+        text:'黑黄'
     }
 ]
 const data ={

@@ -175,16 +175,28 @@ const make = ({
     let backgroundColor = blackColor
     let shadowColor = orangeColor
 
-    if(plan === 'white'){
-        fontColor = blackColor
-        backgroundColor = '#FFF'
-        shadowColor = orangeColorInverse
-    }else if(plan === 'red'){
-        fontColor = '#D00'
-        backgroundColor = '#180000'
-        shadowColor = 'rgba(255,0,0,.5)'
+    switch(plan){
+        case 'wb':
+            fontColor = blackColor
+            backgroundColor = whiteColor
+            shadowColor = orangeColorInverse
+            break;
+        case 'br':
+            fontColor = '#D00'
+            backgroundColor = '#180000'
+            shadowColor = 'rgba(255,0,0,.5)'
+            break;
+        case 'rw':
+            fontColor = whiteColor
+            backgroundColor = '#910b0b'
+            shadowColor = 'rgba(255,120,120,.7)'
+            break;
+        case 'by':
+            fontColor = '#e77205'
+            backgroundColor = '#140202'
+            shadowColor = 'rgba(231,120,0,.5)'
+            break;
     }
-    
     ctx.fillStyle = backgroundColor;
     ctx.fillRect(
         0, 0,
