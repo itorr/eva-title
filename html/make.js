@@ -122,7 +122,6 @@ const make = ({
     let { 
         shadow = true,
         type95 = false,
-        retina = true,
         convolute = false,
         noise = false,
         plan
@@ -133,17 +132,12 @@ const make = ({
     const outputHeight = config.height || 480;
     const outputWidth = Math.floor(outputHeight / 3 * 4);
 
-    let renderScale = 1;
+    let renderScale = 2;
 
     if(type95){
-        retina = false;
+        renderScale = 1;
         convolute = true;
     }
-
-    if(retina){
-        renderScale = 2;
-    }
-
 
     // const defaultHeight = 960;
     const defaultWidth  = outputWidth  * renderScale;
