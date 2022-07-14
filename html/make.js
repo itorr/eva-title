@@ -108,7 +108,20 @@ const yuv2rgb = (y,u,v)=>{
 
 	return [r,g,b];
 };
+const measureText = (ctx,text,fontSize)=>{
+    const metrics = ctx.measureText(text);
 
+    const width = Math.ceil(metrics.width);
+    const height = (metrics.fontBoundingBoxDescent + metrics.fontBoundingBoxAscent) || fontSize;
+    // || (metrics.actualBoundingBoxDescent + metrics.actualBoundingBoxAscent )
+
+    // console.log(metrics)
+    return {
+        metrics,
+        width,
+        height
+    }
+}
 
 const make = ({
     outputCanvas = createCanvas(),
@@ -117,7 +130,7 @@ const make = ({
     timer = false,
     layout
 })=>{
-    !timer||console.time(layout.title)
+    if(timer) console.time(layout.title)
 
     const canvas = createCanvas();
     const ctx = canvas.getContext('2d');
@@ -250,15 +263,11 @@ const make = ({
             fontFamilyName
         })
 
-        const metrics = ctx.measureText(text)
+        let { width , height } = measureText(ctx,text,fontSize);
 
-        // console.log(text,metrics)
-        const width = Math.ceil(metrics.width) - letterSpacing + fontPadding * 2;
-        const height = isNaN(metrics.fontBoundingBoxDescent + metrics.fontBoundingBoxAscent)
-          ? fontSize + fontPadding * 2 // browser do not support `metrics.fontBoundingBoxDescent/Ascent`
-          : Math.ceil(metrics.fontBoundingBoxDescent + metrics.fontBoundingBoxAscent) + fontPadding * 2
+        width = width - letterSpacing + fontPadding * 2;
+        height = height + fontPadding * 2;
 
-        // console.log({text,width,height})
         canvas.width = width;
         canvas.height = height;
 
@@ -467,11 +476,10 @@ const make = ({
         text = text.trim();
 
         if(/^[a-zA-Z][a-z ]+$/.test(text)){
-            const metrics = ctx.measureText(text)
-            const width = Math.ceil(metrics.width) - letterSpacing;
-            const height = isNaN(metrics.fontBoundingBoxDescent + metrics.fontBoundingBoxAscent)
-              ? fontSize // browser do not support `metrics.fontBoundingBoxDescent/Ascent`
-              : Math.ceil(metrics.fontBoundingBoxDescent + metrics.fontBoundingBoxAscent)
+            let { width , height } = measureText(ctx,text,fontSize);
+
+            width = width - letterSpacing;
+            height = height;
 
             canvas.width = height
             canvas.height = width
@@ -728,7 +736,7 @@ const make = ({
         );
     }
 
-    !timer||console.timeEnd(layout.title)
+    if(timer) console.timeEnd(layout.title)
 
     removeCanvas(canvas);
     removeCanvas(outputCanvas);
