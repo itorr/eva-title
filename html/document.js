@@ -344,6 +344,7 @@ const getQuerys = _=>{
 };
 
 let outputCanvas = createCanvas();
+let canvas = createCanvas();
 
 const c = callback=>{
     loadFont('baseSplit','base-split.woff?r=220708',async _=>{
@@ -367,6 +368,7 @@ const c = callback=>{
                 });
                 make({
                     outputCanvas,
+                    canvas,
                     texts,
                     config,
                     layout

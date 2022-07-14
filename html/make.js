@@ -125,6 +125,7 @@ const measureText = (ctx,text,fontSize)=>{
 
 const make = ({
     outputCanvas = createCanvas(),
+    canvas = createCanvas(),
     texts,
     config = {},
     timer = false,
@@ -132,7 +133,6 @@ const make = ({
 })=>{
     if(timer) console.time(layout.title)
 
-    const canvas = createCanvas();
     const ctx = canvas.getContext('2d');
 
     let { 
@@ -622,7 +622,6 @@ const make = ({
             0,0,width,height,
         );
     }
-
 
     // const outputCanvas = createCanvas();
     const outputCtx = outputCanvas.getContext('2d');
