@@ -51,7 +51,7 @@ const checkFont = fontName=>{
 let haveMatisse = checkFont('EVA_Matisse_Classic-EB,MatissePro-EB') > 120;
 
 
-let debug = /192\.168|local/.test(location.origin);
+let debug = /192\.168/.test(location.origin);
 
 
 if(debug){
