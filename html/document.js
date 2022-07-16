@@ -109,9 +109,10 @@ const checkboxEl = document.querySelector('input');
 const outputEl = document.querySelector('#out');
 
 
+const defaultMojiPlus = ' \n,-./01234567890:?ABCDEFGHILMNOPRSTUVabcdefghijklmnoprstuvwxyz“”、。「」いかくけげしせただちてでとなのはめもらるわをんアイカグシスゼダネバフマルレー一下不世中了京人今他伍作使來例価侵値僅先入八六其决况出到劳化匹博原参參叫可吃問喜嘗嘘器噪嚴四在型士壱太奇字存实室實市座庵弐当後徒微心情成我战戦戰拾持掃授排換支攷文新日明替最权来東案桌森標模樣歡求決沈浏海瀏版生用界發的監看督石神福秀章端第糊系終繁纪统网者臭螺襲覽览試話誕請议请跡輸轉逃选遇還郎配重野銳键間雨雷電面音頭題页项香驗验體魂鳴麦黙點🏼👩！，'.split('');
 
 const getMoji = _=>{
-    let v = layouts.map(a=>[a.inputs.map(t=>t.placeholder),a.exemples]).flat().join();
+    let v = defaultMojiPlus+layouts.map(a=>[a.inputs.map(t=>t.placeholder),a.exemples]).flat().join();
     // console.log(v)
     // v += document.querySelector('body').textContent;
     return v;
@@ -124,10 +125,12 @@ let defaultMoji = Array.from(new Set(getMoji())).sort();
 // if(ios || !isChrome){
 //     defaultMoji = [];
 // }
-defaultMoji = ' \n,-./01235789:?ABCDEFGHILMNOPRSTUVabcdefghijklmnoprstuvwxyz“”、。「」いかくけげしせただちてでとなのはめもらるわをんアイカグシスゼダネバフマルレー一下不世中了京人今他伍作使來例価侵値僅先入八六其决况出到劳化匹博原参參叫可吃問喜嘗嘘器噪嚴四在型士壱太奇字存实室實市座庵弐当後徒微心情成我战戦戰拾持掃授排換支攷文新日明替最权来東案桌森標模樣歡求決沈浏海瀏版生用界發的監看督石神福秀章端第糊系終繁纪统网者臭螺襲覽览試話誕請议请跡輸轉逃选遇還郎配重野銳键間雨雷電面音頭題页项香驗验體魂鳴麦黙點🏼👩！，'.split('');
 
-// const unicode = str2utf8(defaultMoji.join('')).join();
-// console.log(unicode)
+if(debug){
+    const unicode = str2utf8(defaultMoji.join('')).join();
+    console.log(`${fontAPI}?name=${fontFamilyName}&type=woff&unicode=${unicode}`);
+}
+
 const diffDefaultMoji = text=>{
     return text.split('').filter(moji=>!defaultMoji.includes(moji)).join('').replace(/\s/g,'')
 };
@@ -347,7 +350,7 @@ let outputCanvas = createCanvas();
 let canvas = createCanvas();
 
 const c = callback=>{
-    loadFont('baseSplit','base-split.woff?r=220708',async _=>{
+    loadFont('baseSplit','base-split.woff?r=220716',async _=>{
         getFontFromText(fontFamilyName,getMoji(),async _=>{
             layouts.slice().sort(_=>-1).forEach((layout,index)=>{
                 let texts = [
