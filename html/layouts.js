@@ -269,7 +269,7 @@ const layouts = [
 
 
             // 标题在中
-            const textCanvas = makeTextSizeDiffCanvas(text,-space * 2)
+            const textCanvas = makeTextSizeDiffCanvas(text,-space * 1.4)
             ctx.drawImage(
                 textCanvas,
                 width * 0.2,height * 0.44,
@@ -333,7 +333,7 @@ const layouts = [
             const [text,sub] = texts;
 
             // 标题在上
-            const textCanvas = makeTextSizeDiffCanvas(text,-space * 2)
+            const textCanvas = makeTextSizeDiffCanvas(text,-space * 1.4)
             const textWidth = width - padding * 2
             const textHeight = Math.min(textWidth / textCanvas.width * textCanvas.height * 1.4,height / 2)
             ctx.drawImage(
@@ -407,7 +407,7 @@ const layouts = [
             const b = text.slice(sliceIndex)
 
             // 标题在上
-            const aCanvas = makeTextSizeDiffCanvas(a,-space * 2)
+            const aCanvas = makeTextSizeDiffCanvas(a,-space * 1.4)
             const aWidth = width - padding * 5
             const aHeight = Math.min(aWidth / aCanvas.width * aCanvas.height * 1.15,height / 2)
             ctx.drawImage(
@@ -416,7 +416,7 @@ const layouts = [
                 aWidth, aHeight
             )
 
-            const bCanvas = makeTextSizeDiffCanvas(b,-space * 2)
+            const bCanvas = makeTextSizeDiffCanvas(b,-space * 1.4)
             const bHeight = aHeight * 0.95
             const bWidth = Math.min(bHeight * bCanvas.width / bCanvas.height,height / 2) * 0.9
 
@@ -523,7 +523,7 @@ const layouts = [
             randOne([
                 _=>{
                     // 标题在下
-                    const textCanvas = makeTextSizeDiffCanvas(text,-space * 2)
+                    const textCanvas = makeTextSizeDiffCanvas(text,-space * 1.4)
                     const textWidth = width - padding * 2
                     const textHeight = Math.min(textWidth / textCanvas.width * textCanvas.height,height - padding * 2)
                     ctx.drawImage(
@@ -551,7 +551,7 @@ const layouts = [
                 },
                 _=>{
                     // 标题在左 sub在右
-                    const textCanvas = makeVerticalTextCanvas(text,-space * 2)
+                    const textCanvas = makeVerticalTextCanvas(text,-space * 1.4)
                     const textHeight = height - padding * 2
                     const textWidth = Math.min(textHeight / textCanvas.height * textCanvas.width, width - padding * 2) * rand(0.8,1.4)
                     
@@ -584,7 +584,7 @@ const layouts = [
                 },
                 _=>{
                     // 标题在右 sub在左
-                    const textCanvas = makeVerticalTextCanvas(text,-space * 2)
+                    const textCanvas = makeVerticalTextCanvas(text,-space * 1.4)
                     const textHeight = height - padding * 2
                     const textWidth = Math.min(textHeight / textCanvas.height * textCanvas.width, width - padding * 2) * rand(0.8,1.4)
                     
@@ -1557,7 +1557,7 @@ const layouts = [
 
             // console.log(/两排托底/,texts);
             if(texts.length){
-                const aCanvas = makeLinesCanvas(texts.slice(0,2),-space * 2)
+                const aCanvas = makeLinesCanvas(texts.slice(0,2),-space * 1.4)
                 ctx.drawImage(
                     aCanvas,
                     width * 0.1, height * 0.05,
