@@ -12,3 +12,4 @@ html/dest/*
 html/Gruntfile.js
 html/package.json
 html/logo*
+vue.2.6.11.min.js
