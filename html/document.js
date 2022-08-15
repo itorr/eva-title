@@ -7,7 +7,7 @@ htmlEl.setAttribute('data-is-chrome',isChrome);
 const style = document.createElement('style');
 document.head.appendChild(style);
 // let fontAPI = 'http://192.168.31.7:8003/api/fontmin';
-let fontAPI = 'https://lab.magiconch.com/api/fontmin';
+let fontAPI = `https://${location.hostname}/api/fontmin`;
 
 // fontAPI = 'https://s6.magiconch.com/api/fontmin';
 // fontAPI = 'http://localhost:60912/api/fontmin';
