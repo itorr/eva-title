@@ -584,14 +584,19 @@ const make = ({
         if(zoom !== 1){
             const zoomWidth = width / zoom;
             const zoomheight = height / zoom;
-        
-            ctx.drawImage(
+
+            const zoomCanvas = document.createElement('canvas');
+            zoomCanvas.width = zoomWidth;
+            zoomCanvas.height = zoomheight;
+            const zoomCtx = zoomCanvas.getContext('2d');
+
+            zoomCtx.drawImage(
                 canvas,
                 0,0,width,height,
                 0,0,zoomWidth,zoomheight,
             )
             ctx.drawImage(
-                canvas,
+                zoomCanvas,
                 0,0,zoomWidth,zoomheight,
                 0,0,width,height
             )
