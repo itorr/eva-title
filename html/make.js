@@ -580,7 +580,7 @@ const make = ({
     }
     if(config.blur){
 
-        const zoom = 2;
+        const zoom = 1.4;
         if(zoom !== 1){
             const zoomWidth = width / zoom;
             const zoomheight = height / zoom;
@@ -660,13 +660,6 @@ const make = ({
         0, 0,
         outputWidth, outputHeight
     );
-
-
-    console.log({
-        outputWidth,
-        insetWidth,
-        insetLeft
-    })
 
     outputCtx.drawImage(
         canvas,
