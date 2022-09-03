@@ -32,7 +32,8 @@
     <div class="content-box" v-if="layout">
         <section class="output-box">
             <h2>輸出</h2>
-            <canvas ref="canvas" :style="{height:`${config.height}px`}"></canvas>
+            <canvas ref="canvas"></canvas>
+            <!-- :style="{height:`${config.height}px`}" -->
         </section>
         <section class="config-box">
             <!-- <h2>{{layout.title}}</h2> -->
@@ -77,8 +78,14 @@
             </div>
             <!-- v-if="!noMatchMojis.length" -->
             <div class="ctrl-box">
-                <button :class="{current:lastAllText!==allText && !noMatchMojis.length}" @click="make()" data-text="生成"></button>
-                <button :class="{current:lastAllText===allText && !noMatchMojis.length}" @click="save()" data-text="保存成圖片"></button>
+                <button class="btn" :class="{current:lastAllText!==allText && !noMatchMojis.length}" @click="make()" data-text="生成"></button>
+                <a 
+                    class="btn" 
+                    :class="{current:lastAllText===allText && !noMatchMojis.length}" 
+                    @click="save()" 
+                    :href="output"
+                    :download="downloadFilename"
+                    data-text="保存成圖片"></a>
             </div>
             <p class="tip">
                 生成图片仅供预览，再利用需自行购买字体授权<br>
@@ -102,6 +109,9 @@
                     <ui-switch v-model="config.convolute">銳化</ui-switch>
                     <ui-switch v-model="config.type95">Type 95</ui-switch>
                 </div>
+                <div class="config-item">
+                    <ui-tabs v-model="config.outputRatio" :options="outputRatios"></ui-tabs>
+                </div>
             </div>
             <p class="tip" v-if="!haveMatisse">
                 本机安装 <b>Matisse-EB</b> 字体的情况会得到最佳使用体验<br>
@@ -115,6 +125,19 @@
             <pre>{{texts}}</pre> -->
         </section>
     </div>
+	<div class="ui-shadow" v-if="output" v-clock>
+		<div class="ui-output-box">
+			<h2>生成好啦</h2>
+			<img :src="output" :alt="downloadFilename">
+			<!-- <p>
+				<a :href="output">链接形式跳转到图片</a>
+			</p> -->
+			<p>手机端保存失败时可尝试长按图片 <b>“添加到照片”</b></p>
+			<div class="ctrl-box">
+				<button class="btn current" @click="output = ''">关闭窗口</button>
+			</div>
+		</div>
+	</div>
 </div>
 
 <script src="/vue.2.6.11.min.js"></script>

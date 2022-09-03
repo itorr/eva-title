@@ -52,6 +52,10 @@ html{
     background-position: top left;
 	background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23222222' viewBox='0 0 200 339'%3E%3Cpath d='M100,69.6l87,50v100l-87,50l-87-50v-100L100,69.6zM87-18v68L0,100L-18,0M380,0l-180,100L113,50V-18M0,239l87,50V400H-198M400,400H113v-111l87-50'/%3E%3C/svg%3E");
 	background-size: 16px;
+
+    &[data-output="true"]{
+        overflow: hidden;
+    }
 }
 body{
     margin:0;
@@ -242,6 +246,13 @@ footer{
     }
 }
 
+
+.output-box{
+    canvas{
+        max-width: 100%;
+    }
+}
+
 .config-item{
     padding:10px 0;
 }
@@ -275,7 +286,8 @@ footer{
     padding:15px 0;
 }
 
-button{
+.btn{
+    display: inline-block;
     background-color: #333;
     color:#FFF;
     border:0;
@@ -357,7 +369,6 @@ button{
         }
         canvas{
             display: block;
-            max-width: 100%;
             height:auto !important;
         }
     }
@@ -413,4 +424,44 @@ input {
     width: 1px;
     height: 1px;
     overflow: hidden;
+}
+
+
+
+
+.ui-shadow{
+    position: fixed;
+    top:0;
+    right:0;
+    left:0;
+    bottom:0;
+    z-index:1;
+    background:rgba(0,0,0,.5);
+    overflow: auto;
+    overflow-y: scroll;
+    overscroll-behavior: contain;
+}
+.ui-output-box{
+    text-align: center;
+    font-size:14px;
+    background:#222;
+    width: 800px;
+    max-width:100%;
+    margin:40px auto;
+    padding:20px;
+    box-sizing: border-box;
+    box-shadow: 0 0 40px rgba(0,10,40,.4);
+    h2{
+        padding-bottom:10px;
+    }
+    img{
+        display: block;
+        width:800px;
+        max-width:100%;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        margin:10px 0 40px;
+    }
+    .ctrl-box{
+        padding:10px 0;
+    }
 }

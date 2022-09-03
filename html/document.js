@@ -150,8 +150,27 @@ const defaultConfig = {
     retina:true,
     plan:undefined,
     noise:true,
+    outputRatio:1.334,
     // inverse:false,// Math.random()>0.9,
 };
+const outputRatios = [
+    {
+        value: 1.334,
+        text: '4:3'
+    },
+    {
+        value: 1.778,
+        text: '16:9'
+    },
+    {
+        value: 1,
+        text: '1:1'
+    },
+    {
+        value: 1.25,
+        text: '5:4'
+    },
+]
 const types = [
     {
         value: undefined,
@@ -194,7 +213,9 @@ const data ={
     config:deepCopy(defaultConfig),
     texts,
     loading:true,
-    lastAllText:''
+    lastAllText:'',
+    output: null,
+    downloadFilename: null,
 };
 const Layouts = {}
 layouts.forEach(layout=>{
@@ -280,10 +301,8 @@ const app = new Vue({
         },
         save(){
             const {canvas} = this.$refs;
-            const a = document.createElement('a');
-            a.href = canvas.toDataURL('image/jpeg',.95);
-            a.download = `[lab.magiconch.com][福音戰士標題生成器]-${+Date.now()}.jpg`;
-            a.click();
+            this.output = canvas.toDataURL('image/jpeg',.95);
+            this.downloadFilename = `[lab.magiconch.com][福音戰士標題生成器]-${+Date.now()}.jpg`;
         },
         tc(){
             this.texts = this.texts.map(s=>{
@@ -322,6 +341,9 @@ const app = new Vue({
             deep:true,
             handler:'make'
         },
+		output(v){
+			document.documentElement.setAttribute('data-output',!!v);
+		},
         // layout:'make',
         // texts:{
         //     deep:true,

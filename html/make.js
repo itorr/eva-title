@@ -19,6 +19,9 @@ const engFontFamilyName = `"Times New Roman"`
 
 let baseFontFamilyName = 'EVA_Matisse_Classic-EB,MatissePro-EB,baseSplit,SourceHanSerifCN-Heavy,serif';
 
+
+const defaultOutputRatio = 1.334;
+
 if(ios){
     fontWeight = 500;
 }
@@ -123,6 +126,7 @@ const measureText = (ctx,text,fontSize)=>{
     }
 }
 
+
 const make = ({
     outputCanvas = createCanvas(),
     canvas = createCanvas(),
@@ -140,13 +144,15 @@ const make = ({
         type95 = false,
         convolute = false,
         noise = false,
-        plan
+        plan,
+        outputRatio = 1.334,
     } = config;
 
     // if(ios) shadow = false;
 
-    const outputHeight = config.height || 480;
-    const outputWidth = Math.floor(outputHeight / 3 * 4);
+
+    const insetHeight = config.height || 480;
+    const insetWidth = Math.floor(insetHeight * defaultOutputRatio);
 
     let renderScale = 2;
 
@@ -156,8 +162,8 @@ const make = ({
     }
 
     // const defaultHeight = 960;
-    const defaultWidth  = outputWidth  * renderScale;
-    const defaultHeight = outputHeight * renderScale;
+    const defaultWidth  = insetWidth  * renderScale;
+    const defaultHeight = insetHeight * renderScale;
 
 
     const padding = defaultHeight / 24;
@@ -623,16 +629,51 @@ const make = ({
         );
     }
 
+
+
+    let outputHeight = insetHeight;
+    let outputWidth = insetWidth;
+
+    let insetLeft = 0;
+    let insetTop = 0;
+
+    const renderRatio = width / height;
+
+
+    if(outputRatio > renderRatio){
+        outputWidth = Math.floor(outputHeight * outputRatio);
+        insetLeft = (outputWidth - insetWidth) / 2;
+    }else{
+        outputHeight = Math.floor(outputWidth / outputRatio);
+        insetTop = (outputHeight - insetHeight) / 2;
+    }
+
+
     // const outputCanvas = createCanvas();
     const outputCtx = outputCanvas.getContext('2d');
 
     outputCanvas.width = outputWidth
     outputCanvas.height = outputHeight
 
+    outputCtx.fillStyle = backgroundColor;
+    outputCtx.fillRect(
+        0, 0,
+        outputWidth, outputHeight
+    );
+
+
+    console.log({
+        outputWidth,
+        insetWidth,
+        insetLeft
+    })
+
     outputCtx.drawImage(
         canvas,
-        0,0,width,height,
-        0,0,outputWidth,outputHeight,
+        0,0,
+        width,height,
+        insetLeft,insetTop,
+        insetWidth,insetHeight,
     )
     
     if(convolute || noise){
