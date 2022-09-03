@@ -127,6 +127,8 @@ const measureText = (ctx,text,fontSize)=>{
 }
 
 
+const zoomCanvas = createCanvas();
+
 const make = ({
     outputCanvas = createCanvas(),
     canvas = createCanvas(),
@@ -585,7 +587,6 @@ const make = ({
             const zoomWidth = width / zoom;
             const zoomheight = height / zoom;
 
-            const zoomCanvas = document.createElement('canvas');
             zoomCanvas.width = zoomWidth;
             zoomCanvas.height = zoomheight;
             const zoomCtx = zoomCanvas.getContext('2d');
