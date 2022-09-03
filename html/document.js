@@ -164,11 +164,15 @@ const outputRatios = [
     },
     {
         value: 1,
-        text: '1:1'
+        text: '3:3'
     },
     {
         value: 1.25,
         text: '5:4'
+    },
+    {
+        value: 1.5,
+        text: '3:2'
     },
 ]
 const types = [
