@@ -53,7 +53,7 @@
                 <div v-if="noMatchMojis.length">
                     <h3>未匹配文字</h3>
                     <div style="padding: 0.5em 0 0.8em;">{{noMatchMojis.join(' , ')}}</div>
-                    <button class="current min" @click="tc()" :disabled="!canTc" data-text="尝试替换不匹配字形"></button>
+                    <button class="btn current min" @click="tc()" :disabled="!canTc" data-text="尝试替换不匹配字形"></button>
                     <!-- v-if="canTc" -->
                     <p class="tip">
                         遇到不匹配字型可先嘗試轉繁體，還不匹配的情况請嘗試替換其他文字<br>
