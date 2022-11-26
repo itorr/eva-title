@@ -17,15 +17,15 @@ let fontAPI = `https://${location.hostname}/api/fontmin`;
 const blockMojiRegex = /\s/g;
 
 
-const checkFont = fontName=>{
+const checkFont = (fontName,weight=100)=>{
     const canvas = document.createElement('canvas');
     const w = 18;
     canvas.width = w;
     canvas.height = w;
     const ctx = canvas.getContext('2d');
-    // document.body.appendChild(canvas);
+    document.body.appendChild(canvas);
 
-    ctx.font = `100 ${w}px ${fontName},sans-serif`;
+    ctx.font = `${weight} ${w}px ${fontName},sans-serif`;
     ctx.fillStyle = '#000';
     ctx.lineCap  = 'round';
     ctx.lineJoin = 'round';
@@ -49,6 +49,7 @@ const checkFont = fontName=>{
 };
 
 let haveMatisse = checkFont('EVA_Matisse_Classic-EB,MatissePro-EB') > 120;
+let haveSourceHanSerifCNHeavy = checkFont('SourceHanSerifCN-Heavy',800) > 150;
 
 
 let debug = /192\.168/.test(location.origin);
@@ -58,7 +59,7 @@ if(debug){
     // fontWeight = 100;
     fontAPI = 'http://localhost:60912/api/fontmin';
     haveMatisse = false;
-    baseFontFamilyName = 'baseSplit,serif';
+    // baseFontFamilyName = 'baseSplit,serif';
 }
 
 
@@ -375,52 +376,54 @@ const getQuerys = _=>{
 let outputCanvas = createCanvas();
 let canvas = createCanvas();
 
-const c = callback=>{
-    loadFont('baseSplit','base-split.woff?r=220716',async _=>{
-        getFontFromText(fontFamilyName,getMoji(),async _=>{
-            layouts.slice().sort(_=>-1).forEach((layout,index)=>{
-                let texts = [
-                    // '使徒',
-                    // '襲来',
-                    // '第壱話',
-                ];
-                texts = layout.inputs.map((input,index)=>{
-                    return texts[index] || input.placeholder
-                })
-                const height = 240;
-                const config = Object.assign({},defaultConfig,layout.config,{
-                    height,
-                    // convolute: true,
-                    noise:false,
-                    blur:1,
-                    // inverse: Math.random()>0.9,
-                });
-                make({
-                    outputCanvas,
-                    canvas,
-                    texts,
-                    config,
-                    layout
-                })
-                const src = makeBMPFormCanvas(outputCanvas)
-                layout.src = src;
-                // console.log(src)
-                // app.$set(layout,'src',src)
-                // outputEl.appendChild(el)
+const c = async callback=>{
+    loadFont('notdef','NotDefault.woff2',async _=>{
+        loadFont('baseSplit','base-split.woff?r=220716',async _=>{
+            getFontFromText(fontFamilyName,getMoji(),async _=>{
+                layouts.slice().sort(_=>-1).forEach((layout,index)=>{
+                    let texts = [
+                        // '使徒',
+                        // '襲来',
+                        // '第壱話',
+                    ];
+                    texts = layout.inputs.map((input,index)=>{
+                        return texts[index] || input.placeholder
+                    })
+                    const height = 240;
+                    const config = Object.assign({},defaultConfig,layout.config,{
+                        height,
+                        // convolute: true,
+                        noise:false,
+                        blur:1,
+                        // inverse: Math.random()>0.9,
+                    });
+                    make({
+                        outputCanvas,
+                        canvas,
+                        texts,
+                        config,
+                        layout
+                    })
+                    const src = makeBMPFormCanvas(outputCanvas)
+                    layout.src = src;
+                    // console.log(src)
+                    // app.$set(layout,'src',src)
+                    // outputEl.appendChild(el)
 
-                // if(layout.exemples){
-                //     layout.exemples.forEach(texts=>{
-                //         const el = make({
-                //             texts,
-                //             config,
-                //             layout
-                //         })
-                //         // outputEl.appendChild(el)
-                //     })
-                // }
+                    // if(layout.exemples){
+                    //     layout.exemples.forEach(texts=>{
+                    //         const el = make({
+                    //             texts,
+                    //             config,
+                    //             layout
+                    //         })
+                    //         // outputEl.appendChild(el)
+                    //     })
+                    // }
+                })
+                app.layouts = layouts;
+                callback()
             })
-            app.layouts = layouts;
-            callback()
         })
     })
 }
