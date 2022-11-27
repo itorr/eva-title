@@ -45,6 +45,7 @@ const checkFont = (fontName,weight=100)=>{
     }
 
     const l = aa/w/w;
+    document.body.removeChild(canvas);
     return l;
 };
 
