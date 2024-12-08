@@ -165,6 +165,10 @@ const outputRatios = [
         text: '16:9'
     },
     {
+        value: 2.333,
+        text: '21:9'
+    },
+    {
         value: 1,
         text: '3:3'
     },
@@ -207,6 +211,22 @@ const plans = [
     {
         value:'by',
         text:'黑黄'
+    },
+    {
+        value:'1.11',
+        text:'序'
+    },
+    {
+        value:'2.22',
+        text:'破'
+    },
+    {
+        value:'3.33',
+        text:'Q'
+    },
+    {
+        value:'3.0+1.11',
+        text:'终'
     },
     // {
     //     value:'yb',
@@ -378,52 +398,54 @@ let outputCanvas = createCanvas();
 let canvas = createCanvas();
 
 const c = async callback=>{
-    loadFont('notdef','NotDefault.woff2',async _=>{
-        loadFont('baseSplit','base-split.woff?r=220716',async _=>{
-            getFontFromText(fontFamilyName,getMoji(),async _=>{
-                layouts.slice().sort(_=>-1).forEach((layout,index)=>{
-                    let texts = [
-                        // '使徒',
-                        // '襲来',
-                        // '第壱話',
-                    ];
-                    texts = layout.inputs.map((input,index)=>{
-                        return texts[index] || input.placeholder
-                    })
-                    const height = 240;
-                    const config = Object.assign({},defaultConfig,layout.config,{
-                        height,
-                        // convolute: true,
-                        noise:false,
-                        blur:1,
-                        // inverse: Math.random()>0.9,
-                    });
-                    make({
-                        outputCanvas,
-                        canvas,
-                        texts,
-                        config,
-                        layout
-                    })
-                    const src = makeBMPFormCanvas(outputCanvas)
-                    layout.src = src;
-                    // console.log(src)
-                    // app.$set(layout,'src',src)
-                    // outputEl.appendChild(el)
+    loadFont('eva-eb', 'MatissePro.woff2',async _=> {
+        loadFont('notdef','NotDefault.woff2',async _=>{
+            loadFont('baseSplit','base-split.woff?r=220716',async _=>{
+                getFontFromText(fontFamilyName,getMoji(),async _=>{
+                    layouts.slice().sort(_=>-1).forEach((layout,index)=>{
+                        let texts = [
+                            // '使徒',
+                            // '襲来',
+                            // '第壱話',
+                        ];
+                        texts = layout.inputs.map((input,index)=>{
+                            return texts[index] || input.placeholder
+                        })
+                        const height = 240;
+                        const config = Object.assign({},defaultConfig,layout.config,{
+                            height,
+                            // convolute: true,
+                            noise:false,
+                            blur:1,
+                            // inverse: Math.random()>0.9,
+                        });
+                        make({
+                            outputCanvas,
+                            canvas,
+                            texts,
+                            config,
+                            layout
+                        })
+                        const src = makeBMPFormCanvas(outputCanvas)
+                        layout.src = src;
+                        // console.log(src)
+                        // app.$set(layout,'src',src)
+                        // outputEl.appendChild(el)
 
-                    // if(layout.exemples){
-                    //     layout.exemples.forEach(texts=>{
-                    //         const el = make({
-                    //             texts,
-                    //             config,
-                    //             layout
-                    //         })
-                    //         // outputEl.appendChild(el)
-                    //     })
-                    // }
+                        // if(layout.exemples){
+                        //     layout.exemples.forEach(texts=>{
+                        //         const el = make({
+                        //             texts,
+                        //             config,
+                        //             layout
+                        //         })
+                        //         // outputEl.appendChild(el)
+                        //     })
+                        // }
+                    })
+                    app.layouts = layouts;
+                    callback()
                 })
-                app.layouts = layouts;
-                callback()
             })
         })
     })
