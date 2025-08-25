@@ -23,7 +23,7 @@ let baseFontFamilyName = 'EVA_Matisse_Classic-EB,MatissePro-EB,baseSplit,notdef,
 const defaultOutputRatio = 1.334;
 
 if(ios){
-    fontWeight = 500;
+    fontWeight = 400;
 }
 // if(ios){
 //     fontFamilyName = 'SourceHanSerifHeavy';
