@@ -1579,6 +1579,271 @@ const layouts = [
 
         }
     },
-    
+    {
+        id: 'eva_1.11',
+        title: 'ヱヴァンゲリヲン新劇場版：序',
+        inputs:[
+            {
+                placeholder:'ヱヴァンゲリヲン新劇場版：序',
+                minLength:2,
+                maxLength:24,
+            },
+        ],
+        config:{
+            height:1080,
+            blur:false,
+            noise:false,
+            plan:'1.11',
+            outputRatio:1.778,
+        },
+        make:({
+            canvas,
+            ctx,
+            texts,
+            config,
+            functions,
+        })=>{
+            const {
+                width,
+                height,
+                scale,
+                padding,
+                space,
+                fontColor,
+            } = config;
+            
+            const {
+                randOne,
+                setCtxConfig,
+                makeTextCanvas,
+                makeTextSizeDiffCanvas,
+                makeLinesCanvas,
+                makeLinesDiffSizeCanvas,
+                makeVerticalTextCanvas,
+            } = functions;
+
+            const [text,sub] = texts;
+
+                // 序
+                const textCanvas = makeTextCanvas(text,-space);
+                const _config = randOne([
+                    {
+                        heightScale: 0.30,
+                        padding: padding,
+                        borderWidth: space * 0.2,
+                    },
+                ]);
+                const textHeight = height * _config.heightScale;
+                const textWidth = Math.min(textHeight * textCanvas.width / textCanvas.height, width * 0.65);
+
+                ctx.drawImage(
+                    textCanvas,
+                    (width - textWidth) / 2, ( height - textHeight ) / 2,
+                    textWidth,textHeight
+                );
+                // ctx.strokeStyle = fontColor;
+                // ctx.lineWidth = _config.borderWidth;
+        }
+    },
+    {
+        id: 'eva_2.22',
+        title: 'ヱヴァンゲリヲン新劇場版：破',
+        inputs:[
+            {
+                placeholder:'ヱヴァンゲリヲン新劇場版：破',
+                minLength:2,
+                maxLength:24,
+            },
+        ],
+        config:{
+            height:1080,
+            blur:false,
+            noise:false,
+            outputRatio:1.778,
+            plan:'2.22'
+        },
+        make:({
+            canvas,
+            ctx,
+            texts,
+            config,
+            functions,
+        })=>{
+            const {
+                width,
+                height,
+                scale,
+                padding,
+                space,
+                fontColor,
+            } = config;
+            
+            const {
+                randOne,
+                setCtxConfig,
+                makeTextCanvas,
+                makeTextSizeDiffCanvas,
+                makeLinesCanvas,
+                makeLinesDiffSizeCanvas,
+                makeVerticalTextCanvas,
+            } = functions;
+
+            const [text,sub] = texts;
+
+                // 序
+                const textCanvas = makeTextCanvas(text,-space);
+                const _config = randOne([
+                    {
+                        heightScale: 0.45,
+                        padding: padding,
+                        borderWidth: space * 0.2,
+                    },
+                ]);
+                const textHeight = height * _config.heightScale;
+                const textWidth = width * 0.85;
+
+                ctx.drawImage(
+                    textCanvas,
+                    (width - textWidth) / 2, ( height - textHeight ) / 2,
+                    textWidth,textHeight
+                );
+                // ctx.strokeStyle = fontColor;
+                // ctx.lineWidth = _config.borderWidth;
+        }
+    },
+    {
+        id: 'eva_3.33',
+        title: 'ヱヴァンゲリヲン新劇場版：Q',
+        inputs:[
+            {
+                placeholder:'ヱヴァンゲリヲン新劇場版：Q',
+                minLength:2,
+                maxLength:24,
+            },
+        ],
+        config:{
+            height:814,
+            blur:false,
+            noise:false,
+            outputRatio:2.333,
+            plan:'3.33'
+        },
+        make:({
+            canvas,
+            ctx,
+            texts,
+            config,
+            functions,
+        })=>{
+            const {
+                width,
+                height,
+                scale,
+                padding,
+                space,
+                fontColor,
+            } = config;
+            
+            const {
+                randOne,
+                setCtxConfig,
+                makeTextCanvas,
+                makeTextSizeDiffCanvas,
+                makeLinesCanvas,
+                makeLinesDiffSizeCanvas,
+                makeVerticalTextCanvas,
+            } = functions;
+
+            const [text,sub] = texts;
+
+                // 序
+                const textCanvas = makeTextCanvas(text,-space);
+                const _config = randOne([
+                    {
+                        heightScale: 0.6,
+                        padding: padding,
+                        borderWidth: space * 0.2,
+                    },
+                ]);
+                const textHeight = height * _config.heightScale;
+                const textWidth = width * 0.85;
+
+                ctx.drawImage(
+                    textCanvas,
+                    (width - textWidth) / 2, ( height - textHeight ) / 2,
+                    textWidth,textHeight
+                );
+                // ctx.strokeStyle = fontColor;
+                // ctx.lineWidth = _config.borderWidth;
+        }
+    },
+    {
+        id: 'eva_3.0+1.11',
+        title: 'シン･エヴァンゲリオン劇場版𝄇',
+        inputs:[
+            {
+                placeholder:'シン･エヴァンゲリオン劇場版𝄇',
+                minLength:2,
+                maxLength:24,
+            },
+        ],
+        config:{
+            // height:816,
+            height:814,
+            blur:false,
+            noise:false,
+            // outputRatio:2.353,
+            outputRatio:2.333,
+            plan:'3.0+1.11'
+        },
+        make:({
+            canvas,
+            ctx,
+            texts,
+            config,
+            functions,
+        })=>{
+            const {
+                width,
+                height,
+                scale,
+                padding,
+                space,
+                fontColor,
+            } = config;
+            
+            const {
+                randOne,
+                setCtxConfig,
+                makeTextCanvas,
+                makeTextSizeDiffCanvas,
+                makeLinesCanvas,
+                makeLinesDiffSizeCanvas,
+                makeVerticalTextCanvas,
+            } = functions;
+
+            const [text,sub] = texts;
+
+                // 序
+                const textCanvas = makeTextCanvas(text,-space);
+                const _config = randOne([
+                    {
+                        heightScale: 0.3,
+                        padding: padding,
+                        borderWidth: space * 0.2,
+                    },
+                ]);
+                const textHeight = height * _config.heightScale;
+                const textWidth = width * 0.9;
+
+                ctx.drawImage(
+                    textCanvas,
+                    (width - textWidth) / 2, ( height - textHeight ) / 2,
+                    textWidth,textHeight
+                );
+                // ctx.strokeStyle = fontColor;
+                // ctx.lineWidth = _config.borderWidth;
+        }
+    },
 
 ]
