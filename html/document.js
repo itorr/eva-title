@@ -86,7 +86,7 @@ const getFontFromText = (name,text,onOver=_=>{})=>{
     })
 }
 const loadFont = async (fontName,fontURL,callback) => {
-    if(haveMatisse) return requestAnimationFrame(callback);
+    if(haveMatisse && fontName !== 'baseSplit') return requestAnimationFrame(callback);
 	const fontFace = new FontFace(fontName, `url(${fontURL})`);
 	fontFace.load().then(fontFace => {
 		document.fonts.add(fontFace);
@@ -112,7 +112,7 @@ const outputEl = document.querySelector('#out');
 
 
 // base-split.woff 自带的可见字形。其余字形由字体接口按需加载。
-const baseMoji = ',-./0123456789:?ABCDEFGHILMNOPQRSTUVabcdefghijklmnoprstuvwxyz‑“”⻨⼀⼈⼊⼋⼠⼼⽀⽂⽇⽣⽤⽯⽹⾬⾯⾳⾹、。「」いかくけげしせただちてでとなのはめもらるわをんァアイエオカグゲシスゼダネバフマリルレヱヲンヴー一下不世中了京人今他伍作使來例価侵値僅先入八六其决况出到劇勞化匹博原参參叫可吃問喜嘗嘘器噪嚴四在型場士壱太奇字存室實市序座庵弐当後徒微心情成我戦戰拾持掃授排換支攷文新日明替最来東案森標模樣歡求決沈海瀏版生用界發的監看督石破神福秀章端第糊系終繁网者臭螺襲覽試話誕請跡輸轉逃遇還郎配重野間雨雷電面音頭題香驗體魂鳴麦黙點！，：･';
+const baseMoji = ',-./0123456789:?ABCDEFGHILMNOPQRSTUVabcdefghijklmnoprstuvwxyz‑“”⻨⼀⼈⼊⼋⼠⼼⽀⽂⽇⽣⽤⽯⽹⾬⾯⾳⾹、。「」いかくけげしせただちてでとなのはめもらるわをんァアイエオカグゲシスゼダネバフマリルレヱヲンヴー一下不世中了京人今他伍作使來例価侵値僅先入八六其决况出到劇勞化匹博原参參叫可吃問喜嘗嘘器噪嚴四在型場士壱太奇字存室實市序座庵弐当後徒微心情成我戦戰拾持掃授排換支攷文新日明替最来東案森標模樣歡求決沈海瀏版生用界發的監看督石破神福秀章端第糊系終繁网者臭螺襲覽試話誕請跡輸轉逃遇還郎配重野間雨雷電面音頭題香驗體魂鳴麦黙點！，：･𝄇';
 
 const getLayoutMoji = _=>layouts.map(layout=>[
     layout.inputs.map(input=>input.placeholder),
@@ -125,7 +125,7 @@ if(debug){
 }
 
 const diffBaseMoji = text=>{
-    return Array.from(text).filter(moji=>moji !== rightRepeatSign && !baseMoji.includes(moji)).join('')
+    return Array.from(text).filter(moji=>!baseMoji.includes(moji)).join('')
 };
 
 
@@ -338,7 +338,7 @@ const app = new Vue({
             return this.texts.join() !== transformFunc[2](this.texts.join())
         },
         noMatchMojis(){
-            return Array.from(new Set(this.allText)).sort().filter(m=>m !== rightRepeatSign && !EVAMatisseClassicMojis.includes(m))
+            return Array.from(new Set(this.allText)).sort().filter(m=>!EVAMatisseClassicMojis.includes(m) && !baseMoji.includes(m))
         }
     },
     watch:{
@@ -378,7 +378,7 @@ let canvas = createCanvas();
 
 const c = async callback=>{
     loadFont('notdef','NotDefault.woff2',async _=>{
-        loadFont('baseSplit','base-split.woff?r=261111',async _=>{
+        loadFont('baseSplit','base-split.woff?r=261112b',async _=>{
             getFontFromText(fontFamilyName,getLayoutMoji(),async _=>{
                 layouts.slice().sort(_=>-1).forEach((layout,index)=>{
                     let texts = [
