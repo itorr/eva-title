@@ -17,14 +17,13 @@ let fontWeight = 900;
 let fontFamilyName = 'EVAMatisseClassic'
 const engFontFamilyName = `"Times New Roman"`
 
-let baseFontFamilyName = 'EVA_Matisse_Classic-EB,MatissePro-EB,eva-eb,baseSplit,notdef,SourceHanSerifCN-Heavy,serif';
-// let baseFontFamilyName = 'eva-eb,baseSplit,notdef';
+let baseFontFamilyName = 'EVA_Matisse_Classic-EB,MatissePro-EB,baseSplit,notdef,SourceHanSerifCN-Heavy,serif';
 
 
 const defaultOutputRatio = 1.334;
 
 if(ios){
-    fontWeight = 500;
+    fontWeight = 400;
 }
 // if(ios){
 //     fontFamilyName = 'SourceHanSerifHeavy';
@@ -155,8 +154,8 @@ const make = ({
 
 
     const insetHeight = config.height || 480;
-    const insetWidth = Math.floor(insetHeight * config.outputRatio);
-    // const insetWidth = Math.floor(insetHeight * defaultOutputRatio);
+    const insetRatio = (layout.config && layout.config.outputRatio) || defaultOutputRatio;
+    const insetWidth = Math.floor(insetHeight * insetRatio);
 
     let renderScale = 2;
 
@@ -227,22 +226,22 @@ const make = ({
         case '1.11':
             fontColor = '#7B1020'
             backgroundColor = '#000000'
-            shadowColor = 'rgba(0,0,0,0)'
+            shadowColor = 'transparent'
             break;
         case '2.22':
             fontColor = '#EF4507'
             backgroundColor = '#000000'
-            shadowColor = 'rgba(0,0,0,0)'
+            shadowColor = 'transparent'
             break;
         case '3.33':
             fontColor = '#0DAFB4'
             backgroundColor = '#000000'
-            shadowColor = 'rgba(0,0,0,0)'
+            shadowColor = 'transparent'
             break;
         case '3.0+1.11':
             fontColor = '#F1FEED'
             backgroundColor = '#000000'
-            shadowColor = 'rgba(0,0,0,0)'
+            shadowColor = 'transparent'
             break;
     }
     ctx.fillStyle = backgroundColor;
