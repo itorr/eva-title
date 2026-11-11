@@ -73,7 +73,7 @@ const getFontFromText = (name,text,onOver=_=>{})=>{
     text = Array.from(new Set(text)).sort().join('');
     // console.log(str2utf8(text))
     // console.log(utf82str(str2utf8(text)))
-    text = diffDefaultMoji(text);
+    text = diffBaseMoji(text);
     // console.log({text})
     if(!text) return requestAnimationFrame(onOver);
 
@@ -111,30 +111,21 @@ const checkboxEl = document.querySelector('input');
 const outputEl = document.querySelector('#out');
 
 
-const defaultMojiPlus = ' \n,-./01234567890:?ABCDEFGHILMNOPRSTUVabcdefghijklmnoprstuvwxyz“”、。「」いかくけげしせただちてでとなのはめもらるわをんアイカグシスゼダネバフマルレー一下不世中了京人今他伍作使來例価侵値僅先入八六其决况出到劳化匹博原参參叫可吃問喜嘗嘘器噪嚴四在型士壱太奇字存实室實市座庵弐当後徒微心情成我战戦戰拾持掃授排換支攷文新日明替最权来東案桌森標模樣歡求決沈浏海瀏版生用界發的監看督石神福秀章端第糊系終繁纪统网者臭螺襲覽览試話誕請议请跡輸轉逃选遇還郎配重野銳键間雨雷電面音頭題页项香驗验體魂鳴麦黙點🏼👩！，'.split('');
+// base-split.woff 自带的可见字形。其余字形由字体接口按需加载。
+const baseMoji = ',-./0123456789:?ABCDEFGHILMNOPRSTUVabcdefghijklmnoprstuvwxyz‑“”⻨⼀⼈⼊⼋⼠⼼⽀⽂⽇⽣⽤⽯⽹⾬⾯⾳⾹、。「」いかくけげしせただちてでとなのはめもらるわをんアイカグシスゼダネバフマルレー一下不世中了京人今他伍作使來例価侵値僅先入八六其决况出到勞化匹博原参參叫可吃問喜嘗嘘器噪嚴四在型士壱太奇字存室實市座庵弐当後徒微心情成我戦戰拾持掃授排換支攷文新日明替最来東案森標模樣歡求決沈海瀏版生用界發的監看督石神福秀章端第糊系終繁网者臭螺襲覽試話誕請跡輸轉逃遇還郎配重野間雨雷電面音頭題香驗體魂鳴麦黙點！，';
 
-const getMoji = _=>{
-    let v = defaultMojiPlus+layouts.map(a=>[a.inputs.map(t=>t.placeholder),a.exemples]).flat().join();
-    // console.log(v)
-    // v += document.querySelector('body').textContent;
-    return v;
-};
-
-let defaultMoji = Array.from(new Set(getMoji())).sort();
-
-// console.log(defaultMoji.join(''));
-
-// if(ios || !isChrome){
-//     defaultMoji = [];
-// }
+const getLayoutMoji = _=>layouts.map(layout=>[
+    layout.inputs.map(input=>input.placeholder),
+    layout.exemples
+]).flat(Infinity).join('');
 
 if(debug){
-    const unicode = str2utf8(defaultMoji.join('')).join();
+    const unicode = str2utf8(Array.from(new Set(getLayoutMoji())).sort().join('')).join();
     console.log(`${fontAPI}?name=${fontFamilyName}&type=woff&unicode=${unicode}`);
 }
 
-const diffDefaultMoji = text=>{
-    return text.split('').filter(moji=>!defaultMoji.includes(moji)).join('').replace(/\s/g,'')
+const diffBaseMoji = text=>{
+    return text.split('').filter(moji=>!baseMoji.includes(moji)).join('').replace(/\s/g,'')
 };
 
 
@@ -163,6 +154,10 @@ const outputRatios = [
     {
         value: 1.778,
         text: '16:9'
+    },
+    {
+        value: 2.333,
+        text: '21:9'
     },
     {
         value: 1,
@@ -208,6 +203,10 @@ const plans = [
         value:'by',
         text:'黑黄'
     },
+    { value:'1.11', text:'序' },
+    { value:'2.22', text:'破' },
+    { value:'3.33', text:'Q' },
+    { value:'3.0+1.11', text:'终' },
     // {
     //     value:'yb',
     //     text:'黄黑'
@@ -380,7 +379,7 @@ let canvas = createCanvas();
 const c = async callback=>{
     loadFont('notdef','NotDefault.woff2',async _=>{
         loadFont('baseSplit','base-split.woff?r=220716',async _=>{
-            getFontFromText(fontFamilyName,getMoji(),async _=>{
+            getFontFromText(fontFamilyName,getLayoutMoji(),async _=>{
                 layouts.slice().sort(_=>-1).forEach((layout,index)=>{
                     let texts = [
                         // '使徒',
@@ -391,11 +390,10 @@ const c = async callback=>{
                         return texts[index] || input.placeholder
                     })
                     const height = 240;
-                    const config = Object.assign({},defaultConfig,layout.config,{
+                    const config = Object.assign({},defaultConfig,{ blur:1 },layout.config,{
                         height,
                         // convolute: true,
                         noise:false,
-                        blur:1,
                         // inverse: Math.random()>0.9,
                     });
                     make({

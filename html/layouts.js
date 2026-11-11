@@ -1,3 +1,19 @@
+const makeRebuildLayout = (version,title,height,outputRatio,textHeightRatio,textWidthRatio,limitNaturalWidth = false)=>({
+    id: `eva_${version}`,
+    title,
+    inputs:[{ placeholder:title, minLength:2, maxLength:24 }],
+    config:{ height, outputRatio, plan:version, blur:false, noise:false },
+    make:({ ctx, texts:[text], config:{ width, height, space }, functions:{ makeTextCanvas } })=>{
+        const textCanvas = makeTextCanvas(text,-space);
+        const textHeight = height * textHeightRatio;
+        const maxWidth = width * textWidthRatio;
+        const textWidth = limitNaturalWidth
+            ? Math.min(textHeight * textCanvas.width / textCanvas.height, maxWidth)
+            : maxWidth;
+        ctx.drawImage(textCanvas,(width - textWidth) / 2,(height - textHeight) / 2,textWidth,textHeight);
+    }
+});
+
 const layouts = [
     {
         id: 'e1',
@@ -1579,6 +1595,8 @@ const layouts = [
 
         }
     },
-    
-
+    makeRebuildLayout('1.11','ヱヴァンゲリヲン新劇場版：序',1080,1.778,0.30,0.65,true),
+    makeRebuildLayout('2.22','ヱヴァンゲリヲン新劇場版：破',1080,1.778,0.45,0.85),
+    makeRebuildLayout('3.33','ヱヴァンゲリヲン新劇場版：Q',814,2.333,0.60,0.85),
+    makeRebuildLayout('3.0+1.11','シン･エヴァンゲリオン劇場版𝄇',814,2.333,0.30,0.90),
 ]
