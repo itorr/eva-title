@@ -112,7 +112,7 @@ const outputEl = document.querySelector('#out');
 
 
 // base-split.woff 自带的可见字形。其余字形由字体接口按需加载。
-const baseMoji = ',-./0123456789:?ABCDEFGHILMNOPRSTUVabcdefghijklmnoprstuvwxyz‑“”⻨⼀⼈⼊⼋⼠⼼⽀⽂⽇⽣⽤⽯⽹⾬⾯⾳⾹、。「」いかくけげしせただちてでとなのはめもらるわをんアイカグシスゼダネバフマルレー一下不世中了京人今他伍作使來例価侵値僅先入八六其决况出到勞化匹博原参參叫可吃問喜嘗嘘器噪嚴四在型士壱太奇字存室實市座庵弐当後徒微心情成我戦戰拾持掃授排換支攷文新日明替最来東案森標模樣歡求決沈海瀏版生用界發的監看督石神福秀章端第糊系終繁网者臭螺襲覽試話誕請跡輸轉逃遇還郎配重野間雨雷電面音頭題香驗體魂鳴麦黙點！，';
+const baseMoji = ',-./0123456789:?ABCDEFGHILMNOPQRSTUVabcdefghijklmnoprstuvwxyz‑“”⻨⼀⼈⼊⼋⼠⼼⽀⽂⽇⽣⽤⽯⽹⾬⾯⾳⾹、。「」いかくけげしせただちてでとなのはめもらるわをんァアイエオカグゲシスゼダネバフマリルレヱヲンヴー一下不世中了京人今他伍作使來例価侵値僅先入八六其决况出到劇勞化匹博原参參叫可吃問喜嘗嘘器噪嚴四在型場士壱太奇字存室實市序座庵弐当後徒微心情成我戦戰拾持掃授排換支攷文新日明替最来東案森標模樣歡求決沈海瀏版生用界發的監看督石破神福秀章端第糊系終繁网者臭螺襲覽試話誕請跡輸轉逃遇還郎配重野間雨雷電面音頭題香驗體魂鳴麦黙點！，：･';
 
 const getLayoutMoji = _=>layouts.map(layout=>[
     layout.inputs.map(input=>input.placeholder),
@@ -125,7 +125,8 @@ if(debug){
 }
 
 const diffBaseMoji = text=>{
-    return text.split('').filter(moji=>!baseMoji.includes(moji)).join('').replace(/\s/g,'')
+    // 𝄇 由系统字体显示，EVA 字体接口没有这个字形。
+    return Array.from(text).filter(moji=>moji !== '𝄇' && !baseMoji.includes(moji)).join('')
 };
 
 
@@ -378,7 +379,7 @@ let canvas = createCanvas();
 
 const c = async callback=>{
     loadFont('notdef','NotDefault.woff2',async _=>{
-        loadFont('baseSplit','base-split.woff?r=220716',async _=>{
+        loadFont('baseSplit','base-split.woff?r=261111',async _=>{
             getFontFromText(fontFamilyName,getLayoutMoji(),async _=>{
                 layouts.slice().sort(_=>-1).forEach((layout,index)=>{
                     let texts = [
