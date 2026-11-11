@@ -36,6 +36,39 @@ if(ios){
 // fontFamilyName = 'RaglanStdUB'
 
 const isEngRegex = /^[a-z\s!?:\.()\[\]\{\}]+$/i;
+const rightRepeatSign = '𝄇';
+// Font units at 1000 UPM, based on the 3.0+1.11 poster wordmark.
+const rightRepeatGeometry = {
+    "advance": 480,
+    "bottom": -74,
+    "top": 810,
+    "bars": [[208, 31], [349, 104]],
+    "dots": [[104, 254], [104, 475]],
+    "dotRadius": 45
+};
+const rightRepeatAdvance = rightRepeatGeometry.advance / 1000;
+const rightRepeatCenter = (rightRepeatGeometry.top + rightRepeatGeometry.bottom) / 2000;
+const withoutRightRepeat = text => text.split(rightRepeatSign).join('');
+let rightRepeatPath;
+
+function drawRightRepeat(ctx, x, center, size) {
+    if (!rightRepeatPath) {
+        rightRepeatPath = new Path2D();
+        const { bottom, top, bars, dots, dotRadius } = rightRepeatGeometry;
+        for (const [left, width] of bars) {
+            rightRepeatPath.rect(left, bottom, width, top - bottom);
+        }
+        for (const [dotX, dotY] of dots) {
+            rightRepeatPath.moveTo(dotX + dotRadius, dotY);
+            rightRepeatPath.arc(dotX, dotY, dotRadius, 0, Math.PI * 2);
+        }
+    }
+    ctx.save();
+    ctx.translate(x, center + rightRepeatCenter * size);
+    ctx.scale(size / 1000, -size / 1000);
+    ctx.fill(rightRepeatPath);
+    ctx.restore();
+}
 
 let startTagsString = '「“(‘（『【《〈';
 let endTagsString = '」”)’）』】》〉';
@@ -292,7 +325,15 @@ const make = ({
             fontFamilyName
         })
 
-        let { width , height } = measureText(ctx,text,fontSize);
+        const runs = text.includes(rightRepeatSign) ?
+            text.split(/(𝄇)/u).filter(Boolean).map(run => ({
+                text: run,
+                width: run === rightRepeatSign ? rightRepeatAdvance * fontSize + letterSpacing : ctx.measureText(run).width,
+            })) : null;
+        let { width, height } = runs ? {
+            width: Math.ceil(runs.reduce((sum, run) => sum + run.width, 0)),
+            height: measureText(ctx, withoutRightRepeat(text) || '字', fontSize).height,
+        } : measureText(ctx,text,fontSize);
 
         width = width - letterSpacing + fontPadding * 2;
         height = height + fontPadding * 2;
@@ -304,10 +345,16 @@ const make = ({
             fontFamilyName
         })
 
-        ctx.fillText(
-            text,
-            fontPadding, height/2
-        );
+        if (runs) {
+            let x = fontPadding;
+            for (const run of runs) {
+                if (run.text === rightRepeatSign) drawRightRepeat(ctx, x, height / 2, fontSize);
+                else ctx.fillText(run.text, x, height / 2);
+                x += run.width;
+            }
+        } else {
+            ctx.fillText(text, fontPadding, height / 2);
+        }
         removeCanvas(canvas)
         return canvas
         
@@ -331,7 +378,7 @@ const make = ({
 
         canvas.style.letterSpacing = `${letterSpacing}px`
 
-        const mojis = text.split('')
+        const mojis = text.includes(rightRepeatSign) ? Array.from(text) : text.split('')
 
 
         let allWidth = fontPadding * 2 - letterSpacing;
@@ -339,7 +386,9 @@ const make = ({
 
             let mojiFontSize = fontSize;
 
-            if(/、/.test(moji)){
+            if (moji === rightRepeatSign) {
+                mojiFontSize = fontSize * rightRepeatAdvance;
+            } else if(/、/.test(moji)){
                 mojiFontSize = fontSize * pointWidthScale
             }else if(new RegExp(kataRegex,'').test(moji)){
                 mojiFontSize = kataFontSize;
@@ -372,10 +421,12 @@ const make = ({
                 fontSize: _fontSize
             });
 
-            ctx.fillText(
-                moji,
-                left, height
-            );
+            if (moji === rightRepeatSign) {
+                drawRightRepeat(ctx, left, height - _fontSize / 2, _fontSize);
+                _fontSize = fontSize * rightRepeatAdvance;
+            } else {
+                ctx.fillText(moji, left, height);
+            }
             if(/、/.test(moji)){
                 _fontSize = fontSize * pointWidthScale
             }
@@ -527,7 +578,7 @@ const make = ({
             return canvas;
         }
 
-        const mojis = text.split('')
+        const mojis = text.includes(rightRepeatSign) ? Array.from(text) : text.split('')
         const lineHeight = fontSize + letterSpacing
         const width = fontSize
         const height = mojis.length * lineHeight - letterSpacing
@@ -546,10 +597,8 @@ const make = ({
             if(StartAndEndTagTestRegex.test(moji)|| /ー/.test(moji)){
                 ctx.rotate(90 * Math.PI / 180);
             }
-            ctx.fillText(
-                moji,
-                0,0
-            );
+            if (moji === rightRepeatSign) drawRightRepeat(ctx, -fontSize * rightRepeatAdvance / 2, 0, fontSize);
+            else ctx.fillText(moji, 0, 0);
             ctx.restore()
         })
         removeCanvas(canvas)

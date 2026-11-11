@@ -125,8 +125,7 @@ if(debug){
 }
 
 const diffBaseMoji = text=>{
-    // 𝄇 由系统字体显示，EVA 字体接口没有这个字形。
-    return Array.from(text).filter(moji=>moji !== '𝄇' && !baseMoji.includes(moji)).join('')
+    return Array.from(text).filter(moji=>moji !== rightRepeatSign && !baseMoji.includes(moji)).join('')
 };
 
 
@@ -339,7 +338,7 @@ const app = new Vue({
             return this.texts.join() !== transformFunc[2](this.texts.join())
         },
         noMatchMojis(){
-            return Array.from(new Set(this.allText)).sort().filter(m=>!EVAMatisseClassicMojis.includes(m))
+            return Array.from(new Set(this.allText)).sort().filter(m=>m !== rightRepeatSign && !EVAMatisseClassicMojis.includes(m))
         }
     },
     watch:{
