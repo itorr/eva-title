@@ -378,7 +378,7 @@ let canvas = createCanvas();
 
 const c = async callback=>{
     loadFont('notdef','NotDefault.woff2',async _=>{
-        loadFont('baseSplit','base-split.woff?r=261112',async _=>{
+        loadFont('baseSplit','base-split.woff?r=261112b',async _=>{
             getFontFromText(fontFamilyName,getLayoutMoji(),async _=>{
                 layouts.slice().sort(_=>-1).forEach((layout,index)=>{
                     let texts = [

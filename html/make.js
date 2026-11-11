@@ -331,15 +331,19 @@ const make = ({
 
         canvas.style.letterSpacing = `${letterSpacing}px`
 
-        const mojis = text.split('')
+        const mojis = Array.from(text)
 
 
+        setCtxConfig(ctx);
+        const repeatSignWidth = text.includes('𝄇') ? ctx.measureText('𝄇').width : 0;
         let allWidth = fontPadding * 2 - letterSpacing;
         mojis.forEach(moji=>{
 
             let mojiFontSize = fontSize;
 
-            if(/、/.test(moji)){
+            if(moji === '𝄇'){
+                mojiFontSize = repeatSignWidth;
+            }else if(/、/.test(moji)){
                 mojiFontSize = fontSize * pointWidthScale
             }else if(new RegExp(kataRegex,'').test(moji)){
                 mojiFontSize = kataFontSize;
@@ -379,7 +383,7 @@ const make = ({
             if(/、/.test(moji)){
                 _fontSize = fontSize * pointWidthScale
             }
-            left += _fontSize + letterSpacing;
+            left += (moji === '𝄇' ? repeatSignWidth : _fontSize) + letterSpacing;
         })
         removeCanvas(canvas);
         return canvas
@@ -527,7 +531,7 @@ const make = ({
             return canvas;
         }
 
-        const mojis = text.split('')
+        const mojis = Array.from(text)
         const lineHeight = fontSize + letterSpacing
         const width = fontSize
         const height = mojis.length * lineHeight - letterSpacing
