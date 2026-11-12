@@ -365,12 +365,23 @@ const make = ({
         const mojis = Array.from(text)
 
 
+        let repeatSignWidth = fontSize;
+        if(mojis.includes('𝄇') && hasGlyph('𝄇')){
+            if(outline){
+                repeatSignWidth = outlineLength(outline.shape('𝄇'),fontSize,0);
+            }else{
+                setCtxConfig(ctx);
+                repeatSignWidth = ctx.measureText('𝄇').width;
+            }
+        }
         let allWidth = fontPadding * 2 - letterSpacing;
         mojis.forEach(moji=>{
 
             let mojiFontSize = fontSize;
 
-            if(/、/.test(moji)){
+            if(moji === '𝄇'){
+                mojiFontSize = repeatSignWidth;
+            }else if(/、/.test(moji)){
                 mojiFontSize = fontSize * pointWidthScale
             }else if(new RegExp(kataRegex,'').test(moji)){
                 mojiFontSize = kataFontSize;
@@ -414,7 +425,7 @@ const make = ({
             if(/、/.test(moji)){
                 _fontSize = fontSize * pointWidthScale
             }
-            left += _fontSize + letterSpacing;
+            left += (moji === '𝄇' ? repeatSignWidth : _fontSize) + letterSpacing;
         })
         removeCanvas(canvas);
         return canvas
