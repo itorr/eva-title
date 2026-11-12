@@ -1,4 +1,4 @@
-import { decodeInlineOutlines, decodeOutlines } from './outline-codec.mjs';
+import { decodeInlineOutlines } from './outline-codec.mjs';
 
 const control = /\p{Cc}/u;
 
@@ -9,22 +9,19 @@ export class StaticOutlineFont {
         this.points = new Map();
         this.metrics = new Map();
         this.outlines = new Map();
-        this.hotShards = new Map();
         this.requests = new Map();
     }
 
-    async fetch(file) {
-        const response = await this.fetchResource(new URL(file, this.directory));
-        if (!response.ok) throw new Error(`Outline asset ${file} returned ${response.status}`);
-        return response;
-    }
-
-    load(file, get) {
+    load(file, get, optional = false) {
         if (!this.requests.has(file)) {
             this.requests.set(
                 file,
-                this.fetch(file)
-                    .then(get)
+                this.fetchResource(new URL(file, this.directory))
+                    .then((response) => {
+                        if (optional && response.status === 404) return;
+                        if (!response.ok) throw new Error(`Outline asset ${file} returned ${response.status}`);
+                        return get(response);
+                    })
                     .catch((error) => {
                         this.requests.delete(file);
                         throw error;
@@ -36,45 +33,43 @@ export class StaticOutlineFont {
 
     preload(name) {
         return this.load(`${name}.bin`, async (response) => {
-            const { layout, glyphs } = decodeInlineOutlines(await response.arrayBuffer());
-            if (this.info && this.info.version !== layout.version)
+            const pack = decodeInlineOutlines(await response.arrayBuffer());
+            const { format, version, upem, ascender, descender, hasRightRepeat } = pack.layout;
+            if (format !== 2) throw new Error('Unsupported outline pack format');
+            if (this.info && this.info.version !== version)
                 throw new Error('Inconsistent outline release');
-            this.info = layout;
-            for (const [point, ...pair] of layout.points) this.points.set(point, pair);
-            for (const [glyph, ...metrics] of layout.metrics) this.metrics.set(glyph, metrics);
-            for (const [glyph, file] of layout.hotShards) this.hotShards.set(glyph, file);
-            for (const [glyph, path] of glyphs) this.outlines.set(glyph, path);
+            this.info = { version, upem, ascender, descender, hasRightRepeat };
+            this.addPack(pack);
             return this;
         });
     }
 
+    addPack({ layout, glyphs }) {
+        for (const [point, horizontal, vertical = horizontal] of layout.points) {
+            this.points.set(point, [horizontal, vertical]);
+        }
+        for (const [glyph, ...metrics] of layout.metrics ?? []) this.metrics.set(glyph, metrics);
+        for (const [glyph, path] of glyphs) this.outlines.set(glyph, path);
+    }
+
     async ensure(texts) {
         const characters = [...new Set(texts.flatMap((text) => Array.from(text)))];
-        const points = characters.map((char) => char.codePointAt(0));
-        if (points.some((point) => !this.points.has(point))) {
-            this.index = await this.load(this.info.indexFile, async (response) => {
-                const data = await response.json();
-                for (const [point, ...pair] of data.points) this.points.set(point, pair);
-                data.metrics.forEach((metrics, glyph) => this.metrics.set(glyph, metrics));
-                return data;
-            });
-        }
-        const shards = new Set();
-        for (const point of points) {
-            for (const glyph of this.points.get(point) ?? []) {
-                if (this.outlines.has(glyph)) continue;
-                const file =
-                    this.hotShards.get(glyph) ?? this.index?.shards[this.index.glyphToShard[glyph]];
-                if (file) shards.add(file);
-            }
+        const pages = new Set();
+        for (const character of characters) {
+            const point = character.codePointAt(0);
+            if (!control.test(character) && !this.points.has(point)) pages.add(point >>> 6);
         }
         await Promise.all(
-            [...shards].map((file) =>
-                this.load(file, async (response) => {
-                    for (const [glyph, path] of decodeOutlines(await response.arrayBuffer()))
-                        this.outlines.set(glyph, path);
-                }),
-            ),
+            [...pages].map((page) => this.load(
+                `u${page.toString(16).padStart(4, '0')}.bin`,
+                async (response) => {
+                    const pack = decodeInlineOutlines(await response.arrayBuffer());
+                    if (pack.layout.version !== this.info.version || pack.layout.page !== page)
+                        throw new Error('Inconsistent outline page');
+                    this.addPack(pack);
+                },
+                true,
+            )),
         );
     }
 
@@ -86,15 +81,18 @@ export class StaticOutlineFont {
     }
 
     shape(text, vertical = false) {
-        const { upem } = this.info;
+        const { upem, ascender } = this.info;
         return Array.from(text, (character) => {
             const glyph =
                 !control.test(character) &&
                 this.points.get(character.codePointAt(0))?.[vertical ? 1 : 0];
             const path = this.outlines.get(glyph);
             if (!path) return [null, upem, 0, 0];
-            const [horizontal, advance, x, y] = this.metrics.get(glyph);
-            return vertical ? [path, -advance, x, y] : [path, horizontal, 0, 0];
+            const [advance, verticalAdvance, x, y] = this.metrics.get(glyph) ?? [];
+            const horizontal = advance ?? upem;
+            return vertical
+                ? [path, -(verticalAdvance ?? -upem), x ?? -Math.trunc(horizontal / 2), y ?? -ascender]
+                : [path, horizontal, 0, 0];
         });
     }
 

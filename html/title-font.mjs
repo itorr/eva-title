@@ -1,7 +1,9 @@
 import { StaticOutlineFont } from './static-outline-font.mjs';
 
+const manifestFile = typeof TITLE_FONT_MANIFEST === 'string' ? TITLE_FONT_MANIFEST : 'title-font.json';
+
 export async function loadTitleFont(initialLayout) {
-    const manifestURL = new URL('title-font.json', location.href);
+    const manifestURL = new URL(manifestFile, location.href);
     const response = await fetch(manifestURL, { cache: 'no-cache' });
     if (!response.ok) throw new Error('Unable to load the title font manifest');
 
