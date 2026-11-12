@@ -14,28 +14,11 @@ const orangeColorInverse = 'rgba(255,165,255,.2)'
 
 let fontWeight = 900;
 
-let fontFamilyName = 'EVAMatisseClassic'
-const engFontFamilyName = `"Times New Roman"`
-
-let baseFontFamilyName = 'EVA_Matisse_Classic-EB,MatissePro-EB,baseSplit,notdef,SourceHanSerifCN-Heavy,serif';
-
-
 const defaultOutputRatio = 1.334;
 
 if(ios){
     fontWeight = 400;
 }
-// if(ios){
-//     fontFamilyName = 'SourceHanSerifHeavy';
-// }
-// fontFamilyName = 'SourceHanSerifHeavy';
-
-// if(ios || !isChrome){
-//     fontFamilyName = 'MatisseProEB'
-// }
-// fontFamilyName = 'RaglanStdUB'
-
-const isEngRegex = /^[a-z\s!?:\.()\[\]\{\}]+$/i;
 
 let startTagsString = '「“(‘（『【《〈';
 let endTagsString = '」”)’）』】》〉';
@@ -130,13 +113,17 @@ const measureText = (ctx,text,fontSize)=>{
 const zoomCanvas = createCanvas();
 
 const make = ({
-    outputCanvas = createCanvas(),
-    canvas = createCanvas(),
+    outputCanvas,
+    canvas,
     texts,
     config = {},
     timer = false,
-    layout
+    layout,
+    font,
 })=>{
+    const {outline,coverage,family} = font;
+    const missing = new Set();
+
     if(timer) console.time(layout.title)
 
     const ctx = canvas.getContext('2d');
@@ -255,13 +242,12 @@ const make = ({
         const {
             fontSize = defaultFontSize,
             textBaseline = 'middle',
-            _fontFamilyName = fontFamilyName,
             // shadow = true
         } = config;
 
         // console.log({ctx})
         
-        ctx.font = `${fontWeight} ${fontSize}px ${_fontFamilyName},${baseFontFamilyName}`;
+        if(family) ctx.font = `${fontWeight} ${fontSize}px ${family}`;
         ctx.fillStyle = fontColor
         ctx.lineCap  = 'round';
         ctx.lineJoin = 'round';
@@ -275,39 +261,79 @@ const make = ({
     }
 
 
+    const hasGlyph = character => {
+        if(outline ? outline.has(character) : coverage.has(character.codePointAt(0))) return true;
+        missing.add(character);
+        return false;
+    };
+    for(const text of texts){
+        if(typeof text === 'string'){
+            for(const character of text) hasGlyph(character);
+        }
+    }
+
+    const outlineLength = (glyphs,size,spacing) =>
+        glyphs.reduce((length,glyph) => length + glyph[1],0) * size / outline.info.upem
+        + spacing * Math.max(0,glyphs.length - 1);
+
+    const layoutText = (ctx,text)=>{
+        const runs = [];
+        let run = '';
+        let offset = 0;
+        const addRun = () => {
+            if(!run) return;
+            runs.push({text:run,offset});
+            offset += ctx.measureText(run).width;
+            run = '';
+        };
+        for(const character of text){
+            if(hasGlyph(character)){
+                run += character;
+            }else{
+                addRun();
+                offset += fontSize;
+            }
+        }
+        addRun();
+        const {height} = measureText(ctx,runs[0]?.text || '',fontSize);
+        return {width:Math.ceil(offset),height,runs};
+    };
+
+    const drawTextRuns = (ctx,runs,x,y)=>{
+        for(const run of runs) ctx.fillText(run.text,x + run.offset,y);
+    };
+
     const makeTextCanvas = (text,letterSpacing = 0,margin = 0)=>{
         const canvas = createCanvas();
         const ctx = canvas.getContext('2d');
 
-        let fontFamilyName = null;
-
-        if(isEngRegex.test(text)){
-            fontFamilyName = engFontFamilyName
-        }
-
         canvas.style.letterSpacing = `${letterSpacing}px`
 
 
-        setCtxConfig(ctx,{
-            fontFamilyName
-        })
+        setCtxConfig(ctx);
 
-        let { width , height } = measureText(ctx,text,fontSize);
+        const glyphs = outline?.shape(text);
+        const {ascender,descender,upem} = outline?.info ?? {};
+        let {width,height,runs} = glyphs ? {
+            width:Math.ceil(outlineLength(glyphs,fontSize,letterSpacing)),
+            height:(ascender - descender) * fontSize / upem,
+        } : layoutText(ctx,text);
 
-        width = width - letterSpacing + fontPadding * 2;
+        width = width + fontPadding * 2 - (glyphs ? 0 : letterSpacing);
         height = height + fontPadding * 2;
 
         canvas.width = width;
         canvas.height = height;
 
-        setCtxConfig(ctx,{
-            fontFamilyName
-        })
+        setCtxConfig(ctx);
 
-        ctx.fillText(
-            text,
-            fontPadding, height/2
-        );
+        if(glyphs){
+            for(const character of text) hasGlyph(character);
+            const baseline = height / 2 + (ascender + descender) * fontSize / upem / 2;
+            outline.draw(ctx,glyphs,fontPadding,baseline,fontSize,letterSpacing);
+        }else{
+            drawTextRuns(ctx,runs,fontPadding,height/2);
+        }
         removeCanvas(canvas)
         return canvas
         
@@ -319,7 +345,7 @@ const make = ({
         if(!kataMatch) return makeTextCanvas(text,letterSpacing)
 
         // console.log(text,kataMatch.length , text.length)
-        if( (kataMatch.length / text.length) > 0.5 ){
+        if( (kataMatch.length / Array.from(text).length) > 0.5 ){
             kataRegex = /[のい的、]/g;
             kataMatch = text.match(kataRegex)
             // console.log(text,kataMatch.length , text.length)
@@ -331,7 +357,7 @@ const make = ({
 
         canvas.style.letterSpacing = `${letterSpacing}px`
 
-        const mojis = text.split('')
+        const mojis = Array.from(text)
 
 
         let allWidth = fontPadding * 2 - letterSpacing;
@@ -372,10 +398,14 @@ const make = ({
                 fontSize: _fontSize
             });
 
-            ctx.fillText(
-                moji,
-                left, height
-            );
+            if(hasGlyph(moji)){
+                if(outline){
+                    const {descender,upem} = outline.info;
+                    outline.draw(ctx,outline.shape(moji),left,height + descender * _fontSize / upem,_fontSize);
+                }else{
+                    ctx.fillText(moji,left,height);
+                }
+            }
             if(/、/.test(moji)){
                 _fontSize = fontSize * pointWidthScale
             }
@@ -492,20 +522,34 @@ const make = ({
         const canvas = createCanvas();
         const ctx = canvas.getContext('2d');
 
+        const latin = /^[a-zA-Z][a-z ]+$/.test(text);
+        if(outline){
+            if(latin){
+                const horizontal = makeTextCanvas(text,letterSpacing);
+                canvas.width = horizontal.height;
+                canvas.height = horizontal.width;
+                ctx.translate(canvas.width,0);
+                ctx.rotate(Math.PI / 2);
+                ctx.drawImage(horizontal,0,0);
+            }else{
+                const glyphs = outline.shape(text,true);
+                canvas.width = fontSize;
+                canvas.height = Math.max(1,Math.ceil(outlineLength(glyphs,fontSize,letterSpacing)));
+                setCtxConfig(ctx);
+                outline.draw(ctx,glyphs,fontSize / 2,0,fontSize,letterSpacing,true);
+            }
+            removeCanvas(canvas);
+            return canvas;
+        }
+
         const config = {
             textBaseline:'top',
         };
 
-        if(isEngRegex.test(text)){
-            config.fontFamilyName = engFontFamilyName;
-        }
-        
         setCtxConfig(ctx,config);
 
-        text = text.trim();
-
-        if(/^[a-zA-Z][a-z ]+$/.test(text)){
-            let { width , height } = measureText(ctx,text,fontSize);
+        if(latin){
+            let {width,height,runs} = layoutText(ctx,text);
 
             width = width - letterSpacing;
             height = height;
@@ -519,15 +563,13 @@ const make = ({
             ctx.rotate(90 * Math.PI / 180);
             // ctx.translate(-width,-width)
 
-            ctx.fillText(
-                text,
-                0,0
-            );
+            drawTextRuns(ctx,runs,0,0);
             ctx.restore()
+            removeCanvas(canvas);
             return canvas;
         }
 
-        const mojis = text.split('')
+        const mojis = Array.from(text)
         const lineHeight = fontSize + letterSpacing
         const width = fontSize
         const height = mojis.length * lineHeight - letterSpacing
@@ -541,6 +583,7 @@ const make = ({
         ctx.textBaseline = 'middle';
 
         mojis.forEach((moji,index)=>{
+            if(!hasGlyph(moji)) return;
             ctx.save()
             ctx.translate(width/2, index * lineHeight + fontSize / 2)
             if(StartAndEndTagTestRegex.test(moji)|| /ー/.test(moji)){
@@ -574,6 +617,7 @@ const make = ({
         },
         functions: {
             randOne,
+            rand,
             setCtxConfig,
             makeTextCanvas,
             makeTextSizeDiffCanvas,
@@ -796,12 +840,8 @@ const make = ({
         );
     }
 
-    if(timer) console.timeEnd(layout.title)
-
-    removeCanvas(canvas);
-    removeCanvas(outputCanvas);
-
-    return outputCanvas
+    if(timer) console.timeEnd(layout.title);
+    return [...missing];
 }
 
 
@@ -854,3 +894,5 @@ const convolutePixel = (pixels,weights,ctx)=>{
 	// }
 	return output;
 };
+
+export { make, createCanvas, removeCanvas };

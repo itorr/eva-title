@@ -1,32 +1,3 @@
-// @font-face {
-//     font-family: EVAMatisseClassic;
-//     src: url(../fonts/EVA-Matisse_Classic.woff2);
-// }
-// @font-face {
-//     font-family: MatisseProEB;
-//     src: url(FOT-MatissePro-EB.woff2);
-// }
-
-// @font-face {
-//     font-family: NotoSerifSCBlack;
-//     src: url(NotoSerifSC-Black.woff2);
-// }
-
-
-/*
-
-
-"MS Pゴシック","MS P明朝",
-"ヒラギノ明朝","游明朝", "Yu Mincho", "游明朝体", YuMincho,
-"微軟正黑體",
-"ヒラギノ明朝 Pro","PT Serif",
-*/
-
-// @font-face {
-//     font-family: baseSplit;
-//     src: url(base-split.woff);
-// }
-
 :root{
     --color-red: #a42121;
     --color-background: #252525;
@@ -35,13 +6,6 @@
 
 html{
     font:24px/1.4 sans-serif;
-    // font-family: MatisseProEB,serif;
-    // font-family: EVAMatisseClassic,serif;
-    // font-family: EVAMatisseClassic,MatisseProEB,serif;
-    // font-family: NotoSerifSCBlack,serif;
-    // font-family: MatisseProEB,NotoSerifSCBlack,serif;
-    // font-weight: 200;
-    // font-display: swap;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: grayscale;
 
@@ -97,10 +61,6 @@ header{
         padding-top: .5em;
     }
 }
-// h1,h2,h3,h4,
-// .exemple-item{
-//     font-family: baseSplit,serif;
-// }
 h3.tip{
     padding:20px;
     font-size:14px;
@@ -135,6 +95,18 @@ p.tip{
             width: 160px;
             height: 120px;
             pointer-events: none;
+        }
+        span{
+            display: grid;
+            place-items: center;
+            box-sizing: border-box;
+            height: 100%;
+            padding: .5em;
+            color: var(--color-font);
+            background: var(--color-background);
+            font-size: 14px;
+            text-align: center;
+            white-space: normal;
         }
         position: relative;
         b{
@@ -184,21 +156,11 @@ p.tip{
             transition: transform .3s ease;
         }
     }
-    &[data-checked]{
-        .switch {
-            background: currentColor;
-            .slider {
-                transform: translateX(1em)
-            }
+    input:checked + .switch {
+        background: var(--color-red);
+        .slider {
+            transform: translateX(1em)
         }
-    }
-}
-
-
-
-[data-text]{
-    &:before{
-        content:attr(data-text);
     }
 }
 
@@ -209,20 +171,36 @@ p.tip{
     overflow: hidden;
     text-align: center;
 
-    a{
+    label{
         float: left;
         cursor: pointer;
+    }
+    span{
+        display: block;
         line-height: 1;
         padding:8px;
         transition: color .3s ease, background-color .3s ease;
         background: var(--color-font);
-        &[data-checked="true"]{
-            background: currentColor;
-            &:before{
-                color: var(--color-font);
-            }
-        }
+        color: var(--color-red);
     }
+    input:checked + span{
+        background: var(--color-red);
+        color: var(--color-font);
+    }
+}
+
+.ui-tabs-box input,
+.ui-switch-box input{
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    clip-path: inset(50%);
+}
+
+.ui-tabs-box input:focus-visible + span,
+.ui-switch-box input:focus-visible + .switch{
+    outline: 2px solid currentColor;
+    outline-offset: -2px;
 }
 
 section{
@@ -250,6 +228,9 @@ footer{
 .output-box{
     canvas{
         max-width: 100%;
+        &:not([data-ready="true"]){
+            visibility: hidden;
+        }
     }
 }
 
@@ -264,6 +245,10 @@ footer{
 .exemple-item{
     float: left;
     cursor: pointer;
+    border:0;
+    color:inherit;
+    line-height:inherit;
+    text-align:left;
     background:rgba(0,0,0,.2);
     padding:20px 30px;
     border-radius:4px;
@@ -299,7 +284,8 @@ footer{
 
     border-radius:4px;
 
-    &.current{
+    &.current,
+    &[data-current="true"]{
         background-color: var(--color-red);
     }
     &:disabled{
@@ -374,7 +360,7 @@ footer{
     }
 }
 
-input {
+input[type="text"] {
     border: 2px solid currentColor;
     margin: 0.4em 0;
     padding: 0.3em 0.5em;
@@ -406,9 +392,6 @@ input {
     }
     &[data-loading="true"]{
         cursor: wait;
-        &>*{
-            pointer-events: none;
-        }
         &:before{
             opacity: 1;
         }

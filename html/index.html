@@ -6,9 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>福音战士標題生成器 - Evangelion Title Card Generator - 神奇海螺实验室</title>
 <meta name="description" content="福音战士标题生成器 新世纪福音战士 EVA-Matisse-EB マティス-EB EVA-マティス-クラシック Episode Generator 标题画面生成 神奇海螺实验室">
-<!--merge:css-->
 <link rel="stylesheet" href="document.css">
-<!--merge:css-->
 
 <header>
     <h1>福音戰士標題生成器</h1>
@@ -17,142 +15,64 @@
 <div style="padding:20px;font-size:14px;color:#a42121;">
     2022-07-12：支持 iOS、Mac Safari、Firefox 啦
 </div>
-<div class="app" :data-loading="loading">
-    <section class="layout-list">
-        <h2>排版</h2>
-        <a class="item" v-for="(_layout,index) in layouts"
-            :title="_layout.title"
-            :data-checked="layout && layout.id === _layout.id"
-            @click.prevent="setLayout(_layout)"
-            :href="`/?layout=${encodeURI(_layout.id)}`"
-            >
-            <img :src="_layout.src" v-if="_layout.src">
-        </a>
-    </section>
-    <div class="content-box" v-if="layout">
+<div class="app" data-loading="true">
+    <p class="tip" role="alert" hidden>標題字型載入失敗，請重新載入頁面。</p>
+    <section class="layout-list"><h2>排版</h2></section>
+    <div class="content-box" hidden>
         <section class="output-box">
             <h2>輸出</h2>
-            <canvas ref="canvas"></canvas>
-            <!-- :style="{height:`${config.height}px`}" -->
+            <canvas></canvas>
         </section>
         <section class="config-box">
-            <!-- <h2>{{layout.title}}</h2> -->
             <h2>文字</h2>
             <div class="inputs-box">
-                <div class="input-item" v-for="(input,index) in layout.inputs">
-                    <template v-if="input.type==='tab'">
-                        <h4>{{input.name}}</h4>
-                        <ui-tabs v-model="texts[index]" :options="input.options"></ui-tabs>
-                    </template>
-                    <template v-else>
-                        <input type="text" :placeholder="input.placeholder" v-model.lazy.trim="texts[index]" 
-                            :minlength="input.minLength"
-                            :maxlength="input.maxLength">
-                    </template>
-                </div>
-                <div v-if="noMatchMojis.length">
-                    <h3>未匹配文字</h3>
-                    <div style="padding: 0.5em 0 0.8em;">{{noMatchMojis.join(' , ')}}</div>
-                    <button class="btn current min" @click="tc()" :disabled="!canTc" data-text="尝试替换不匹配字形"></button>
-                    <!-- v-if="canTc" -->
-                    <p class="tip">
-                        遇到不匹配字型可先嘗試轉繁體，還不匹配的情况請嘗試替換其他文字<br>
-                        2022-11-26 不匹配字型调整为空白显示，请确保字型存在
-                        <a href="https://github.com/itorr/eva-title/issues/31" target="_blank">#31</a><br>
-                        <del>实在找不到替换文字可以偷懒安装一份 <b>思源宋体</b> Heavy 字型作为 Fallbacks</del>
-                    </p>
+                <div data-fields></div>
+                <div role="status" hidden>
+                    <h3>目前字型不支援的文字</h3>
+                    <div data-missing style="padding: 0.5em 0 0.8em;"></div>
+                    <p class="tip">缺字會在預覽和圖片中留白。</p>
                 </div>
                 <h3>樣例</h3>
-                <div class="exemple-list">
-                    <div class="exemple-item" 
-                        @click="setDefaultTexts(layout)"
-                        :d="texts.filter(t=>!t.type).join('')"
-                        :data-checked="!texts.filter((t,i)=>!layout.inputs[i].type).join('')">
-                        <span v-for="input in layout.inputs">{{input.placeholder}}</span>
-                    </div>
-                    <div class="exemple-item" 
-                        v-for="exemple in layout.exemples" 
-                        :data-checked="texts.join(',') === exemple.join(',')"
-                        @click="setExemple(exemple)">
-                        <span v-for="text in exemple">{{text}}</span>
-                    </div>
-                </div>
+                <div class="exemple-list"></div>
             </div>
-            <!-- v-if="!noMatchMojis.length" -->
             <div class="ctrl-box">
-                <button class="btn" :class="{current:lastAllText!==allText && !noMatchMojis.length}" @click="make()" data-text="生成"></button>
-                <a 
-                    class="btn" 
-                    :class="{current:lastAllText===allText && !noMatchMojis.length}" 
-                    @click="save()" 
-                    :href="output"
-                    :download="downloadFilename"
-                    data-text="保存成圖片"></a>
+                <button class="btn" type="button" data-action="render">生成</button>
+                <button class="btn" type="button" data-action="save" disabled>保存成圖片</button>
             </div>
-            <!-- <h2>选项</h2> -->
             <div class="config-box">
-                <!-- <div class="config-item">
-                    <ui-tabs v-model="config.type" :options="types"></ui-tabs>
-                </div> -->
+                <div class="config-item" data-plan></div>
                 <div class="config-item">
-                    <ui-tabs v-model="config.plan" :options="plans"></ui-tabs>
+                    <label class="ui-switch-box"><input type="checkbox" name="blur"><span class="switch" aria-hidden="true"><i class="slider"></i></span> 模糊</label>
+                    <label class="ui-switch-box"><input type="checkbox" name="noise"><span class="switch" aria-hidden="true"><i class="slider"></i></span> 顆粒</label>
+                    <label class="ui-switch-box"><input type="checkbox" name="convolute"><span class="switch" aria-hidden="true"><i class="slider"></i></span> 銳化</label>
+                    <label class="ui-switch-box"><input type="checkbox" name="type95"><span class="switch" aria-hidden="true"><i class="slider"></i></span> Type 95</label>
                 </div>
-                <div class="config-item">
-                    <ui-switch v-model="config.blur">模糊</ui-switch>
-                    <ui-switch v-model="config.noise">顆粒</ui-switch>
-                    <ui-switch v-model="config.convolute">銳化</ui-switch>
-                    <ui-switch v-model="config.type95">Type 95</ui-switch>
-                </div>
-                <div class="config-item">
-                    <ui-tabs v-model="config.outputRatio" :options="outputRatios"></ui-tabs>
-                </div>
+                <div class="config-item" data-ratio></div>
             </div>
-            <p class="tip" v-if="!haveMatisse">
-                本机安装 <b>Matisse-EB</b> 字体的情况会得到最佳使用体验<br>
-                建议优先安装 <b>EVA-Matisse-EB</b>，会更有福音战士味儿<br>
-                Fontworks 的 EVA 联动订阅字体授权在 <a href="https://mojimo.jp/eva">mojimo.jp/eva</a>
-            </p>
-            <p class="tip" v-if="haveMatisse">
-                本机已安装 <b>Matisse-EB</b> 字体，字体授权情况请自行确认
-            </p>
-            <!-- <pre>{{config}}</pre>
-            <pre>{{texts}}</pre> -->
         </section>
     </div>
-	<div class="ui-shadow" v-if="output" v-clock>
-		<div class="ui-output-box">
-			<h2>生成好啦</h2>
-			<img :src="output" :alt="downloadFilename">
-			<!-- <p>
-				<a :href="output">链接形式跳转到图片</a>
-			</p> -->
-			<p>手机端保存失败时可尝试长按图片 <b>“添加到照片”</b></p>
-			<div class="ctrl-box">
-				<button class="btn current" @click="output = ''">关闭窗口</button>
-			</div>
+    <div class="ui-shadow" role="dialog" aria-modal="true" aria-labelledby="download-title" hidden>
+        <div class="ui-output-box">
+            <h2 id="download-title">生成好啦</h2>
+            <img>
+            <p>手机端保存失败时可尝试长按图片 <b>“添加到照片”</b></p>
+            <div class="ctrl-box">
+                <a class="btn" download>下載圖片</a>
+                <button class="btn current" type="button" data-action="close">关闭窗口</button>
+            </div>
             <p class="tip">
                 生成图片仅供预览，再利用需自行购买字体授权<br>
                 请使用自带浏览器进行保存图片
-                <span style="display:block;" v-if="lastAllText===allText && !noMatchMojis.length">
+                <span style="display:block;">
                     图片不够旧？可以试试再来几年 <a href="https://magiconch.com/patina/">电子包浆</a><br>
-                    图片不够蒸？可以试试虚拟虚拟信号 <a href="https://magiconch.com/vaporwave/">蒸 気 機</a>
+                    图片不够蒸？可以试试虚拟虚拟信号 <a href="https://magiconch.com/vaporwave/">蒸 气 機</a>
                 </span>
             </p>
-		</div>
-	</div>
+        </div>
+    </div>
 </div>
 
-<script src="/vue.2.6.11.min.js"></script>
-<!--merge:js-->
-<script src="eva-matisse-classic-moji-list.js"></script>
-<script src="transform-func.js"></script>
-<script src="ui-tabs.vue.js"></script>
-<script src="ui-switch.vue.js"></script>
-<script src="layouts.js"></script>
-<script src="makebmp.js"></script>
-<script src="make.js"></script>
-<script src="document.js"></script>
-<!--merge:js-->
+<script type="module" src="document.mjs"></script>
 
 <base target="_blank">
 <footer>
@@ -187,15 +107,3 @@
         <a href="https://lab.magiconch.com">lab.magiconch.com</a>
     </section> 
 </footer>
-<!-- <footer class="ui-footer">
-    <a href="https://weibo.com/1197780522/LB5DsoCUF" target="_blank">转发微博</a>
-    <a href="https://weibo.com/1197780522" target="_blank">@卜卜口</a>
-    <a href="https://github.com/itorr/eva-title" target="_blank">GitHub</a>
-    <br>
-
-    <a href="https://mojimo.jp/eva/" target="_blank">字体授权</a>
-    <a href="https://zh.wikipedia.org/wiki/%E6%96%B0%E4%B8%96%E7%BA%AA%E7%A6%8F%E9%9F%B3%E6%88%98%E5%A3%AB#%E6%94%BE%E6%98%A0%E5%92%8C%E7%99%BC%E8%A1%8C" target="_blank">标题参考</a>
-    <br>
-    <a href="https://lab.magiconch.com/magi" target="_blank">MAGI</a>
-    <a href="https://lab.magiconch.com">神奇海螺实验室</a>
-</footer> -->

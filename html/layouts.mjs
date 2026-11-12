@@ -71,8 +71,7 @@ const layouts = [
             } = functions;
 
             const [a,b,sub] = texts;
-            const aLength = a.length;
-            const bLength = b.length;
+            const bLength = Array.from(b).length;
 
             const titleCanvas = (_=>{
                 const canvas = document.createElement('canvas');
@@ -190,8 +189,7 @@ const layouts = [
             } = functions;
 
             const [a,b,sub] = texts;
-            const aLength = a.length;
-            const bLength = b.length;
+            const bLength = Array.from(b).length;
 
             const titleCanvas = (_=>{
                 const canvas = document.createElement('canvas');
@@ -418,9 +416,10 @@ const layouts = [
 
             const [text,sub] = texts;
 
-            let sliceIndex = Math.round(text.length * 0.8)
-            const a = text.slice(0,sliceIndex)
-            const b = text.slice(sliceIndex)
+            const characters = Array.from(text);
+            const sliceIndex = Math.round(characters.length * 0.8);
+            const a = characters.slice(0,sliceIndex).join('');
+            const b = characters.slice(sliceIndex).join('');
 
             // 标题在上
             const aCanvas = makeTextSizeDiffCanvas(a,-space * 1.4)
@@ -532,6 +531,7 @@ const layouts = [
                 makeVerticalTextCanvas,
             } = functions;
 
+            const { rand } = functions;
             const [text,sub,a,b] = texts;
 
             // console.log(text,sub,a,b)
@@ -724,9 +724,10 @@ const layouts = [
 
             const bCanvas = (_=>{
                 // b字符需要拐个弯
-                const bSliceIndex = Math.floor(b.length/2)
-                const ba = b.slice(0,bSliceIndex)
-                const bb = b.slice(bSliceIndex)
+                const characters = Array.from(b);
+                const bSliceIndex = Math.floor(characters.length/2);
+                const ba = characters.slice(0,bSliceIndex).join('');
+                const bb = characters.slice(bSliceIndex).join('');
                 // console.log({ba,bb})
 
                 const baCanvas = makeTextCanvas(ba,-space)
@@ -1023,10 +1024,11 @@ const layouts = [
 
             const [text,sub] = texts;
 
-            const _texts = new Array(Math.ceil(text.length/6)).fill(1).map((_,index)=>{
+            const characters = Array.from(text);
+            const _texts = new Array(Math.ceil(characters.length/6)).fill(1).map((_,index)=>{
                 const start = index * 6;
                 const end = start + 6;
-                return text.slice(start,end)
+                return characters.slice(start,end).join('');
             })
             const titleCanvas = makeLinesCanvas(_texts,-space * 1.5);
             ctx.drawImage(
@@ -1109,13 +1111,11 @@ const layouts = [
             // ┗
             const titleCanvas = (_=>{
                 
-                let aSliceIndex = Math.floor(a.length/2)
-
-                const pointIndex = a.indexOf('、')
-                if(pointIndex !== -1) aSliceIndex = pointIndex
-
-                const aa = a.slice(0,aSliceIndex)
-                const ab = a.slice(aSliceIndex)
+                const characters = Array.from(a);
+                const pointIndex = characters.indexOf('、');
+                const aSliceIndex = pointIndex === -1 ? Math.floor(characters.length/2) : pointIndex;
+                const aa = characters.slice(0,aSliceIndex).join('');
+                const ab = characters.slice(aSliceIndex).join('');
 
 
                 const canvas = document.createElement('canvas');
@@ -1216,9 +1216,10 @@ const layouts = [
             // ┒
             const titleCanvas = (_=>{
                                     
-                const aSliceIndex = Math.ceil(a.length/2)
-                const aa = a.slice(0,aSliceIndex)
-                const ab = a.slice(aSliceIndex)
+                const characters = Array.from(a);
+                const aSliceIndex = Math.ceil(characters.length/2);
+                const aa = characters.slice(0,aSliceIndex).join('');
+                const ab = characters.slice(aSliceIndex).join('');
 
 
                 const canvas = document.createElement('canvas');
@@ -1472,13 +1473,9 @@ const layouts = [
                 makeVerticalTextCanvas,
             } = functions;
 
-            let [a,b,sub] = texts;
-
-            const af = a.substr(0,1)
-            a = a.substr(1)
-
-            const bf = b.substr(0,1)
-            b = b.substr(1)
+            const [a,b,sub] = texts;
+            const [af = '',...aRest] = a;
+            const [bf = '',...bRest] = b;
 
             const afCanvas = makeTextCanvas(af);
             ctx.drawImage(
@@ -1487,7 +1484,7 @@ const layouts = [
                 width * 0.3,height * 0.4
             );
 
-            const aCanvas = makeTextSizeDiffCanvas(a,-space);
+            const aCanvas = makeTextSizeDiffCanvas(aRest.join(''),-space);
             ctx.drawImage(
                 aCanvas,
                 width * 0.3 + padding * 1.5, height * 0.15,
@@ -1500,7 +1497,7 @@ const layouts = [
                 padding * 2, height * 0.55,
                 width * 0.3,height * 0.4
             );
-            const bCanvas = makeTextSizeDiffCanvas(b,-space);
+            const bCanvas = makeTextSizeDiffCanvas(bRest.join(''),-space);
             ctx.drawImage(
                 bCanvas,
                 width * 0.3 + padding * 1.5, height * 0.65,
@@ -1600,3 +1597,5 @@ const layouts = [
     makeRebuildLayout('3.33','ヱヴァンゲリヲン新劇場版：Q',814,2.333,0.60,0.85),
     makeRebuildLayout('3.0+1.11','シン･エヴァンゲリオン劇場版𝄇',814,2.333,0.30,0.90),
 ]
+
+export { layouts };

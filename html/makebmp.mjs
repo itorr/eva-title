@@ -41,3 +41,5 @@ const makeBMPFormCanvas = canvas=>{
     const url = URL.createObjectURL(blob)
     return url
 }
+
+export { makeBMPFormCanvas };
