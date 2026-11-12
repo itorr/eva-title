@@ -6,11 +6,65 @@ const isSafari = navigator.vendor && navigator.vendor.indexOf('Apple') > -1 &&
   navigator.userAgent.indexOf('CriOS') == -1 &&
   navigator.userAgent.indexOf('FxiOS') == -1;
 const isMobile = document.body.offsetWidth < 700;
-// const whiteColor = '#e8e8e8'
-const whiteColor = '#e4e0e8'
-const blackColor = '#030201'
-const orangeColor = 'rgba(255,165,0,.6)'
-const orangeColorInverse = 'rgba(255,165,255,.2)'
+const whiteColor = '#e4e0e8';
+const blackColor = '#030201';
+const orangeColor = 'rgba(255,165,0,.6)';
+const orangeColorInverse = 'rgba(255,165,255,.2)';
+
+// Each palette supplies the text, background and shadow colors in that order.
+const palettes = {
+    __proto__: null,
+    default: [
+        whiteColor,
+        blackColor,
+        orangeColor,
+    ],
+    wb: [
+        blackColor,
+        whiteColor,
+        orangeColorInverse,
+    ],
+    br: [
+        '#D00',
+        '#180000',
+        'rgba(255,0,0,.5)',
+    ],
+    rw: [
+        whiteColor,
+        '#910b0b',
+        'rgba(255,120,120,.7)',
+    ],
+    by: [
+        '#e77225',
+        '#140202',
+        'rgba(231,120,0,.5)',
+    ],
+    yb: [
+        '#140202',
+        '#e77205',
+        'rgba(231,120,0,.5)',
+    ],
+    '1.11': [
+        '#7B1020',
+        '#000000',
+        'transparent',
+    ],
+    '2.22': [
+        '#EF4507',
+        '#000000',
+        'transparent',
+    ],
+    '3.33': [
+        '#0DAFB4',
+        '#000000',
+        'transparent',
+    ],
+    '3.0+1.11': [
+        '#F1FEED',
+        '#000000',
+        'transparent',
+    ],
+};
 
 let fontWeight = 900;
 
@@ -180,57 +234,8 @@ const make = ({
     canvas.width  = width;
     canvas.height = height;
 
-    let fontColor = whiteColor
-    let backgroundColor = blackColor
-    let shadowColor = orangeColor
+    const [fontColor, backgroundColor, shadowColor] = palettes[plan] ?? palettes.default;
 
-    switch(plan){
-        case 'wb':
-            fontColor = blackColor
-            backgroundColor = whiteColor
-            shadowColor = orangeColorInverse
-            break;
-        case 'br':
-            fontColor = '#D00'
-            backgroundColor = '#180000'
-            shadowColor = 'rgba(255,0,0,.5)'
-            break;
-        case 'rw':
-            fontColor = whiteColor
-            backgroundColor = '#910b0b'
-            shadowColor = 'rgba(255,120,120,.7)'
-            break;
-        case 'by':
-            fontColor = '#e77225'
-            backgroundColor = '#140202'
-            shadowColor = 'rgba(231,120,0,.5)'
-            break;
-        case 'yb':
-            fontColor = '#140202'
-            backgroundColor = '#e77205'
-            shadowColor = 'rgba(231,120,0,.5)'
-            break;
-        case '1.11':
-            fontColor = '#7B1020'
-            backgroundColor = '#000000'
-            shadowColor = 'transparent'
-            break;
-        case '2.22':
-            fontColor = '#EF4507'
-            backgroundColor = '#000000'
-            shadowColor = 'transparent'
-            break;
-        case '3.33':
-            fontColor = '#0DAFB4'
-            backgroundColor = '#000000'
-            shadowColor = 'transparent'
-            break;
-        case '3.0+1.11':
-            fontColor = '#F1FEED'
-            backgroundColor = '#000000'
-            shadowColor = 'transparent'
-            break;
-    }
     ctx.fillStyle = backgroundColor;
     ctx.fillRect(
         0, 0,
