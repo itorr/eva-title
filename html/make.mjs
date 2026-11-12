@@ -66,6 +66,8 @@ const palettes = {
     ],
 };
 
+const getPalette = plan => palettes[plan] ?? palettes.default;
+
 let fontWeight = 900;
 
 const defaultOutputRatio = 1.334;
@@ -234,7 +236,7 @@ const make = ({
     canvas.width  = width;
     canvas.height = height;
 
-    const [fontColor, backgroundColor, shadowColor] = palettes[plan] ?? palettes.default;
+    const [fontColor, backgroundColor, shadowColor] = getPalette(plan);
 
     ctx.fillStyle = backgroundColor;
     ctx.fillRect(
@@ -911,4 +913,4 @@ const convolutePixel = (pixels,weights,ctx)=>{
 	return output;
 };
 
-export { make, createCanvas, removeCanvas };
+export { make, createCanvas, removeCanvas, getPalette };

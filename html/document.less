@@ -89,7 +89,7 @@ p.tip{
 
         width: 160px;
         height: 120px;
-        
+
         img{
             display: block;
             width: 160px;
@@ -187,6 +187,37 @@ p.tip{
         background: var(--color-red);
         color: var(--color-font);
     }
+}
+
+[data-plan] .ui-tabs-box {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+
+    label {
+        display: grid;
+        justify-items: center;
+        gap: 5px;
+        width: 44px;
+        padding: 5px 0;
+        font-size: .75em;
+        line-height: 1;
+
+        &:has(> input:checked) {
+            background: var(--color-red);
+        }
+
+        &:has(> input:focus-visible) {
+            outline: 2px solid currentColor;
+            outline-offset: -2px;
+        }
+    }
+}
+
+.palette-swatch {
+    width: 32px;
+    height: 32px;
+    forced-color-adjust: none;
 }
 
 .ui-tabs-box input,

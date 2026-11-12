@@ -1,5 +1,5 @@
 import { layouts } from './layouts.mjs';
-import { make, createCanvas, removeCanvas } from './make.mjs';
+import { make, createCanvas, removeCanvas, getPalette } from './make.mjs';
 import { makeBMPFormCanvas } from './makebmp.mjs';
 import { loadTitleFont } from './title-font.mjs';
 import { createMissingGlyphReporter } from './missing-glyph-log.mjs';
@@ -13,15 +13,15 @@ const defaults = {
 };
 
 const plans = [
-    [undefined, '黑白'],
-    ['wb', '白黑'],
-    ['br', '黑红'],
-    ['rw', '红白'],
-    ['by', '黑黄'],
-    ['1.11', '序'],
-    ['2.22', '破'],
-    ['3.33', 'Q'],
-    ['3.0+1.11', '终'],
+    [undefined, '黑白', 68],
+    ['wb', '白黑', 48],
+    ['br', '黑红', 76],
+    ['rw', '红白', 56],
+    ['by', '黑黄', 80],
+    ['1.11', '序', 72],
+    ['2.22', '破', 64],
+    ['3.33', 'Q', 60],
+    ['3.0+1.11', '终', 52],
 ];
 
 const ratios = [
@@ -47,18 +47,26 @@ const element = (tag, className, text) => {
     return node;
 };
 
-function radioGroup(name, options, label) {
+function planOption([plan, caption, split]) {
+    const [text, background] = getPalette(plan);
+    const swatch = element('i', 'palette-swatch');
+    swatch.setAttribute('aria-hidden', 'true');
+    swatch.style.background = `linear-gradient(90deg, ${background} ${split}%, ${text} ${split}%)`;
+    return [swatch, caption];
+}
+
+function radioGroup(name, options, label, makeOption = ([, caption]) => [element('span', null, caption)]) {
     const group = element('span', 'ui-tabs-box');
     group.setAttribute('role', 'group');
     group.setAttribute('aria-label', label);
     return {
         node: group,
-        controls: options.map(([, caption]) => {
+        controls: options.map((option) => {
             const item = element('label');
             const input = element('input');
             input.type = 'radio';
             input.name = name;
-            item.append(input, element('span', null, caption));
+            item.append(input, ...makeOption(option));
             group.append(item);
             return input;
         }),
@@ -76,7 +84,7 @@ class TitleEditor {
         this.title = document.title;
         this.revision = 0;
         this.navigation = new Map();
-        this.plan = radioGroup('plan', plans, '配色');
+        this.plan = radioGroup('plan', plans, '配色', planOption);
         this.ratio = radioGroup('ratio', ratios, '輸出比例');
         this.get('[data-plan]').append(this.plan.node);
         this.get('[data-ratio]').append(this.ratio.node);
