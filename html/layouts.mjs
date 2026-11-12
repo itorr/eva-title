@@ -16,20 +16,19 @@ const makeRebuildLayout = (version,title,height,outputRatio,textHeightRatio,text
 
 const drawEpisodeText = ({ ctx, config, functions }, text, referenceLength, box, options = {}) => {
     if (!text) return;
-    const { width, height, space } = config;
-    const { vertical = false, right = false } = options;
+    const { width, height, fontSize, space } = config;
     const [x, y, w, h] = box;
-    const lengthRatio = Array.from(text).length / referenceLength;
+    const { vertical = false, right = false, maxWidth = w } = options;
     const textCanvas = vertical
         ? functions.makeVerticalTextCanvas(text, -space)
         : functions.makeTextCanvas(text, -space);
-    const mainScale = Math.min(1, lengthRatio);
-    const crossScale = Math.min(1, 1 / lengthRatio);
-    const textWidth = w * width * (vertical ? crossScale : mainScale);
-    const textHeight = h * height * (vertical ? mainScale : crossScale);
+    const lengthRatio = vertical
+        ? textCanvas.height / (fontSize * referenceLength - space * (referenceLength - 1))
+        : textCanvas.width / functions.fullWidthTextCanvasWidth(referenceLength, -space);
+    const textWidth = width * (vertical ? w * Math.min(1, 1 / lengthRatio) : Math.min(w * lengthRatio, maxWidth));
+    const textHeight = h * height * (vertical ? Math.min(1, lengthRatio) : 1);
     const left = right ? (x + w) * width - textWidth : x * width;
-    const top = vertical ? y * height : (y + h) * height - textHeight;
-    ctx.drawImage(textCanvas, left, top, textWidth, textHeight);
+    ctx.drawImage(textCanvas, left, y * height, textWidth, textHeight);
 };
 
 const layouts = [
@@ -1688,7 +1687,7 @@ const layouts = [
         make: (frame) => {
             const [title, episode] = frame.texts;
             drawEpisodeText(frame, episode, 5, [0.095, 0.08, 0.385, 0.155]);
-            drawEpisodeText(frame, title, 1, [0.63, 0.51, 0.28, 0.405], { right: true });
+            drawEpisodeText(frame, title, 1, [0.63, 0.51, 0.28, 0.405], { right: true, maxWidth: 0.81 });
         },
     },
     makeRebuildLayout('1.11','ヱヴァンゲリヲン新劇場版：序',1080,1.778,0.30,0.65,true),

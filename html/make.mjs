@@ -310,6 +310,14 @@ const make = ({
         for(const run of runs) ctx.fillText(run.text,x + run.offset,y);
     };
 
+    const textCanvasWidth = (width, letterSpacing) =>
+        width + fontPadding * 2 - (outline ? 0 : letterSpacing);
+
+    const fullWidthTextCanvasWidth = (length, letterSpacing) => {
+        const spacing = outline ? letterSpacing * (length - 1) : 0;
+        return Math.floor(textCanvasWidth(Math.ceil(length * fontSize + spacing), letterSpacing));
+    };
+
     const makeTextCanvas = (text,letterSpacing = 0,margin = 0)=>{
         const canvas = createCanvas();
         const ctx = canvas.getContext('2d');
@@ -326,7 +334,7 @@ const make = ({
             height:(ascender - descender) * fontSize / upem,
         } : layoutText(ctx,text);
 
-        width = width + fontPadding * 2 - (glyphs ? 0 : letterSpacing);
+        width = textCanvasWidth(width, letterSpacing);
         height = height + fontPadding * 2;
 
         canvas.width = width;
@@ -638,6 +646,7 @@ const make = ({
             rand,
             setCtxConfig,
             makeTextCanvas,
+            fullWidthTextCanvasWidth,
             makeTextSizeDiffCanvas,
             makeLinesCanvas,
             makeLinesDiffSizeCanvas,
