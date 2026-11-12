@@ -14,6 +14,24 @@ const makeRebuildLayout = (version,title,height,outputRatio,textHeightRatio,text
     }
 });
 
+const drawEpisodeText = ({ ctx, config, functions }, text, referenceLength, box, options = {}) => {
+    if (!text) return;
+    const { width, height, space } = config;
+    const { vertical = false, right = false } = options;
+    const [x, y, w, h] = box;
+    const lengthRatio = Array.from(text).length / referenceLength;
+    const textCanvas = vertical
+        ? functions.makeVerticalTextCanvas(text, -space)
+        : functions.makeTextCanvas(text, -space);
+    const mainScale = Math.min(1, lengthRatio);
+    const crossScale = Math.min(1, 1 / lengthRatio);
+    const textWidth = w * width * (vertical ? crossScale : mainScale);
+    const textHeight = h * height * (vertical ? mainScale : crossScale);
+    const left = right ? (x + w) * width - textWidth : x * width;
+    const top = vertical ? y * height : (y + h) * height - textHeight;
+    ctx.drawImage(textCanvas, left, top, textWidth, textHeight);
+};
+
 const layouts = [
     {
         id: 'e1',
@@ -1591,6 +1609,87 @@ const layouts = [
             );
 
         }
+    },
+    {
+        id: 'e7',
+        title: '第七話 人の造りしもの',
+        inputs: [
+            { placeholder: '人', maxLength: 4 },
+            { placeholder: 'の', maxLength: 4 },
+            { placeholder: '造', maxLength: 4 },
+            { placeholder: 'りし', maxLength: 6 },
+            { placeholder: 'もの', maxLength: 6 },
+            { placeholder: '第七話', maxLength: 12 },
+        ],
+        config: { noise: false, shadow: false },
+        make: (frame) => {
+            const [first, particle, middle, end, vertical, episode] = frame.texts;
+            const [prefix, ...number] = Array.from(episode);
+            drawEpisodeText(frame, first, 1, [0.085, 0.025, 0.27, 0.46]);
+            drawEpisodeText(frame, particle, 1, [0.34, 0.225, 0.17, 0.245]);
+            drawEpisodeText(frame, middle, 1, [0.49, 0.13, 0.225, 0.36]);
+            drawEpisodeText(frame, end, 2, [0.704, 0.19, 0.24, 0.30]);
+            drawEpisodeText(frame, vertical, 2, [0.797, 0.46, 0.165, 0.43], { vertical: true });
+            drawEpisodeText(frame, prefix, 1, [0.052, 0.55, 0.12, 0.18]);
+            drawEpisodeText(frame, number.join(''), 2, [0.052, 0.727, 0.249, 0.18]);
+        },
+    },
+    {
+        id: 'e16',
+        title: '第拾六話 死に至る病、そして',
+        inputs: [
+            { placeholder: '死', maxLength: 4 },
+            { placeholder: 'に至る', maxLength: 8 },
+            { placeholder: '病', maxLength: 4 },
+            { placeholder: 'そして', maxLength: 8 },
+            { placeholder: '第拾六話', maxLength: 12 },
+        ],
+        config: { noise: false, shadow: false },
+        make: (frame) => {
+            const [first, top, middle, end, episode] = frame.texts;
+            drawEpisodeText(frame, first, 1, [0.057, 0.008, 0.304, 0.744]);
+            drawEpisodeText(frame, top, 3, [0.365, 0.078, 0.397, 0.281]);
+            drawEpisodeText(frame, middle, 1, [0.362, 0.308, 0.304, 0.682]);
+            drawEpisodeText(frame, '、', 1, [0.627, 0.522, 0.14, 0.415]);
+            drawEpisodeText(frame, end, 3, [0.671, 0.534, 0.265, 0.417]);
+            drawEpisodeText(frame, episode, 4, [0.815, 0.083, 0.122, 0.38], { vertical: true });
+        },
+    },
+    {
+        id: 'e18',
+        title: '第拾八話 命の選択を',
+        inputs: [
+            { placeholder: '命', maxLength: 4 },
+            { placeholder: 'の', maxLength: 4 },
+            { placeholder: '選択', maxLength: 6 },
+            { placeholder: 'を', maxLength: 4 },
+            { placeholder: '第拾八話', maxLength: 12 },
+        ],
+        config: { noise: false, shadow: false },
+        make: (frame) => {
+            const [first, firstEnd, second, secondEnd, episode] = frame.texts;
+            const number = Array.from(episode);
+            drawEpisodeText(frame, first, 1, [0.246, 0.058, 0.325, 0.482]);
+            drawEpisodeText(frame, firstEnd, 1, [0.538, 0.262, 0.162, 0.266]);
+            drawEpisodeText(frame, second, 2, [0.242, 0.476, 0.554, 0.469]);
+            drawEpisodeText(frame, secondEnd, 1, [0.776, 0.626, 0.143, 0.323]);
+            drawEpisodeText(frame, number.slice(0, 2).join(''), 2, [0.068, 0.073, 0.187, 0.143]);
+            drawEpisodeText(frame, number.slice(2).join(''), 2, [0.161, 0.194, 0.087, 0.229], { vertical: true });
+        },
+    },
+    {
+        id: 'e23',
+        title: '第弐拾参話 涙',
+        inputs: [
+            { placeholder: '涙', maxLength: 8 },
+            { placeholder: '第弐拾参話', maxLength: 12 },
+        ],
+        config: { noise: false, shadow: false },
+        make: (frame) => {
+            const [title, episode] = frame.texts;
+            drawEpisodeText(frame, episode, 5, [0.095, 0.08, 0.385, 0.155]);
+            drawEpisodeText(frame, title, 1, [0.63, 0.51, 0.28, 0.405], { right: true });
+        },
     },
     makeRebuildLayout('1.11','ヱヴァンゲリヲン新劇場版：序',1080,1.778,0.30,0.65,true),
     makeRebuildLayout('2.22','ヱヴァンゲリヲン新劇場版：破',1080,1.778,0.45,0.85),
